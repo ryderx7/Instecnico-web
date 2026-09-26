@@ -1,0 +1,2643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Detección temprana de dispositivo (PC/Móvil) para optimizar carga y efectos pesados -->
+    <script>
+        (function () {
+            var ua = navigator.userAgent || '';
+            var isMobileUA = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile|webOS/i.test(ua);
+            var isMobile = isMobileUA || window.innerWidth <= 768;
+            var root = document.documentElement;
+            root.classList.add(isMobile ? 'device-mobile' : 'device-pc');
+            window.__isMobileDevice = isMobile;
+        })();
+    </script>
+
+    <title>Instituto Técnico | Formando líderes desde 1913</title>
+    <meta name="description" content="Sitio web oficial de la Institución Educativa Instituto Técnico de Santander de Quilichao, Cauca. Educación Preescolar, Básica y Media.">
+    <meta name="theme-color" content="#000000">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Instituto Técnico | Formando líderes desde 1913">
+    <meta property="og:description" content="Sitio web oficial de la Institución Educativa Instituto Técnico de Santander de Quilichao, Cauca.">
+    <meta property="og:image" content="assets/images/logo.png">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+    <!-- Fuentes de Google: Inter, Space Grotesk e Instrument Serif -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #000000;
+            --bg-panel: #0a0a0a;
+            --bg-card: #111111;
+            --bg-elevated: #1a1a1a;
+            
+            --primary: #00ff88;
+            --primary-hover: #00cc6a;
+            --primary-dim: rgba(0, 255, 136, 0.1);
+            --primary-glow: rgba(0, 255, 136, 0.3);
+            
+            --text-main: #ffffff;
+            --text-muted: #999999;
+            --text-dark: #000000;
+            
+            --border-color: #222222;
+            --border-light: rgba(255, 255, 255, 0.05);
+            
+            --font-body: 'Inter', sans-serif;
+            --font-heading: 'Space Grotesk', sans-serif;
+            --font-elegant: 'Instrument Serif', serif;
+            
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* El header es "fixed", así que sin esto las secciones quedan
+           tapadas al llegar por un link del menú. 100px = altura aprox.
+           del header (coincide con el mismo offset que usa el JS del
+           nav activo al hacer scroll). */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        /* Accesibilidad + batería: si el usuario activó "reducir movimiento"
+           en su sistema operativo, apagamos animaciones/transiciones largas
+           en vez de ignorarlo (algunas personas lo usan por mareo/vértigo,
+           otras solo para ahorrar batería). */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+            html { scroll-behavior: auto; }
+            .reveal, .about-image-caption { opacity: 1 !important; transform: none !important; }
+            .about-flip-float { animation: none !important; }
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 255, 136, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(0, 255, 136, 0.04) 0%, transparent 50%);
+        }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; line-height: 1.2; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        .section-padding {
+            padding: 100px 0;
+            /* ============ NUEVA TÉCNICA: content-visibility ============
+               Le dice al navegador que NO gaste tiempo calculando el layout
+               ni pintando una sección mientras esté lejos de la pantalla.
+               Esto acelera muchísimo el renderizado inicial en páginas largas
+               como esta (menos trabajo = más fluidez, sobre todo en celulares
+               de gama media/baja). contain-intrinsic-size evita que la página
+               "salte" mientras la sección todavía no se ha medido de verdad. */
+            content-visibility: auto;
+            contain-intrinsic-size: 1px 900px;
+        }
+        
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            font-size: 1.1rem;
+        }
+
+        .text-green { color: var(--primary); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+        
+        .btn--primary {
+            background-color: var(--primary);
+            color: var(--text-dark);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+        }
+        
+        .btn--primary:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 0 25px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+        
+        .btn--outline {
+            background-color: transparent;
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn--outline:hover {
+            background-color: var(--primary-dim);
+            box-shadow: 0 0 15px var(--primary-dim);
+            transform: translateY(-2px);
+        }
+
+        .glass-card {
+            background: rgba(17, 17, 17, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 255, 136, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px var(--primary-dim);
+            transform: translateY(-5px);
+        }
+        
+        .glass-card:hover::before { opacity: 1; }
+
+        /* Header & Navbar */
+        .header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+            padding: 20px 0;
+            border-bottom: 1px solid transparent;
+        }
+        
+        .header.scrolled {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            height: 48px;
+        }
+        
+        .logo img {
+            height: 100%;
+            width: auto;
+            max-width: 140px;
+            object-fit: contain;
+            display: block;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            position: relative;
+        }
+        
+        .nav-link:hover, .nav-link.active { color: var(--text-main); }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0; width: 0%; height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+        .mobile-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        /* Hero */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            overflow: hidden;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('assets/images/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: var(--bg-base);
+            z-index: -2;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, var(--bg-base) 100%);
+            z-index: -1;
+        }
+
+        .hero-grid {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            background: var(--primary-dim);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #A0A0A0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-desc {
+            font-size: clamp(1.1rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto; margin-right: auto;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-10px) translateX(-50%); }
+            60% { transform: translateY(-5px) translateX(-50%); }
+        }
+
+        /* Nosotros */
+        .nosotros-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .stat-item {
+            padding: 24px;
+            border-radius: var(--radius-md);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+        }
+
+        .stat-item:hover,
+        .stat-item:focus-visible {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--primary-dim);
+            transform: translateY(-3px);
+            outline: none;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .stat-item:hover .stat-label,
+        .stat-item:focus-visible .stat-label {
+            color: var(--primary);
+        }
+
+        .stat-item.stat-clicked { animation: statClickPulse 0.4s ease; }
+
+        @keyframes statClickPulse {
+            0% { transform: scale(1); }
+            35% { transform: scale(0.94); }
+            100% { transform: scale(1); }
+        }
+
+        .stat-num {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        /* ==========================================================
+           SECCIÓN NOSOTROS: Imagen flotante con flip-card 3D
+           ========================================================== */
+        .about-flip-wrap {
+            position: relative;
+            perspective: 1600px;
+            min-height: 540px;
+            user-select: none;
+        }
+
+        .about-flip-float {
+            width: 100%;
+            height: 100%;
+            min-height: 540px;
+            animation: floatImage 6s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        @keyframes floatImage {
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            50% { transform: translate3d(0, -12px, 0); }
+        }
+
+        .about-flip {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 540px;
+            transform-style: preserve-3d;
+            transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            will-change: transform;
+        }
+
+        .about-flip.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .about-flip-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .about-flip-front {
+            background: var(--bg-card);
+        }
+
+        .about-flip-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .about-image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0) 25%,
+                rgba(0, 0, 0, 0.35) 60%,
+                rgba(0, 0, 0, 0.88) 92%,
+                rgba(0, 0, 0, 0.98) 100%
+            );
+            pointer-events: none;
+            transition: background 0.6s ease;
+            z-index: 1;
+        }
+
+        .about-flip-front:hover .about-image-overlay {
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.08) 20%,
+                rgba(0, 0, 0, 0.45) 55%,
+                rgba(0, 0, 0, 0.92) 88%,
+                rgba(0, 0, 0, 0.99) 100%
+            );
+        }
+
+        .about-image-caption {
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            padding: 32px 30px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(28px);
+        }
+
+        .reveal.active .about-image-caption {
+            animation: captionSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+        }
+
+        @keyframes captionSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .about-image-caption-emoji {
+            font-size: 1.8rem;
+            line-height: 1;
+            margin-bottom: 4px;
+            filter: drop-shadow(0 0 14px rgba(0, 255, 136, 0.55));
+            display: inline-block;
+            width: fit-content;
+            animation: emojiPulse 3.2s ease-in-out infinite;
+        }
+
+        @keyframes emojiPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.08) rotate(-2deg); }
+        }
+
+        .about-image-caption-title {
+            font-family: var(--font-elegant);
+            font-weight: 400;
+            font-style: italic;
+            font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+            line-height: 1.1;
+            color: #ffffff;
+            letter-spacing: -0.015em;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .about-image-caption-title .highlight {
+            color: var(--primary);
+            font-style: italic;
+            text-shadow: 0 0 24px rgba(0, 255, 136, 0.45);
+        }
+
+        .about-image-caption-sub {
+            font-family: var(--font-heading);
+            font-size: 0.72rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 2px;
+            opacity: 0.95;
+        }
+
+        .about-image-caption-hint {
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.55);
+            margin-top: 6px;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Reverso del flip: Historia */
+        .about-flip-back {
+            background: linear-gradient(135deg, #0d0d0d 0%, #000 100%);
+            border: 1px solid rgba(0, 255, 136, 0.22);
+            transform: rotateY(180deg);
+            padding: 32px 30px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .about-flip-back::-webkit-scrollbar { width: 6px; }
+        .about-flip-back::-webkit-scrollbar-track { background: transparent; }
+        .about-flip-back::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+        .about-flip-back::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        .flip-back-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            flex-shrink: 0;
+        }
+
+        .flip-back-emoji {
+            font-size: 1.8rem;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.4));
+            flex-shrink: 0;
+        }
+
+        .flip-back-title {
+            font-family: var(--font-elegant);
+            font-style: italic;
+            font-weight: 400;
+            font-size: 1.55rem;
+            color: #fff;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+        }
+
+        .flip-back-title .text-green {
+            font-style: italic;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .flip-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding-left: 2px;
+            margin-bottom: 14px;
+        }
+
+        .flip-timeline li {
+            display: grid;
+            grid-template-columns: 52px 1fr;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .flip-year {
+            font-family: var(--font-heading);
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--primary);
+            padding-top: 1px;
+            position: relative;
+            letter-spacing: 0.3px;
+        }
+
+        .flip-year::after {
+            content: '';
+            position: absolute;
+            left: 22px;
+            top: 100%;
+            width: 1px;
+            height: 14px;
+            background: linear-gradient(180deg, var(--primary), transparent);
+        }
+
+        .flip-timeline li:last-child .flip-year::after { display: none; }
+
+        .flip-content strong {
+            display: block;
+            color: #fff;
+            font-family: var(--font-heading);
+            font-size: 0.92rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+            letter-spacing: -0.005em;
+        }
+
+        .flip-content p {
+            color: #a0a0a0;
+            font-size: 0.8rem;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        .flip-back-hint {
+            font-size: 0.7rem;
+            color: rgba(0, 255, 136, 0.6);
+            text-align: center;
+            margin-top: auto;
+            padding-top: 12px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-family: var(--font-heading);
+            flex-shrink: 0;
+        }
+
+        /* Sedes */
+        .sedes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+
+        .sede-card {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .sede-img-wrap {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background: var(--bg-elevated);
+        }
+
+        .sede-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+
+        .sede-card:hover .sede-img-wrap img {
+            transform: scale(1.08);
+        }
+
+        /* Difuminado negro sobre la foto */
+        .sede-img-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.15) 0%,
+                rgba(0, 0, 0, 0.05) 40%,
+                rgba(0, 0, 0, 0.75) 100%
+            );
+            pointer-events: none;
+            transition: background 0.4s ease;
+        }
+
+        .sede-card:hover .sede-img-wrap::after {
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.05) 0%,
+                rgba(0, 0, 0, 0.02) 40%,
+                rgba(0, 0, 0, 0.88) 100%
+            );
+        }
+
+        .sede-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--primary);
+            border: 1px solid rgba(0, 255, 136, 0.35);
+            z-index: 2;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .sede-body {
+            padding: 20px 22px 24px;
+        }
+
+        /* Accesos */
+        .accesos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .acceso-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 16px;
+            padding: 32px 20px;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+
+        .acceso-icon {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+        
+        .acceso-card:hover .acceso-icon {
+            background: var(--primary);
+            color: var(--bg-base);
+            box-shadow: 0 0 20px var(--primary-glow);
+            transform: scale(1.1);
+        }
+
+        /* Emisora */
+        .emisora-banner {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-base) 100%);
+            border: 1px solid var(--primary-dim);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .emisora-wave {
+            position: absolute;
+            right: -10%; top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .en-vivo-dot {
+            display: inline-block;
+            width: 10px; height: 10px;
+            background-color: #ff3333;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse-red 1.5s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 51, 51, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0); }
+        }
+
+        /* Noticias */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .news-card {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .news-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-elevated);
+        }
+
+        .news-content {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .news-date { font-size: 0.85rem; color: var(--primary); margin-bottom: 8px; }
+        .news-title { font-size: 1.25rem; margin-bottom: 12px; }
+        .news-excerpt { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; flex-grow: 1; }
+        .news-link {
+            color: var(--text-main);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            font-family: inherit;
+            text-align: left;
+            transition: var(--transition);
+        }
+        .news-link:hover { color: var(--primary); }
+        .news-link svg { transition: transform 0.3s; }
+        .news-link:hover svg { transform: translateX(5px); }
+
+        /* Modal Genérico */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            max-width: 780px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(40px) scale(0.96);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 255, 136, 0.08);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .modal-hero {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-elevated);
+            display: block;
+        }
+
+        .modal-body {
+            padding: 40px;
+        }
+
+        .modal-category {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: var(--primary-dim);
+            border: 1px solid rgba(0, 255, 136, 0.25);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .modal-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .modal-body p {
+            color: #cccccc;
+            margin-bottom: 18px;
+            font-size: 1.02rem;
+            line-height: 1.75;
+        }
+
+        .modal-body h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-top: 28px;
+            margin-bottom: 12px;
+        }
+
+        .modal-body ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 20px;
+        }
+
+        .modal-body ul li {
+            color: #cccccc;
+            padding-left: 24px;
+            position: relative;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .modal-body ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            color: white;
+            font-size: 1.4rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .modal-close:hover {
+            background: var(--primary);
+            color: var(--text-dark);
+            transform: rotate(90deg);
+        }
+
+        @media (max-width: 768px) {
+            .modal-body { padding: 24px; }
+            .modal-hero { height: 200px; }
+            .modal-meta { font-size: 0.82rem; gap: 12px; }
+        }
+
+        /* Galería */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+            grid-auto-rows: 200px;
+        }
+
+        .gallery-item {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            background: var(--bg-elevated);
+        }
+        
+        .gallery-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover img { transform: scale(1.1); }
+        
+        .gallery-item::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: rgba(0,255,136,0.2);
+            opacity: 0; transition: var(--transition);
+        }
+        
+        .gallery-item:hover::after { opacity: 1; }
+
+        .gallery-item:nth-child(2) { grid-row: span 2; }
+        .gallery-item:nth-child(5) { grid-column: span 2; }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox.active { opacity: 1; pointer-events: all; }
+        .lightbox img { max-width: 90%; max-height: 90vh; border-radius: var(--radius-md); box-shadow: 0 0 30px rgba(0,0,0,0.8); }
+        .lightbox-close {
+            position: absolute; top: 30px; right: 40px;
+            background: none; border: none; color: white;
+            font-size: 2rem; cursor: pointer;
+        }
+
+        /* Reconocimiento */
+        .reconocimiento-card {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            padding: 40px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .reconocimiento-card:hover {
+            border-color: rgba(0, 255, 136, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px var(--primary-dim);
+            transform: translateY(-5px);
+        }
+        .reco-img {
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 20px var(--primary-dim);
+            background: var(--bg-elevated);
+            flex-shrink: 0;
+        }
+
+        /* Contacto */
+        .contacto-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); }
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            transition: var(--transition);
+        }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-dim); }
+        textarea.form-control { resize: vertical; min-height: 120px; }
+        
+        .contact-info { display: flex; flex-direction: column; gap: 24px; }
+        .info-item { display: flex; gap: 16px; align-items: flex-start; }
+        .info-icon { color: var(--primary); margin-top: 4px; }
+        
+        .map-container {
+            width: 100%; height: 250px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-top: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-card);
+            padding: 80px 0 24px;
+            margin-top: 60px;
+            content-visibility: auto;
+            contain-intrinsic-size: 1px 500px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-title { color: var(--text-main); font-size: 1.1rem; margin-bottom: 20px; }
+        .footer-links { display: flex; flex-direction: column; gap: 12px; }
+        .footer-links a { color: var(--text-muted); font-size: 0.95rem; }
+        .footer-links a:hover { color: var(--primary); padding-left: 5px; }
+        
+        .social-links { display: flex; gap: 16px; }
+        .social-link {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-main);
+            transition: var(--transition);
+        }
+        .social-link:hover { background: var(--primary); color: var(--bg-base); }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 24px;
+            display: flex; justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 999;
+            opacity: 0; pointer-events: none;
+            transition: var(--transition);
+        }
+        .back-to-top.visible { opacity: 1; pointer-events: all; }
+        .back-to-top:hover { background: var(--primary); color: var(--bg-base); transform: translateY(-5px); }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.12s; }
+        .delay-2 { transition-delay: 0.24s; }
+        .delay-3 { transition-delay: 0.36s; }
+
+        /* Quita el retraso de ~300ms que algunos navegadores móviles
+           agregan antes de procesar un tap (esperando a ver si viene un
+           segundo toque para hacer zoom), y evita el zoom accidental por
+           doble-tap en botones y tarjetas clicables. */
+        .btn, .nav-link, .stat-item, .acceso-card, .gallery-item,
+        .mobile-toggle, .back-to-top, .modal-close, .lightbox-close {
+            touch-action: manipulation;
+        }
+
+        @media (max-width: 992px) {
+            .nosotros-grid, .contacto-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .reconocimiento-card { flex-direction: column; text-align: center; }
+            .hero-title { font-size: clamp(2.5rem, 5vw, 4rem); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .header-cta { display: none; }
+            .mobile-toggle { display: block; }
+            
+            .nav-links.mobile-active {
+                display: flex; flex-direction: column;
+                position: absolute; top: 100%; left: 0; width: 100%;
+                background: rgba(10, 10, 10, 0.98);
+                backdrop-filter: blur(16px);
+                padding: 24px; border-bottom: 1px solid var(--border-color);
+                align-items: flex-start;
+            }
+            .nav-links.mobile-active .nav-link { font-size: 1.2rem; width: 100%; padding: 12px 0; border-bottom: 1px solid var(--border-light); }
+            .header-cta.mobile-active { display: flex; width: 100%; margin-top: 20px; justify-content: center; }
+
+            .hero-actions { flex-direction: column; }
+            .emisora-banner { flex-direction: column; text-align: center; gap: 24px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+            .scroll-indicator { display: none; }
+        }
+
+        /* ======================================================
+           Preloader y optimización móvil
+           ====================================================== */
+
+        body.is-loading { overflow: hidden; }
+
+        .preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .preloader::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 40%, rgba(0, 255, 136, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .preloader.loaded {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .preloader-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .preloader-logo-wrap {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preloader-logo {
+            width: 68px;
+            height: 68px;
+            object-fit: contain;
+            position: relative;
+            z-index: 2;
+            animation: floatLogo 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 18px var(--primary-glow));
+        }
+
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .preloader-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid var(--primary-dim);
+            border-top-color: var(--primary);
+            animation: spinRing 1.3s linear infinite;
+        }
+
+        @keyframes spinRing { to { transform: rotate(360deg); } }
+
+        .preloader-ring::after {
+            content: '';
+            position: absolute;
+            inset: -14px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 255, 136, 0.18);
+            animation: pulseRing 2s ease-out infinite;
+        }
+
+        @keyframes pulseRing {
+            0% { transform: scale(0.8); opacity: 0.7; }
+            100% { transform: scale(1.35); opacity: 0; }
+        }
+
+        .preloader-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .preloader-subtitle {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: -12px;
+        }
+
+        .preloader-bar-track {
+            width: 220px;
+            height: 4px;
+            border-radius: 4px;
+            background: var(--bg-elevated);
+            overflow: hidden;
+        }
+
+        .preloader-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary-hover), var(--primary));
+            border-radius: 4px;
+            box-shadow: 0 0 10px var(--primary-glow);
+            transition: width 0.2s ease;
+        }
+
+        .preloader-percent {
+            font-family: var(--font-heading);
+            font-size: 0.8rem;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        /* ---- Optimización según dispositivo detectado ---- */
+        .device-mobile .glass-card,
+        .device-mobile .header.scrolled,
+        .device-mobile .modal,
+        .device-mobile .lightbox,
+        .device-mobile .modal-close,
+        .device-mobile .preloader,
+        .device-mobile .sede-badge {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        .device-mobile .glass-card { background: rgba(17, 17, 17, 0.94); }
+        .device-mobile .header.scrolled { background: rgba(0, 0, 0, 0.96); }
+        .device-mobile .modal { background: rgba(0, 0, 0, 0.96); }
+        .device-mobile .lightbox { background: rgba(0, 0, 0, 0.97); }
+        .device-mobile .preloader { background: rgba(0, 0, 0, 0.94); }
+        .device-mobile .sede-badge { background: rgba(0, 0, 0, 0.92); }
+        .device-mobile .glass-card:hover,
+        .device-mobile .sede-card:hover,
+        .device-mobile .reconocimiento-card:hover {
+            transform: none;
+        }
+        /* La animación de flotar ya está apagada en móvil (ver más abajo),
+           así que will-change ahí solo desperdicia memoria de GPU sin
+           ningún beneficio real. */
+        .device-mobile .about-flip-float,
+        .device-mobile .about-flip {
+            will-change: auto;
+        }
+
+        /* ---- Optimización fluida extra para celular ---- */
+        @media (max-width: 768px) {
+            .hero { min-height: 100svh; padding-top: 90px; }
+            .section-padding { padding: 64px 0; }
+            .container { padding: 0 18px; }
+            .section-subtitle { margin-bottom: 2rem; font-size: 1rem; }
+
+            .stats-container { gap: 14px; margin-top: 28px; }
+            .stat-item { padding: 16px 10px; }
+            .stat-num { font-size: 1.9rem; }
+
+            /* Flip card móvil */
+            .about-flip-wrap,
+            .about-flip-float,
+            .about-flip { min-height: 440px; }
+            .about-flip-float { animation: none; }
+            .about-image-caption { padding: 22px 22px 20px; }
+            .about-image-caption-title { font-size: 1.35rem; }
+            .about-image-caption-emoji { font-size: 1.5rem; }
+            .about-image-caption-sub { font-size: 0.65rem; letter-spacing: 2.5px; }
+            .about-image-caption-hint { font-size: 0.68rem; }
+            .about-flip-back { padding: 22px 20px; }
+            .flip-back-title { font-size: 1.3rem; }
+            .flip-timeline li { grid-template-columns: 46px 1fr; gap: 10px; }
+            .flip-year { font-size: 0.82rem; }
+            .flip-content strong { font-size: 0.85rem; }
+            .flip-content p { font-size: 0.75rem; }
+
+            .sede-img-wrap { height: 180px; }
+            .sede-badge { top: 10px; right: 10px; font-size: 0.65rem; padding: 4px 10px; }
+            .sede-body { padding: 16px 18px 20px; }
+
+            .emisora-banner { padding: 28px 22px; }
+            .emisora-wave { opacity: 0.06; }
+
+            .reconocimiento-card { padding: 28px 20px; gap: 20px; }
+            .reco-img { width: 110px; height: 110px; }
+
+            .modal-body { padding: 22px; }
+            .contacto-grid { gap: 28px; }
+
+            .footer { padding: 56px 0 20px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px 20px; margin-bottom: 40px; }
+            .footer-bottom { font-size: 0.8rem; }
+
+            .back-to-top { width: 44px; height: 44px; bottom: 20px; right: 20px; }
+
+            .preloader-logo-wrap { width: 90px; height: 90px; }
+            .preloader-logo { width: 54px; height: 54px; }
+            .preloader-bar-track { width: 180px; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-badge { font-size: 0.75rem; padding: 5px 12px; }
+            .stats-container { grid-template-columns: 1fr 1fr; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .social-links { justify-content: center; }
+            .info-item { text-align: left; }
+            .about-flip-wrap,
+            .about-flip-float,
+            .about-flip { min-height: 420px; }
+        }
+    </style>
+</head>
+<body class="is-loading">
+
+    <noscript>
+        <style>
+            .preloader { display: none !important; }
+            body.is-loading { overflow: auto !important; }
+            .reveal { opacity: 1 !important; transform: none !important; }
+            .about-image-caption { opacity: 1 !important; transform: none !important; }
+        </style>
+    </noscript>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader" role="status" aria-live="polite">
+        <div class="preloader-content">
+            <div class="preloader-logo-wrap">
+                <img src="assets/images/logo.png" alt="" class="preloader-logo">
+                <div class="preloader-ring"></div>
+            </div>
+            <h2 class="preloader-title">Ins<span class="text-green">Tecnico</span></h2>
+            <span class="preloader-subtitle">Cargando</span>
+            <div class="preloader-bar-track">
+                <div class="preloader-bar-fill" id="preloaderBarFill"></div>
+            </div>
+            <span class="preloader-percent" id="preloaderPercent">0%</span>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var preloader = document.getElementById('preloader');
+            var barFill = document.getElementById('preloaderBarFill');
+            var percentLabel = document.getElementById('preloaderPercent');
+
+            var MIN_DISPLAY_TIME = 2900;
+
+            var startTime = performance.now();
+            var pageAlreadyLoaded = false;
+            var rafId = null;
+
+            function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+            function animateBar(now) {
+                var elapsed = now - startTime;
+                var t = Math.min(elapsed / MIN_DISPLAY_TIME, 1);
+
+                var ceiling = pageAlreadyLoaded ? 100 : 96;
+                var value = Math.min(easeOutCubic(t) * 100, ceiling);
+
+                barFill.style.width = value + '%';
+                percentLabel.textContent = Math.floor(value) + '%';
+
+                if (value < 100) {
+                    rafId = requestAnimationFrame(animateBar);
+                } else {
+                    hidePreloader();
+                }
+            }
+
+            function hidePreloader() {
+                if (rafId) cancelAnimationFrame(rafId);
+                barFill.style.width = '100%';
+                percentLabel.textContent = '100%';
+                setTimeout(function () {
+                    preloader.classList.add('loaded');
+                    document.body.classList.remove('is-loading');
+                    setTimeout(function () { preloader.remove(); }, 700);
+                }, 250);
+            }
+
+            function markPageLoaded() { pageAlreadyLoaded = true; }
+
+            if (document.readyState === 'complete') {
+                markPageLoaded();
+            } else {
+                window.addEventListener('load', markPageLoaded);
+            }
+
+            setTimeout(markPageLoaded, 8000);
+
+            requestAnimationFrame(animateBar);
+        })();
+    </script>
+
+    <!-- Navbar -->
+    <header class="header" id="header">
+        <div class="container nav-container">
+            <a href="#inicio" class="logo">
+                <img src="assets/images/logo.png" alt="Logo Instituto Técnico">
+                <span>Ins<span class="text-green">Tecnico</span></span>
+            </a>
+            
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#inicio" class="nav-link active">Inicio</a></li>
+                    <li><a href="#nosotros" class="nav-link">Nosotros</a></li>
+                    <li><a href="#sedes" class="nav-link">Sedes</a></li>
+                    <li><a href="#accesos" class="nav-link">Accesos</a></li>
+                    <li><a href="#noticias" class="nav-link">Noticias</a></li>
+                    <li><a href="#contacto" class="nav-link">Contacto</a></li>
+                    <li><a href="chat-global.html" target="_blank" rel="noopener noreferrer" class="nav-link" aria-label="Chat Global (en desarrollo, abre en pestaña nueva)">Chat Global</a></li>
+                </ul>
+            </nav>
+            
+            <a href="https://accounts.google.com/ServiceLogin?service=classroom" target="_blank" rel="noopener noreferrer" class="btn btn--primary header-cta" id="headerCta">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                Classroom
+            </a>
+
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menú">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" id="inicio">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-grid"></div>
+        
+        <div class="container hero-content reveal">
+            <span class="hero-badge">Institución Educativa Oficial</span>
+            <h1 class="hero-title">Instituto Técnico</h1>
+            <p class="hero-desc">Formando líderes desde 1913. Excelencia académica, valores y tecnología para el futuro de Santander de Quilichao.</p>
+            
+            <div class="hero-actions">
+                <a href="#nosotros" class="btn btn--primary">Conoce más</a>
+                <a href="#noticias" class="btn btn--outline">Ver comunicados</a>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <span>Descubre</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+    </section>
+
+    <!-- Nosotros -->
+    <section class="section-padding" id="nosotros">
+        <div class="container">
+            <div class="nosotros-grid">
+                <div class="reveal">
+                    <h2 class="section-title" style="text-align: left;">Tradición y <br><span class="text-green">Evolución</span></h2>
+                    <p class="text-muted" style="margin-bottom: 20px;">
+                        Fundado el 13 de abril de 1913, el Instituto Técnico es un pilar de la educación en Santander de Quilichao, Cauca. De carácter oficial y mixto, ofrecemos formación integral desde Preescolar hasta la Media Técnica.
+                    </p>
+                    <p class="text-muted">
+                        Nos enorgullece combinar nuestra rica historia con metodologías modernas, preparando a nuestros estudiantes para los desafíos del mañana mediante innovación, disciplina y compromiso social.
+                    </p>
+
+                    <div class="stats-container">
+                        <div class="stat-item" tabindex="0" role="button" aria-label="Reiniciar contador de años de historia">
+                            <div class="stat-num counter" data-target="110">0</div>
+                            <div class="stat-label">Años de Historia</div>
+                        </div>
+                        <div class="stat-item" tabindex="0" role="button" aria-label="Reiniciar contador de sedes educativas">
+                            <div class="stat-num counter" data-target="4">0</div>
+                            <div class="stat-label">Sedes Educativas</div>
+                        </div>
+                        <div class="stat-item" tabindex="0" role="button" aria-label="Reiniciar contador de estudiantes activos">
+                            <div class="stat-num"><span class="counter" data-target="3000">0</span>+</div>
+                            <div class="stat-label">Estudiantes Activos</div>
+                        </div>
+                        <div class="stat-item" tabindex="0" role="button" aria-label="Reiniciar contador de compromiso">
+                            <div class="stat-num"><span class="counter" data-target="100">0</span>%</div>
+                            <div class="stat-label">Compromiso</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-flip-wrap reveal delay-1">
+                    <div class="about-flip-float">
+                        <div class="about-flip" id="aboutFlip" tabindex="0" role="button" aria-label="Doble clic para ver la historia del Instituto Técnico">
+                            
+                            <div class="about-flip-face about-flip-front">
+                                <img src="assets/images/nosotros.jpg" alt="Estudiantes del Instituto Técnico" loading="lazy" decoding="async">
+                                <div class="about-image-overlay"></div>
+                                <div class="about-image-caption">
+                                    <span class="about-image-caption-emoji">🎓</span>
+                                    <h3 class="about-image-caption-title">Un siglo <span class="highlight">formando</span> futuro</h3>
+                                    <span class="about-image-caption-sub">Instituto Técnico · Desde 1913</span>
+                                    <span class="about-image-caption-hint">↻ Doble clic para ver nuestra historia</span>
+                                </div>
+                            </div>
+
+                            <div class="about-flip-face about-flip-back">
+                                <div class="flip-back-header">
+                                    <span class="flip-back-emoji">📜</span>
+                                    <h3 class="flip-back-title">Un siglo de <span class="text-green">legado</span></h3>
+                                </div>
+                                <ul class="flip-timeline">
+                                    <li>
+                                        <span class="flip-year">1913</span>
+                                        <div class="flip-content">
+                                            <strong>Fundación</strong>
+                                            <p>El 13 de abril nace el Instituto Técnico, iniciando su labor educativa en Santander de Quilichao.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="flip-year">1975</span>
+                                        <div class="flip-content">
+                                            <strong>Jornada Nocturna</strong>
+                                            <p>Se abre la jornada nocturna, ampliando el acceso educativo para jóvenes y adultos trabajadores.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="flip-year">1987</span>
+                                        <div class="flip-content">
+                                            <strong>Promoción Histórica</strong>
+                                            <p>Graduación de una de las generaciones más recordadas de nuestra institución.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="flip-year">2004</span>
+                                        <div class="flip-content">
+                                            <strong>Reconocimiento Oficial</strong>
+                                            <p>Aprobación mediante Resolución Departamental No. 0448 de abril de 2004.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="flip-year">2017</span>
+                                        <div class="flip-content">
+                                            <strong>Primera Web Institucional</strong>
+                                            <p>El Magister Gersaín León Franco implementa el primer sitio web oficial del colegio.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="flip-year">2026</span>
+                                        <div class="flip-content">
+                                            <strong>Transformación Digital</strong>
+                                            <p>Nuevo sitio web moderno, responsivo y con tecnología de punta.</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <span class="flip-back-hint">↻ Doble clic para volver</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sedes -->
+    <section class="section-padding" style="background-color: var(--bg-panel);" id="sedes">
+        <div class="container">
+            <h2 class="section-title reveal">Nuestras <span class="text-green">Sedes</span></h2>
+            <p class="section-subtitle reveal">Infraestructura distribuida para brindar educación de calidad en diferentes niveles a la comunidad quilichagüeña.</p>
+
+            <div class="sedes-grid reveal-group">
+                <div class="glass-card sede-card reveal">
+                    <div class="sede-img-wrap">
+                        <span class="sede-badge">2 Jornadas</span>
+                        <img src="assets/images/sede-principal.jpg" alt="Sede Principal" loading="lazy" decoding="async">
+                    </div>
+                    <div class="sede-body">
+                        <h3 style="margin-bottom: 8px;">Sede Principal</h3>
+                        <p style="font-size: 0.9rem; color: var(--primary); margin-bottom: 12px;">Básica Secundaria y Media</p>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">El corazón de nuestra institución, albergando las jornadas de la mañana y tarde.</p>
+                    </div>
+                </div>
+                <div class="glass-card sede-card reveal">
+                    <div class="sede-img-wrap">
+                        <span class="sede-badge">Primaria</span>
+                        <img src="assets/images/sede-francisco.jpg" alt="Sede Francisco de Paula Santander" loading="lazy" decoding="async">
+                    </div>
+                    <div class="sede-body">
+                        <h3 style="margin-bottom: 8px;">Francisco de P. Santander</h3>
+                        <p style="font-size: 0.9rem; color: var(--primary); margin-bottom: 12px;">Básica Primaria</p>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Espacio dedicado a la formación inicial con metodologías lúdicas y formativas.</p>
+                    </div>
+                </div>
+                <div class="glass-card sede-card reveal">
+                    <div class="sede-img-wrap">
+                        <span class="sede-badge">Primaria</span>
+                        <img src="assets/images/sede-tello.jpg" alt="Sede Rafael Tello" loading="lazy" decoding="async">
+                    </div>
+                    <div class="sede-body">
+                        <h3 style="margin-bottom: 8px;">Sede Rafael Tello</h3>
+                        <p style="font-size: 0.9rem; color: var(--primary); margin-bottom: 12px;">Básica Primaria</p>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Ambiente acogedor diseñado para el desarrollo cognitivo y social de los niños.</p>
+                    </div>
+                </div>
+                <div class="glass-card sede-card reveal">
+                    <div class="sede-img-wrap">
+                        <span class="sede-badge">Primaria</span>
+                        <img src="assets/images/sede-edmundo.jpg" alt="Sede José Edmundo Sandoval" loading="lazy" decoding="async">
+                    </div>
+                    <div class="sede-body">
+                        <h3 style="margin-bottom: 8px;">José E. Sandoval</h3>
+                        <p style="font-size: 0.9rem; color: var(--primary); margin-bottom: 12px;">Básica Primaria</p>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Instalaciones enfocadas en el acompañamiento temprano y crecimiento integral.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Accesos -->
+    <section class="section-padding" id="accesos">
+        <div class="container">
+            <h2 class="section-title reveal">Accesos <span class="text-green">Rápidos</span></h2>
+            <p class="section-subtitle reveal">Plataformas y herramientas digitales para la comunidad educativa.</p>
+
+            <div class="accesos-grid reveal-group">
+                <a href="https://accounts.google.com/ServiceLogin?service=classroom" target="_blank" rel="noopener noreferrer" class="glass-card acceso-card reveal" aria-label="Acceder a Google Classroom">
+                    <div class="acceso-icon">
+                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><path d="M9 21v-2a4 4 0 0 1 4-4v0a4 4 0 0 1 4 4v2"/></svg>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 4px;">Classroom</h4>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Aulas Virtuales</span>
+                    </div>
+                </a>
+
+                <a href="https://new.edmodo.com/login" target="_blank" rel="noopener noreferrer" class="glass-card acceso-card reveal" aria-label="Acceder a Edmodo">
+                    <div class="acceso-icon">
+                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 4px;">Edmodo</h4>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Plataforma Educativa</span>
+                    </div>
+                </a>
+
+                <a href="https://tecnico.educa20.com" target="_blank" rel="noopener noreferrer" class="glass-card acceso-card reveal" aria-label="Acceder al Portal Educa20">
+                    <div class="acceso-icon">
+                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 4px;">Notas</h4>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Portal Educa20</span>
+                    </div>
+                </a>
+
+                <a href="https://educa20.com/gegar-soft.com/" target="_blank" rel="noopener noreferrer" class="glass-card acceso-card reveal" aria-label="Acceder al Sistema Académico">
+                    <div class="acceso-icon">
+                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 4px;">Sistema GegarSoft</h4>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Plataforma Educa20</span>
+                    </div>
+                </a>
+
+                <a href="#" onclick="openModal('docentes'); return false;" class="glass-card acceso-card reveal" aria-label="Ver Docentes (en desarrollo)">
+                    <div class="acceso-icon">
+                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 4px;">Docentes</h4>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">En Desarrollo</span>
+                    </div>
+                </a>
+
+                <a href="https://orientacionieitbachillerato.weebly.com/" target="_blank" rel="noopener noreferrer" class="glass-card acceso-card reveal" aria-label="Acceder a Orientación">
+                    <div class="acceso-icon">
+                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 4px;">Orientación</h4>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Blog Psicoorientación</span>
+                    </div>
+                </a>
+
+                <a href="http://ieinstecnico.edu.co/163_COMUNICADO.pdf" target="_blank" rel="noopener noreferrer" class="glass-card acceso-card reveal" aria-label="Acceder a Comunicados">
+                    <div class="acceso-icon">
+                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 4px;">Comunicados</h4>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Archivos PDF Oficiales</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emisora -->
+    <section class="section-padding pt-0">
+        <div class="container reveal">
+            <div class="emisora-banner">
+                <svg class="emisora-wave" width="400" height="200" viewBox="0 0 400 200" fill="none" stroke="var(--primary)" stroke-width="4">
+                    <path d="M0 100 Q 25 50, 50 100 T 100 100 T 150 100 T 200 100 T 250 100 T 300 100 T 350 100 T 400 100"/>
+                </svg>
+
+                <div style="position: relative; z-index: 2;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <span class="en-vivo-dot"></span>
+                        <span style="color: #ff3333; font-weight: 600; letter-spacing: 1px;">EN VIVO</span>
+                    </div>
+                    <h2 class="section-title" style="text-align: left; margin-bottom: 8px;">Emisora <span class="text-green">Institucional</span></h2>
+                    <p style="color: var(--text-muted); max-width: 500px;">Sintoniza nuestra radio en línea. Escucha programas dirigidos por estudiantes, avisos oficiales y la mejor música.</p>
+                </div>
+
+                <a href="http://cp.usastreams.com/html5-player-barra-meter.aspx?stream=http://freeuk19.listen2myradio.com:16129/;" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="position: relative; z-index: 2;" aria-label="Escuchar emisora en vivo">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                    Escuchar Ahora
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Noticias -->
+    <section class="section-padding" style="background-color: var(--bg-panel);" id="noticias">
+        <div class="container">
+            <h2 class="section-title reveal">Noticias y <span class="text-green">Eventos</span></h2>
+            
+            <div class="news-grid reveal-group">
+                <article class="glass-card news-card reveal">
+                    <img src="assets/images/noticia-feria.jpg" class="news-img" alt="Feria Universitaria" loading="lazy" decoding="async">
+                    <div class="news-content">
+                        <span class="news-date">24 Septiembre, 2026</span>
+                        <h3 class="news-title">Feria Universitaria para el grado 11°</h3>
+                        <p class="news-excerpt">Las principales universidades de la región visitaron nuestra institución para orientar a los futuros bachilleres.</p>
+                        <button class="news-link" onclick="openModal('noticia-feria')" aria-label="Leer más sobre Feria Universitaria">
+                            Leer más
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </article>
+
+                <article class="glass-card news-card reveal">
+                    <img src="assets/images/noticia-docente.jpg" class="news-img" alt="Día del Docente" loading="lazy" decoding="async">
+                    <div class="news-content">
+                        <span class="news-date">15 Mayo, 2026</span>
+                        <h3 class="news-title">Celebración Día del Maestro</h3>
+                        <p class="news-excerpt">Rendimos homenaje a nuestros educadores por su invaluable labor y compromiso con la excelencia educativa.</p>
+                        <button class="news-link" onclick="openModal('noticia-docente')" aria-label="Leer más sobre Celebración Día del Maestro">
+                            Leer más
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </article>
+
+                <article class="glass-card news-card reveal">
+                    <img src="assets/images/noticia-admisiones.jpg" class="news-img" alt="Admisiones" loading="lazy" decoding="async">
+                    <div class="news-content">
+                        <span class="news-date">20 Enero, 2027</span>
+                        <h3 class="news-title">Apertura de Inscripciones 2027</h3>
+                        <p class="news-excerpt">Conoce el cronograma, requisitos y proceso de inscripción para nuevos estudiantes en todas nuestras sedes.</p>
+                        <button class="news-link" onclick="openModal('noticia-admisiones')" aria-label="Leer más sobre Apertura de Inscripciones 2027">
+                            Leer más
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Genérico -->
+    <div class="modal" id="genericModal">
+        <div class="modal-content" id="genericModalContent">
+            <button class="modal-close" id="genericModalClose" aria-label="Cerrar">&times;</button>
+            <img class="modal-hero" id="genericModalImg" src="" alt="">
+            <div class="modal-body">
+                <span class="modal-category" id="genericModalCategory"></span>
+                <h2 class="modal-title" id="genericModalTitle"></h2>
+                <div class="modal-meta">
+                    <span id="genericModalDate"></span>
+                    <span id="genericModalAuthor"></span>
+                </div>
+                <div id="genericModalText"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Galería -->
+    <section class="section-padding" id="galeria">
+        <div class="container">
+            <h2 class="section-title reveal">Galería <span class="text-green">Institucional</span></h2>
+            <p class="section-subtitle reveal">Momentos que construyen nuestra historia.</p>
+
+            <div class="gallery-grid reveal">
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="assets/images/galeria-1.jpg" alt="Feria Universitaria" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="assets/images/galeria-2.jpg" alt="Grupo de Docentes" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="assets/images/galeria-3.jpg" alt="Instalaciones" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="assets/images/galeria-4.jpg" alt="Sede Principal" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="assets/images/galeria-5.jpg" alt="Laboratorio" loading="lazy" decoding="async">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar imagen">&times;</button>
+        <img src="" id="lightboxImg" alt="Imagen en grande">
+    </div>
+
+    <!-- Reconocimiento -->
+    <section class="section-padding" style="background-color: var(--bg-panel);">
+        <div class="container">
+            <div class="glass-card reconocimiento-card reveal" onclick="openModal('reconocimiento-gersain')" role="button" tabindex="0" aria-label="Ver reconocimiento al Magister Gersaín León Franco">
+                <img src="assets/images/gersain.jpg" class="reco-img" alt="Magister Gersaín León Franco" loading="lazy" decoding="async">
+                <div>
+                    <div style="color: var(--primary); font-size: 0.9rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">Reconocimiento Especial</div>
+                    <h3 style="font-size: 2rem; margin-bottom: 16px;">Magister Gersaín León Franco</h3>
+                    <p style="color: var(--text-muted); font-size: 1.05rem;">
+                        Agradecimiento y reconocimiento especial por su invaluable aporte a la institución, siendo el pionero e implementador del sitio web institucional oficial desde el año 2017.
+                    </p>
+                    <span style="display: inline-block; margin-top: 12px; color: var(--primary); font-weight: 600; font-size: 0.9rem;">Haz clic para ver más →</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto -->
+    <section class="section-padding" id="contacto">
+        <div class="container">
+            <h2 class="section-title reveal">Ponte en <span class="text-green">Contacto</span></h2>
+            <p class="section-subtitle reveal">¿Tienes dudas sobre admisiones, procesos o requieres información? Escríbenos.</p>
+
+            <div class="contacto-grid">
+                <div class="glass-card reveal">
+                    <form id="contactForm" onsubmit="handleFormSubmit(event)">
+                        <div class="form-group">
+                            <label class="form-label" for="nombre">Nombre Completo</label>
+                            <input type="text" id="nombre" name="nombre" class="form-control" required placeholder="Ej. Juan Pérez">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email">Correo Electrónico</label>
+                            <input type="email" id="email" name="email" class="form-control" required placeholder="tu@correo.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="asunto">Asunto</label>
+                            <input type="text" id="asunto" name="asunto" class="form-control" required placeholder="Consulta sobre...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="mensaje">Mensaje</label>
+                            <textarea id="mensaje" name="mensaje" class="form-control" required placeholder="Escribe tu mensaje aquí..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn--primary" style="width: 100%;">Enviar Mensaje</button>
+                    </form>
+                </div>
+
+                <div class="reveal delay-1">
+                    <div class="contact-info">
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 4px;">Ubicación</h4>
+                                <p style="color: var(--text-muted);">Calle 3 # 7-68, Barrio Centro<br>Santander de Quilichao, Cauca, Colombia</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 4px;">Teléfono</h4>
+                                <p style="color: var(--text-muted);">+57 (2) 829-2177</p>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 4px;">Correo</h4>
+                                <p style="color: var(--text-muted);">info@instecnico.edu.co</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3983.3364966967733!2d-76.48674502395568!3d3.011666654784401!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e39768393b6e821%3A0xc3fec3f63806be95!2sInstituto%20T%C3%A9cnico!5e0!3m2!1ses!2sco!4v1700000000000!5m2!1ses!2sco" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="#inicio" class="logo" style="margin-bottom: 20px;">
+                        <img src="assets/images/logo.png" alt="Logo">
+                        <span>Ins<span class="text-green">Tecnico</span></span>
+                    </a>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">Institución Educativa oficial dedicada a la formación de líderes en Santander de Quilichao, Cauca.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="YouTube">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.16 1 12 1 12s0 3.84.46 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.84 23 12 23 12s0-3.84-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Institución</h4>
+                    <div class="footer-links">
+                        <a href="#nosotros">Historia</a>
+                        <a href="#sedes">Nuestras Sedes</a>
+                        <a href="#noticias">Noticias y Eventos</a>
+                        <a href="#galeria">Galería</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Accesos</h4>
+                    <div class="footer-links">
+                        <a href="https://accounts.google.com/ServiceLogin?service=classroom">Google Classroom</a>
+                        <a href="https://tecnico.educa20.com/portal/menu/" target="_blank" rel="noopener noreferrer">Portal de Notas</a>
+                        <a href="https://educa20.com/gegar-soft.com/" target="_blank" rel="noopener noreferrer">Sistema Académico</a>
+                        <a href="http://cp.usastreams.com/html5-player-barra-meter.aspx?stream=http://freeuk19.listen2myradio.com:16129/;" target="_blank" rel="noopener noreferrer">Emisora en Vivo</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Legal</h4>
+                    <div class="footer-links">
+                        <a href="#">Políticas de Privacidad</a>
+                        <a href="#">Términos de Uso</a>
+                        <a href="#">Manual de Convivencia</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2026</span> Instituto Técnico. Todos los derechos reservados.</p>
+                <p>Diseñado y desarrollado por <span class="text-green">Dev Keiner A Tegue</span> y <span class="text-green">Grupo Frontend</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón Volver Arriba -->
+    <div class="back-to-top" id="backToTop" aria-label="Volver arriba">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+    </div>
+
+    <script>
+        // ============ DATOS DE LOS MODALES ============
+        const modalData = {
+            'noticia-feria': {
+                titulo: 'Feria Universitaria para el grado 11°',
+                fecha: '24 de Septiembre, 2026',
+                autor: 'Por: Coordinación Académica',
+                categoria: 'Evento Académico',
+                imagen: 'assets/images/noticia-feria.jpg',
+                contenido: `
+                    <p>El pasado 24 de septiembre, nuestra institución abrió sus puertas a la <strong>Feria Universitaria 2026</strong>, un espacio diseñado para que los estudiantes de grado 11° conocieran de primera mano la oferta académica de las principales universidades de la región y del país.</p>
+                    <p>El evento contó con la participación de más de 15 instituciones de educación superior, entre ellas universidades públicas y privadas del Cauca, Valle del Cauca y Bogotá, quienes instalaron stands informativos en el patio central de la Sede Principal.</p>
+                    <h3>Actividades realizadas</h3>
+                    <ul>
+                        <li>Charlas informativas sobre programas académicos y becas disponibles.</li>
+                        <li>Talleres vocacionales para orientar la elección profesional.</li>
+                        <li>Testimonios de egresados que hoy estudian en distintas universidades.</li>
+                        <li>Espacio de preguntas y respuestas con representantes de admisiones.</li>
+                        <li>Simulacros de entrevistas y asesoría en la inscripción al Icetex.</li>
+                    </ul>
+                    <h3>Un puente hacia el futuro</h3>
+                    <p>La feria no solo buscó informar, sino también inspirar. Muchos estudiantes manifestaron haber descubierto carreras que no conocían y salieron con una idea mucho más clara de su proyecto de vida.</p>
+                    <p>Desde la institución agradecemos a todas las universidades participantes, a los docentes organizadores y, sobre todo, a los estudiantes por su entusiasmo. Seguiremos trabajando para que cada quilichagüeño tenga las herramientas necesarias para construir su futuro profesional.</p>
+                `
+            },
+            'noticia-docente': {
+                titulo: 'Celebración Día del Maestro',
+                fecha: '15 de Mayo, 2026',
+                autor: 'Por: Rectoría y Bienestar Institucional',
+                categoria: 'Celebración',
+                imagen: 'assets/images/noticia-docente.jpg',
+                contenido: `
+                    <p>El 15 de mayo celebramos con profundo cariño el <strong>Día del Maestro</strong>, una fecha especial para reconocer la invaluable labor de quienes dedican su vida a formar a las nuevas generaciones del Instituto Técnico.</p>
+                    <p>La jornada inició con un acto cultural preparado por los estudiantes, quienes con música, poesía y danza expresaron su gratitud hacia sus docentes. Posteriormente se realizó un homenaje especial a los maestros con mayor trayectoria en la institución.</p>
+                    <h3>Reconocimientos entregados</h3>
+                    <ul>
+                        <li>Mención honorífica a docentes con más de 25 años de servicio.</li>
+                        <li>Reconocimiento a los docentes destacados por innovación pedagógica.</li>
+                        <li>Homenaje póstumo a maestros que dejaron huella en nuestra historia.</li>
+                        <li>Entrega de detalles simbólicos por parte del gobierno escolar.</li>
+                    </ul>
+                    <h3>Un mensaje de gratitud</h3>
+                    <p>Ser maestro no es solo transmitir conocimientos: es sembrar valores, guiar con el ejemplo y acompañar a los estudiantes en sus momentos más importantes. Hoy, más que nunca, reconocemos que la grandeza de nuestra institución se debe a la vocación y el compromiso de nuestros educadores.</p>
+                    <p>¡Feliz día a todos nuestros maestros! Su labor transforma vidas y construye el futuro de Santander de Quilichao.</p>
+                `
+            },
+            'noticia-admisiones': {
+                titulo: 'Apertura de Inscripciones 2027',
+                fecha: '20 de Enero, 2027',
+                autor: 'Por: Secretaría Académica',
+                categoria: 'Admisiones',
+                imagen: 'assets/images/noticia-admisiones.jpg',
+                contenido: `
+                    <p>Nos complace informar a toda la comunidad quilichagüeña que el <strong>Instituto Técnico</strong> abre oficialmente su proceso de admisiones para el año escolar 2027, en todas sus sedes y niveles educativos.</p>
+                    <p>Ofrecemos educación de calidad desde Preescolar hasta Media Técnica, con un enfoque integral que combina excelencia académica, formación en valores y desarrollo de competencias para el siglo XXI.</p>
+                    <h3>Cronograma del proceso</h3>
+                    <ul>
+                        <li><strong>Abril – Mayo:</strong> Inicio del año escolar.</li>
+                        <li><strong>Junio:</strong> Transcurso de Clases Normal.</li>
+                        <li><strong>Julio:</strong> Simulacro Saber EntreNando.</li>
+                        <li><strong>Septiembre:</strong> Matrículas Abiertas.</li>
+                        <li><strong>Noviembre:</strong> Fin del año escolar.</li>
+                    </ul>
+                    <h3>Documentos requeridos</h3>
+                    <ul>
+                        <li>Registro civil de nacimiento (original y copia).</li>
+                        <li>Documento de identidad del acudiente.</li>
+                        <li>Certificados de estudio del último año cursado.</li>
+                        <li>Fotografía reciente tamaño 3x4.</li>
+                        <li>Carne de vacunación (para Preescolar y Primaria).</li>
+                    </ul>
+                    <h3>Mayor información</h3>
+                    <p>Puedes acercarte a la Secretaría Académica de la Sede Principal (Calle 3 # 7-68, Barrio Centro), llamar al <strong>+57 (2) 829-2177</strong> o escribirnos a <strong>info@instecnico.edu.co</strong>. También puedes consultar el cronograma completo en nuestras oficinas.</p>
+                    <p>¡Te esperamos para seguir construyendo juntos más de un siglo de historia y excelencia educativa!</p>
+                `
+            },
+            'docentes': {
+                titulo: 'Nuestros Docentes',
+                fecha: 'Próximamente',
+                autor: 'Por: Instituto Técnico',
+                categoria: 'En Desarrollo',
+                imagen: 'assets/images/docentes-placeholder.jpg',
+                contenido: `
+                    <p>Estamos trabajando en una sección especial para que toda la comunidad educativa pueda conocer a nuestros docentes: sus nombres, áreas, formación y trayectoria.</p>
+                    <p>Esta sección estará disponible próximamente y será un espacio para reconocer la labor de quienes día a día construyen el futuro de nuestros estudiantes.</p>
+                    <p>¡Gracias por tu paciencia! Muy pronto podrás conocer más sobre el equipo docente del Instituto Técnico.</p>
+                    <p style="color: var(--primary); font-weight: 600;">— El equipo de desarrollo web —</p>
+                `
+            },
+            'reconocimiento-gersain': {
+                titulo: 'Reconocimiento al Magister Gersaín León Franco',
+                fecha: 'Desde 2017',
+                autor: 'Por: Instituto Técnico',
+                categoria: 'Reconocimiento Especial',
+                imagen: 'assets/images/recon.jpg',
+                contenido: `
+                    <p>La Institución Educativa <strong>Instituto Técnico</strong> de Santander de Quilichao, Cauca, expresa su más profundo agradecimiento y reconocimiento al <strong>Magister Gersaín León Franco</strong> por su invaluable aporte a nuestra comunidad educativa.</p>
+                    <p>Desde el año <strong>2017</strong>, el Magister Gersaín lideró la implementación del sitio web institucional oficial, un proyecto que marcó un hito en la modernización de nuestra comunicación y que ha permitido que estudiantes, padres de familia, docentes y la comunidad en general tengan acceso a información oportuna y de calidad.</p>
+                    <h3>Logros destacados</h3>
+                    <ul>
+                        <li>Diseño e implementación del primer sitio web oficial del Instituto Técnico.</li>
+                        <li>Gestión de la plataforma durante más de 6 años.</li>
+                        <li>Integración de servicios digitales como Classroom, notas en línea y emisora virtual.</li>
+                        <li>Actualización constante de contenidos y mejora de la experiencia de usuario.</li>
+                        <li>Formación de nuevos talentos en el manejo de herramientas web.</li>
+                    </ul>
+                    <h3>Un legado que prospera</h3>
+                    <p>Gracias a su visión y compromiso, hoy el Instituto Técnico cuenta con una presencia digital sólida que sigue creciendo. Este nuevo sitio web que ahora presentamos es, en gran medida, una continuación de su legado.</p>
+                    <p>¡Gracias, Magister Gersaín, por su dedicación y por sentar las bases de nuestra transformación digital!</p>
+                    <p style="color: var(--primary); font-weight: 600;">— La comunidad del Instituto Técnico —</p>
+                `
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.getElementById('header');
+            const backToTop = document.getElementById('backToTop');
+            const navLinks = document.getElementById('navLinks');
+            const headerCta = document.getElementById('headerCta');
+            const mobileToggle = document.getElementById('mobileToggle');
+            const sections = document.querySelectorAll('section[id]');
+            const navLinkEls = document.querySelectorAll('.nav-link');
+
+            // ============ SCROLL: header + back-to-top + nav activo ============
+            // Antes esto eran DOS listeners de scroll separados (uno para el header
+            // y otro para marcar el link activo). Los unimos en uno solo y lo
+            // sincronizamos con requestAnimationFrame para que el navegador nunca
+            // haga este trabajo más de una vez por frame, sin importar cuántas
+            // veces dispare el evento "scroll" (en algunos celulares puede disparar
+            // decenas de veces por segundo). Resultado: scroll más fluido.
+            let scrollTicking = false;
+            function onScrollFrame() {
+                const scrollY = window.scrollY;
+                const scrolled = scrollY > 50;
+                header.classList.toggle('scrolled', scrolled);
+                backToTop.classList.toggle('visible', scrolled);
+
+                const current = [...sections].reverse().find(s => scrollY >= s.offsetTop - 100)?.id || '';
+                navLinkEls.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+                });
+
+                scrollTicking = false;
+            }
+            window.addEventListener('scroll', () => {
+                if (!scrollTicking) {
+                    requestAnimationFrame(onScrollFrame);
+                    scrollTicking = true;
+                }
+            }, { passive: true });
+            onScrollFrame(); // estado inicial correcto si la página carga con scroll (ej. recargar a mitad de página)
+
+            // ============ MENÚ MÓVIL ============
+            mobileToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                navLinks.classList.toggle('mobile-active');
+                headerCta.classList.toggle('mobile-active');
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('mobile-active');
+                    headerCta.classList.remove('mobile-active');
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!navLinks.contains(e.target) && !mobileToggle.contains(e.target)) {
+                    navLinks.classList.remove('mobile-active');
+                    headerCta.classList.remove('mobile-active');
+                }
+            });
+
+            // ============ RESIZE UNIFICADO + DEBOUNCE ============
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    const isMobileNow = window.innerWidth <= 768;
+
+                    // Cerrar menú si pasamos a desktop
+                    if (!isMobileNow) {
+                        navLinks.classList.remove('mobile-active');
+                        headerCta.classList.remove('mobile-active');
+                    }
+
+                    // Re-evaluar dispositivo PC/Móvil (para optimizaciones CSS)
+                    const root = document.documentElement;
+                    root.classList.toggle('device-mobile', isMobileNow);
+                    root.classList.toggle('device-pc', !isMobileNow);
+                    window.__isMobileDevice = isMobileNow;
+                }, 150);
+            }, { passive: true });
+
+            // ============ REVEAL ANIMATIONS ============
+
+            // Auto-stagger: calcula el retraso de cada tarjeta según su posición
+            // dentro de su propio grid (Sedes, Accesos, Noticias), en vez de
+            // depender de clases "delay-1/2/3" puestas a mano en el HTML.
+            // Ventaja real: si mañana agregas o quitas una tarjeta, el
+            // escalonado se reacomoda solo, sin tener que editar el HTML.
+            const STAGGER_STEP = 90;  // ms entre una tarjeta y la siguiente
+            const STAGGER_MAX = 4;    // tope de "escalones" para que listas largas no tarden de más
+            document.querySelectorAll('.reveal-group').forEach(group => {
+                const items = group.querySelectorAll(':scope > .reveal');
+                items.forEach((item, i) => {
+                    item.style.transitionDelay = (Math.min(i, STAGGER_MAX) * STAGGER_STEP) + 'ms';
+                });
+            });
+
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+
+            revealElements.forEach(el => revealOnScroll.observe(el));
+
+            // ============ CONTADORES ============
+            function easeOutCubicCounter(t) { return 1 - Math.pow(1 - t, 3); }
+
+            function animateCounterEl(el, duration) {
+                const finalValue = parseInt(el.getAttribute('data-target'), 10);
+                const token = Symbol();
+                el._counterToken = token;
+                const startTime = performance.now();
+
+                function step(now) {
+                    if (el._counterToken !== token) return;
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = easeOutCubicCounter(progress);
+                    el.innerText = Math.floor(eased * finalValue);
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        el.innerText = finalValue;
+                    }
+                }
+                el.innerText = '0';
+                requestAnimationFrame(step);
+            }
+
+            let audioCtx;
+            function playBubbleSound() {
+                try {
+                    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+                    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                    const now = audioCtx.currentTime;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(180, now);
+                    osc.frequency.exponentialRampToValueAtTime(760, now + 0.10);
+                    osc.frequency.exponentialRampToValueAtTime(340, now + 0.22);
+
+                    gain.gain.setValueAtTime(0.0001, now);
+                    gain.gain.exponentialRampToValueAtTime(0.35, now + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } catch (err) { /* silent */ }
+            }
+
+            const counters = document.querySelectorAll('.counter');
+            const counterObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounterEl(entry.target, 2000);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            counters.forEach(counter => counterObserver.observe(counter));
+
+            document.querySelectorAll('.stat-item').forEach(item => {
+                const counterEl = item.querySelector('.counter');
+                if (!counterEl) return;
+
+                function resetAndReplay() {
+                    playBubbleSound();
+                    animateCounterEl(counterEl, 900);
+                    item.classList.remove('stat-clicked');
+                    void item.offsetWidth;
+                    item.classList.add('stat-clicked');
+                }
+
+                item.addEventListener('click', resetAndReplay);
+                item.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        resetAndReplay();
+                    }
+                });
+            });
+
+            // ============ BACK TO TOP ============
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // ============ AÑO AUTOMÁTICO ============
+            const yearEl = document.getElementById('currentYear');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+            // ============ LIGHTBOX ============
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxClose = document.getElementById('lightboxClose');
+
+            window.openLightbox = function(element) {
+                const img = element.querySelector('img');
+                if (img) {
+                    lightboxImg.src = img.src;
+                    lightbox.classList.add('active');
+                }
+            };
+
+            lightboxClose.addEventListener('click', () => lightbox.classList.remove('active'));
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) lightbox.classList.remove('active');
+            });
+
+            // ============ FORMULARIO ============
+            window.handleFormSubmit = function(e) {
+                e.preventDefault();
+                const btn = e.target.querySelector('button[type="submit"]');
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = 'Enviando...';
+                btn.style.opacity = '0.7';
+                
+                setTimeout(() => {
+                    btn.innerHTML = '¡Mensaje Enviado!';
+                    btn.style.backgroundColor = 'var(--primary-hover)';
+                    btn.style.color = 'var(--text-dark)';
+                    e.target.reset();
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.style.backgroundColor = '';
+                        btn.style.color = '';
+                        btn.style.opacity = '1';
+                    }, 3000);
+                }, 1500);
+            };
+
+            // ============ NAV ACTIVE ON SCROLL ============
+            // (fusionado arriba, dentro de onScrollFrame, para no tener dos
+            // listeners de "scroll" compitiendo por el mismo trabajo)
+
+            // ============ MODAL GENÉRICO ============
+            const genericModal = document.getElementById('genericModal');
+            const genericModalClose = document.getElementById('genericModalClose');
+
+            window.openModal = function(id) {
+                const data = modalData[id];
+                if (!data) return;
+
+                document.getElementById('genericModalImg').src = data.imagen;
+                document.getElementById('genericModalImg').alt = data.titulo;
+                document.getElementById('genericModalCategory').textContent = data.categoria;
+                document.getElementById('genericModalTitle').textContent = data.titulo;
+                document.getElementById('genericModalDate').innerHTML = '📅 ' + data.fecha;
+                document.getElementById('genericModalAuthor').innerHTML = '✍️ ' + data.autor;
+                document.getElementById('genericModalText').innerHTML = data.contenido;
+
+                genericModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                document.getElementById('genericModalContent').scrollTop = 0;
+            };
+
+            window.closeModal = function() {
+                genericModal.classList.remove('active');
+                document.body.style.overflow = '';
+            };
+
+            genericModalClose.addEventListener('click', closeModal);
+            genericModal.addEventListener('click', (e) => {
+                if (e.target === genericModal) closeModal();
+            });
+
+            // ============ FLIP CARD: DOBLE CLIC / TAP ============
+            const aboutFlip = document.getElementById('aboutFlip');
+            const isTouch = !window.matchMedia('(hover: hover)').matches;
+
+            if (aboutFlip) {
+                // Bug real: el HTML siempre decía "Doble clic", incluso en
+                // celular donde la interacción de verdad es un solo toque.
+                // Corregimos el texto visible y el aria-label según el dispositivo.
+                if (isTouch) {
+                    const frontHint = aboutFlip.querySelector('.about-image-caption-hint');
+                    const backHint = aboutFlip.querySelector('.flip-back-hint');
+                    if (frontHint) frontHint.textContent = '↻ Toca para ver nuestra historia';
+                    if (backHint) backHint.textContent = '↻ Toca para volver';
+                    aboutFlip.setAttribute('aria-label', 'Toca para ver la historia del Instituto Técnico');
+
+                    aboutFlip.addEventListener('click', () => {
+                        aboutFlip.classList.toggle('flipped');
+                    });
+                } else {
+                    aboutFlip.addEventListener('dblclick', (e) => {
+                        e.preventDefault();
+                        aboutFlip.classList.toggle('flipped');
+                    });
+                    // Accesibilidad: Enter/Espacio
+                    aboutFlip.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            aboutFlip.classList.toggle('flipped');
+                        }
+                    });
+                }
+                // Prevenir selección de texto al hacer doble clic
+                aboutFlip.addEventListener('mousedown', (e) => {
+                    if (e.detail > 1) e.preventDefault();
+                });
+            }
+
+            // ============ ESCAPE: cerrar modal y lightbox ============
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeModal();
+                    lightbox.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
