@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Detección temprana de dispositivo (PC/Móvil) para optimizar carga y efectos pesados -->
     <script>
         (function () {
             var ua = navigator.userAgent || '';
@@ -20,16 +19,13 @@
     <meta name="description" content="Sitio web oficial de la Institución Educativa Instituto Técnico de Santander de Quilichao, Cauca. Educación Preescolar, Básica y Media.">
     <meta name="theme-color" content="#000000">
     
-    <!-- Open Graph -->
     <meta property="og:title" content="Instituto Técnico | Formando líderes desde 1913">
     <meta property="og:description" content="Sitio web oficial de la Institución Educativa Instituto Técnico de Santander de Quilichao, Cauca.">
     <meta property="og:image" content="assets/images/logo.png">
     <meta property="og:type" content="website">
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/images/logo.png">
 
-    <!-- Fuentes de Google: Inter, Space Grotesk e Instrument Serif -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -61,23 +57,16 @@
             --radius-lg: 16px;
             
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* El header es "fixed", así que sin esto las secciones quedan
-           tapadas al llegar por un link del menú. 100px = altura aprox.
-           del header (coincide con el mismo offset que usa el JS del
-           nav activo al hacer scroll). */
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 100px;
         }
 
-        /* Accesibilidad + batería: si el usuario activó "reducir movimiento"
-           en su sistema operativo, apagamos animaciones/transiciones largas
-           en vez de ignorarlo (algunas personas lo usan por mareo/vértigo,
-           otras solo para ahorrar batería). */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.001ms !important;
@@ -87,6 +76,12 @@
             html { scroll-behavior: auto; }
             .reveal, .about-image-caption { opacity: 1 !important; transform: none !important; }
             .about-flip-float { animation: none !important; }
+            .hero-badge, .hero-title, .hero-desc, .hero-actions, .scroll-indicator {
+                animation: none !important;
+                opacity: 1 !important;
+                clip-path: none !important;
+                transform: none !important;
+            }
         }
         
         body {
@@ -119,13 +114,6 @@
         
         .section-padding {
             padding: 100px 0;
-            /* ============ NUEVA TÉCNICA: content-visibility ============
-               Le dice al navegador que NO gaste tiempo calculando el layout
-               ni pintando una sección mientras esté lejos de la pantalla.
-               Esto acelera muchísimo el renderizado inicial en páginas largas
-               como esta (menos trabajo = más fluidez, sobre todo en celulares
-               de gama media/baja). contain-intrinsic-size evita que la página
-               "salte" mientras la sección todavía no se ha medido de verdad. */
             content-visibility: auto;
             contain-intrinsic-size: 1px 900px;
         }
@@ -146,6 +134,7 @@
         }
 
         .text-green { color: var(--primary); }
+        .text-muted { color: var(--text-muted); }
 
         .btn {
             display: inline-flex;
@@ -215,7 +204,6 @@
         
         .glass-card:hover::before { opacity: 1; }
 
-        /* Header & Navbar */
         .header {
             position: fixed;
             top: 0; left: 0; width: 100%;
@@ -292,7 +280,9 @@
             padding: 8px;
         }
 
-        /* Hero */
+        /* ======================================================
+           HERO con animaciones de entrada cinematográficas
+           ====================================================== */
         .hero {
             position: relative;
             min-height: 100vh;
@@ -310,6 +300,12 @@
             background-position: center;
             background-color: var(--bg-base);
             z-index: -2;
+            animation: heroBgZoom 3s var(--ease-premium) forwards;
+        }
+
+        @keyframes heroBgZoom {
+            from { transform: scale(1.15); opacity: 0.4; }
+            to { transform: scale(1); opacity: 1; }
         }
         
         .hero-overlay {
@@ -351,6 +347,7 @@
             margin-bottom: 24px;
             letter-spacing: 1px;
             text-transform: uppercase;
+            animation: heroSlideUp 1.4s var(--ease-premium) 0.3s backwards;
         }
 
         .hero-title {
@@ -361,6 +358,23 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+            animation: heroClipReveal 2.2s var(--ease-premium) 0.5s forwards;
+        }
+
+        @keyframes heroClipReveal {
+            from { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
+            to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        }
+
+        @keyframes heroSlideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes heroFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
         .hero-desc {
@@ -369,12 +383,14 @@
             margin-bottom: 40px;
             max-width: 600px;
             margin-left: auto; margin-right: auto;
+            animation: heroSlideUp 1.6s var(--ease-premium) 1.5s backwards;
         }
 
         .hero-actions {
             display: flex;
             gap: 16px;
             justify-content: center;
+            animation: heroSlideUp 1.6s var(--ease-premium) 1.9s backwards;
         }
 
         .scroll-indicator {
@@ -382,7 +398,6 @@
             bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            animation: bounce 2s infinite;
             color: var(--text-muted);
             display: flex;
             flex-direction: column;
@@ -391,6 +406,7 @@
             font-size: 0.8rem;
             letter-spacing: 2px;
             text-transform: uppercase;
+            animation: bounce 2s infinite, heroFadeIn 1.5s ease 2.5s backwards;
         }
 
         @keyframes bounce {
@@ -399,7 +415,6 @@
             60% { transform: translateY(-5px) translateX(-50%); }
         }
 
-        /* Nosotros */
         .nosotros-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -460,9 +475,6 @@
             margin-bottom: 8px;
         }
 
-        /* ==========================================================
-           SECCIÓN NOSOTROS: Imagen flotante con flip-card 3D
-           ========================================================== */
         .about-flip-wrap {
             position: relative;
             perspective: 1600px;
@@ -557,7 +569,7 @@
         }
 
         .reveal.active .about-image-caption {
-            animation: captionSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+            animation: captionSlideUp 1.4s var(--ease-premium) 0.6s forwards;
         }
 
         @keyframes captionSlideUp {
@@ -620,7 +632,34 @@
             gap: 5px;
         }
 
-        /* Reverso del flip: Historia */
+        .history-btn-wrap {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .history-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            color: var(--text-main);
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .history-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-dim);
+            box-shadow: 0 0 20px var(--primary-dim);
+            transform: translateY(-2px);
+        }
+
         .about-flip-back {
             background: linear-gradient(135deg, #0d0d0d 0%, #000 100%);
             border: 1px solid rgba(0, 255, 136, 0.22);
@@ -735,7 +774,6 @@
             flex-shrink: 0;
         }
 
-        /* Sedes */
         .sedes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -745,9 +783,11 @@
         .sede-card {
             padding: 0;
             overflow: hidden;
+            position: relative;
+            border-radius: var(--radius-lg);
         }
 
-        .sede-img-wrap {
+        .sede-card .sede-img-wrap {
             position: relative;
             width: 100%;
             height: 200px;
@@ -755,7 +795,7 @@
             background: var(--bg-elevated);
         }
 
-        .sede-img-wrap img {
+        .sede-card .sede-img-wrap img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -768,7 +808,6 @@
             transform: scale(1.08);
         }
 
-        /* Difuminado negro sobre la foto */
         .sede-img-wrap::after {
             content: '';
             position: absolute;
@@ -814,7 +853,20 @@
             padding: 20px 22px 24px;
         }
 
-        /* Accesos */
+        .sede-body h3 {
+            margin-bottom: 8px;
+        }
+
+        .sede-body .sede-link-hint {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
         .accesos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -830,6 +882,7 @@
             padding: 32px 20px;
             text-decoration: none;
             color: var(--text-main);
+            transition: var(--transition);
         }
 
         .acceso-icon {
@@ -851,7 +904,6 @@
             transform: scale(1.1);
         }
 
-        /* Emisora */
         .emisora-banner {
             background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-base) 100%);
             border: 1px solid var(--primary-dim);
@@ -887,7 +939,6 @@
             100% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0); }
         }
 
-        /* Noticias */
         .news-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -938,7 +989,6 @@
         .news-link svg { transition: transform 0.3s; }
         .news-link:hover svg { transform: translateX(5px); }
 
-        /* Modal Genérico */
         .modal {
             position: fixed;
             inset: 0;
@@ -1103,12 +1153,11 @@
             .modal-meta { font-size: 0.82rem; gap: 12px; }
         }
 
-        /* Galería */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 220px;
             gap: 16px;
-            grid-auto-rows: 200px;
         }
 
         .gallery-item {
@@ -1118,27 +1167,38 @@
             position: relative;
             background: var(--bg-elevated);
         }
-        
+
+        /* Primera foto destacada: ocupa 2 columnas y 2 filas */
+        .gallery-item:first-child {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
         .gallery-item img {
             width: 100%; height: 100%; object-fit: cover;
             transition: transform 0.5s;
         }
-        
+
         .gallery-item:hover img { transform: scale(1.1); }
-        
+
         .gallery-item::after {
             content: '';
             position: absolute; inset: 0;
             background: rgba(0,255,136,0.2);
             opacity: 0; transition: var(--transition);
         }
-        
+
         .gallery-item:hover::after { opacity: 1; }
 
-        .gallery-item:nth-child(2) { grid-row: span 2; }
-        .gallery-item:nth-child(5) { grid-column: span 2; }
+        @media (max-width: 768px) {
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 160px; gap: 12px; }
+            .gallery-item:first-child { grid-column: span 2; grid-row: span 2; }
+        }
 
-        /* Lightbox */
+        @media (max-width: 480px) {
+            .gallery-grid { grid-auto-rows: 140px; gap: 10px; }
+        }
+
         .lightbox {
             position: fixed; inset: 0;
             background: rgba(0,0,0,0.95);
@@ -1156,7 +1216,6 @@
             font-size: 2rem; cursor: pointer;
         }
 
-        /* Reconocimiento */
         .reconocimiento-card {
             display: flex;
             align-items: center;
@@ -1180,7 +1239,6 @@
             flex-shrink: 0;
         }
 
-        /* Contacto */
         .contacto-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1214,7 +1272,6 @@
             margin-top: 20px;
         }
 
-        /* Footer */
         .footer {
             border-top: 1px solid var(--border-color);
             background: var(--bg-card);
@@ -1256,7 +1313,6 @@
             font-size: 0.85rem;
         }
 
-        /* Back to top */
         .back-to-top {
             position: fixed; bottom: 30px; right: 30px;
             width: 50px; height: 50px;
@@ -1272,24 +1328,28 @@
         .back-to-top.visible { opacity: 1; pointer-events: all; }
         .back-to-top:hover { background: var(--primary); color: var(--bg-base); transform: translateY(-5px); }
 
-        /* Animations */
+        /* ======================================================
+           Reveal: animaciones de scroll más lentas y elegantes
+           ====================================================== */
         .reveal {
             opacity: 0;
-            transform: translateY(36px);
-            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
-                        transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(50px);
+            transition: opacity 1.4s var(--ease-premium),
+                        transform 1.4s var(--ease-premium);
+            will-change: opacity, transform;
         }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-        .delay-1 { transition-delay: 0.12s; }
-        .delay-2 { transition-delay: 0.24s; }
-        .delay-3 { transition-delay: 0.36s; }
+        .reveal.active { 
+            opacity: 1; 
+            transform: translateY(0);
+            will-change: auto;
+        }
+        .delay-1 { transition-delay: 0.15s; }
+        .delay-2 { transition-delay: 0.3s; }
+        .delay-3 { transition-delay: 0.45s; }
 
-        /* Quita el retraso de ~300ms que algunos navegadores móviles
-           agregan antes de procesar un tap (esperando a ver si viene un
-           segundo toque para hacer zoom), y evita el zoom accidental por
-           doble-tap en botones y tarjetas clicables. */
         .btn, .nav-link, .stat-item, .acceso-card, .gallery-item,
-        .mobile-toggle, .back-to-top, .modal-close, .lightbox-close {
+        .mobile-toggle, .back-to-top, .modal-close, .lightbox-close,
+        .sede-card, .history-btn {
             touch-action: manipulation;
         }
 
@@ -1322,145 +1382,11 @@
             .scroll-indicator { display: none; }
         }
 
-        /* ======================================================
-           Preloader y optimización móvil
-           ====================================================== */
-
-        body.is-loading { overflow: hidden; }
-
-        .preloader {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.82);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
-
-        .preloader::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 50% 40%, rgba(0, 255, 136, 0.1) 0%, transparent 60%);
-            pointer-events: none;
-        }
-
-        .preloader.loaded {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .preloader-content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 18px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .preloader-logo-wrap {
-            position: relative;
-            width: 110px;
-            height: 110px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .preloader-logo {
-            width: 68px;
-            height: 68px;
-            object-fit: contain;
-            position: relative;
-            z-index: 2;
-            animation: floatLogo 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 18px var(--primary-glow));
-        }
-
-        @keyframes floatLogo {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-
-        .preloader-ring {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            border: 2px solid var(--primary-dim);
-            border-top-color: var(--primary);
-            animation: spinRing 1.3s linear infinite;
-        }
-
-        @keyframes spinRing { to { transform: rotate(360deg); } }
-
-        .preloader-ring::after {
-            content: '';
-            position: absolute;
-            inset: -14px;
-            border-radius: 50%;
-            border: 1px solid rgba(0, 255, 136, 0.18);
-            animation: pulseRing 2s ease-out infinite;
-        }
-
-        @keyframes pulseRing {
-            0% { transform: scale(0.8); opacity: 0.7; }
-            100% { transform: scale(1.35); opacity: 0; }
-        }
-
-        .preloader-title {
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .preloader-subtitle {
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-top: -12px;
-        }
-
-        .preloader-bar-track {
-            width: 220px;
-            height: 4px;
-            border-radius: 4px;
-            background: var(--bg-elevated);
-            overflow: hidden;
-        }
-
-        .preloader-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--primary-hover), var(--primary));
-            border-radius: 4px;
-            box-shadow: 0 0 10px var(--primary-glow);
-            transition: width 0.2s ease;
-        }
-
-        .preloader-percent {
-            font-family: var(--font-heading);
-            font-size: 0.8rem;
-            color: var(--primary);
-            letter-spacing: 1px;
-        }
-
-        /* ---- Optimización según dispositivo detectado ---- */
         .device-mobile .glass-card,
         .device-mobile .header.scrolled,
         .device-mobile .modal,
         .device-mobile .lightbox,
         .device-mobile .modal-close,
-        .device-mobile .preloader,
         .device-mobile .sede-badge {
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
@@ -1469,22 +1395,17 @@
         .device-mobile .header.scrolled { background: rgba(0, 0, 0, 0.96); }
         .device-mobile .modal { background: rgba(0, 0, 0, 0.96); }
         .device-mobile .lightbox { background: rgba(0, 0, 0, 0.97); }
-        .device-mobile .preloader { background: rgba(0, 0, 0, 0.94); }
         .device-mobile .sede-badge { background: rgba(0, 0, 0, 0.92); }
         .device-mobile .glass-card:hover,
         .device-mobile .sede-card:hover,
         .device-mobile .reconocimiento-card:hover {
             transform: none;
         }
-        /* La animación de flotar ya está apagada en móvil (ver más abajo),
-           así que will-change ahí solo desperdicia memoria de GPU sin
-           ningún beneficio real. */
         .device-mobile .about-flip-float,
         .device-mobile .about-flip {
             will-change: auto;
         }
 
-        /* ---- Optimización fluida extra para celular ---- */
         @media (max-width: 768px) {
             .hero { min-height: 100svh; padding-top: 90px; }
             .section-padding { padding: 64px 0; }
@@ -1495,7 +1416,6 @@
             .stat-item { padding: 16px 10px; }
             .stat-num { font-size: 1.9rem; }
 
-            /* Flip card móvil */
             .about-flip-wrap,
             .about-flip-float,
             .about-flip { min-height: 440px; }
@@ -1531,9 +1451,7 @@
 
             .back-to-top { width: 44px; height: 44px; bottom: 20px; right: 20px; }
 
-            .preloader-logo-wrap { width: 90px; height: 90px; }
-            .preloader-logo { width: 54px; height: 54px; }
-            .preloader-bar-track { width: 180px; }
+            .reveal { transform: translateY(35px); transition-duration: 1.1s; }
         }
 
         @media (max-width: 480px) {
@@ -1548,90 +1466,8 @@
         }
     </style>
 </head>
-<body class="is-loading">
+<body>
 
-    <noscript>
-        <style>
-            .preloader { display: none !important; }
-            body.is-loading { overflow: auto !important; }
-            .reveal { opacity: 1 !important; transform: none !important; }
-            .about-image-caption { opacity: 1 !important; transform: none !important; }
-        </style>
-    </noscript>
-
-    <!-- Preloader -->
-    <div class="preloader" id="preloader" role="status" aria-live="polite">
-        <div class="preloader-content">
-            <div class="preloader-logo-wrap">
-                <img src="assets/images/logo.png" alt="" class="preloader-logo">
-                <div class="preloader-ring"></div>
-            </div>
-            <h2 class="preloader-title">Ins<span class="text-green">Tecnico</span></h2>
-            <span class="preloader-subtitle">Cargando</span>
-            <div class="preloader-bar-track">
-                <div class="preloader-bar-fill" id="preloaderBarFill"></div>
-            </div>
-            <span class="preloader-percent" id="preloaderPercent">0%</span>
-        </div>
-    </div>
-
-    <script>
-        (function () {
-            var preloader = document.getElementById('preloader');
-            var barFill = document.getElementById('preloaderBarFill');
-            var percentLabel = document.getElementById('preloaderPercent');
-
-            var MIN_DISPLAY_TIME = 2900;
-
-            var startTime = performance.now();
-            var pageAlreadyLoaded = false;
-            var rafId = null;
-
-            function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
-
-            function animateBar(now) {
-                var elapsed = now - startTime;
-                var t = Math.min(elapsed / MIN_DISPLAY_TIME, 1);
-
-                var ceiling = pageAlreadyLoaded ? 100 : 96;
-                var value = Math.min(easeOutCubic(t) * 100, ceiling);
-
-                barFill.style.width = value + '%';
-                percentLabel.textContent = Math.floor(value) + '%';
-
-                if (value < 100) {
-                    rafId = requestAnimationFrame(animateBar);
-                } else {
-                    hidePreloader();
-                }
-            }
-
-            function hidePreloader() {
-                if (rafId) cancelAnimationFrame(rafId);
-                barFill.style.width = '100%';
-                percentLabel.textContent = '100%';
-                setTimeout(function () {
-                    preloader.classList.add('loaded');
-                    document.body.classList.remove('is-loading');
-                    setTimeout(function () { preloader.remove(); }, 700);
-                }, 250);
-            }
-
-            function markPageLoaded() { pageAlreadyLoaded = true; }
-
-            if (document.readyState === 'complete') {
-                markPageLoaded();
-            } else {
-                window.addEventListener('load', markPageLoaded);
-            }
-
-            setTimeout(markPageLoaded, 8000);
-
-            requestAnimationFrame(animateBar);
-        })();
-    </script>
-
-    <!-- Navbar -->
     <header class="header" id="header">
         <div class="container nav-container">
             <a href="#inicio" class="logo">
@@ -1662,13 +1498,14 @@
         </div>
     </header>
 
-    <!-- Hero -->
+    <main>
+
     <section class="hero" id="inicio">
         <div class="hero-bg"></div>
         <div class="hero-overlay"></div>
         <div class="hero-grid"></div>
         
-        <div class="container hero-content reveal">
+        <div class="container hero-content">
             <span class="hero-badge">Institución Educativa Oficial</span>
             <h1 class="hero-title">Instituto Técnico</h1>
             <p class="hero-desc">Formando líderes desde 1913. Excelencia académica, valores y tecnología para el futuro de Santander de Quilichao.</p>
@@ -1685,14 +1522,13 @@
         </div>
     </section>
 
-    <!-- Nosotros -->
     <section class="section-padding" id="nosotros">
         <div class="container">
             <div class="nosotros-grid">
                 <div class="reveal">
                     <h2 class="section-title" style="text-align: left;">Tradición y <br><span class="text-green">Evolución</span></h2>
                     <p class="text-muted" style="margin-bottom: 20px;">
-                        Fundado el 13 de abril de 1913, el Instituto Técnico es un pilar de la educación en Santander de Quilichao, Cauca. De carácter oficial y mixto, ofrecemos formación integral desde Preescolar hasta la Media Técnica.
+                        Fundado el 3 de abril de 1913, el Instituto Técnico es un pilar de la educación en Santander de Quilichao, Cauca. De carácter oficial y mixto, ofrecemos formación integral desde Preescolar hasta la Media Técnica.
                     </p>
                     <p class="text-muted">
                         Nos enorgullece combinar nuestra rica historia con metodologías modernas, preparando a nuestros estudiantes para los desafíos del mañana mediante innovación, disciplina y compromiso social.
@@ -1700,7 +1536,7 @@
 
                     <div class="stats-container">
                         <div class="stat-item" tabindex="0" role="button" aria-label="Reiniciar contador de años de historia">
-                            <div class="stat-num counter" data-target="110">0</div>
+                            <div class="stat-num counter" data-target="113">0</div>
                             <div class="stat-label">Años de Historia</div>
                         </div>
                         <div class="stat-item" tabindex="0" role="button" aria-label="Reiniciar contador de sedes educativas">
@@ -1708,7 +1544,7 @@
                             <div class="stat-label">Sedes Educativas</div>
                         </div>
                         <div class="stat-item" tabindex="0" role="button" aria-label="Reiniciar contador de estudiantes activos">
-                            <div class="stat-num"><span class="counter" data-target="3000">0</span>+</div>
+                            <div class="stat-num"><span class="counter" data-target="3300">0</span>+</div>
                             <div class="stat-label">Estudiantes Activos</div>
                         </div>
                         <div class="stat-item" tabindex="0" role="button" aria-label="Reiniciar contador de compromiso">
@@ -1729,7 +1565,7 @@
                                     <span class="about-image-caption-emoji">🎓</span>
                                     <h3 class="about-image-caption-title">Un siglo <span class="highlight">formando</span> futuro</h3>
                                     <span class="about-image-caption-sub">Instituto Técnico · Desde 1913</span>
-                                    <span class="about-image-caption-hint">↻ Doble clic para ver nuestra historia</span>
+                                    <span class="about-image-caption-hint">↻ Doble clic para ver historia rápida</span>
                                 </div>
                             </div>
 
@@ -1743,35 +1579,63 @@
                                         <span class="flip-year">1913</span>
                                         <div class="flip-content">
                                             <strong>Fundación</strong>
-                                            <p>El 13 de abril nace el Instituto Técnico, iniciando su labor educativa en Santander de Quilichao.</p>
+                                            <p>El 3 de abril nace el Instituto Técnico, iniciando su labor educativa en Santander de Quilichao.</p>
                                         </div>
                                     </li>
                                     <li>
-                                        <span class="flip-year">1975</span>
+                                        <span class="flip-year">1944</span>
+                                        <div class="flip-content">
+                                            <strong>Nacionalización</strong>
+                                            <p>Mediante la Ley 75, el Gobierno Nacional asume el sostenimiento de la institución.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="flip-year">1960</span>
+                                        <div class="flip-content">
+                                            <strong>Primera Promoción</strong>
+                                            <p>Se gradúa la primera promoción de bachilleres, un hito para toda la región.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="flip-year">1972</span>
                                         <div class="flip-content">
                                             <strong>Jornada Nocturna</strong>
-                                            <p>Se abre la jornada nocturna, ampliando el acceso educativo para jóvenes y adultos trabajadores.</p>
+                                            <p>Se abre la jornada nocturna para jóvenes y adultos trabajadores.</p>
                                         </div>
                                     </li>
                                     <li>
-                                        <span class="flip-year">1987</span>
+                                        <span class="flip-year">1985</span>
                                         <div class="flip-content">
-                                            <strong>Promoción Histórica</strong>
-                                            <p>Graduación de una de las generaciones más recordadas de nuestra institución.</p>
+                                            <strong>Carácter Mixto</strong>
+                                            <p>La institución recupera su carácter mixto, consolidándose como espacio inclusivo.</p>
                                         </div>
                                     </li>
                                     <li>
-                                        <span class="flip-year">2004</span>
+                                        <span class="flip-year">2003</span>
                                         <div class="flip-content">
-                                            <strong>Reconocimiento Oficial</strong>
-                                            <p>Aprobación mediante Resolución Departamental No. 0448 de abril de 2004.</p>
+                                            <strong>Fusión de Sedes</strong>
+                                            <p>Se fusionan los centros Rafael Tello, José E. Sandoval y Francisco de P. Santander.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="flip-year">2012</span>
+                                        <div class="flip-content">
+                                            <strong>Ley 1576 de 2012</strong>
+                                            <p>El Congreso se vincula al centenario y autoriza recursos para infraestructura.</p>
                                         </div>
                                     </li>
                                     <li>
                                         <span class="flip-year">2017</span>
                                         <div class="flip-content">
                                             <strong>Primera Web Institucional</strong>
-                                            <p>El Magister Gersaín León Franco implementa el primer sitio web oficial del colegio.</p>
+                                            <p>El Magister Gersaín León Franco implementa el primer sitio web oficial.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="flip-year">2024</span>
+                                        <div class="flip-content">
+                                            <strong>Nueva Rectoría</strong>
+                                            <p>Isabel Cristina Cabal Godoy asume la rectoría con visión de calidad educativa.</p>
                                         </div>
                                     </li>
                                     <li>
@@ -1787,12 +1651,17 @@
 
                         </div>
                     </div>
+                    <div class="history-btn-wrap">
+                        <a href="historia.html" class="history-btn" id="openHistoryModal">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+                            Ver Historia Completa
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sedes -->
     <section class="section-padding" style="background-color: var(--bg-panel);" id="sedes">
         <div class="container">
             <h2 class="section-title reveal">Nuestras <span class="text-green">Sedes</span></h2>
@@ -1807,7 +1676,7 @@
                     <div class="sede-body">
                         <h3 style="margin-bottom: 8px;">Sede Principal</h3>
                         <p style="font-size: 0.9rem; color: var(--primary); margin-bottom: 12px;">Básica Secundaria y Media</p>
-                        <p style="font-size: 0.9rem; color: var(--text-muted);">El corazón de nuestra institución, albergando las jornadas de la mañana y tarde.</p>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">El corazón de nuestra institución. Calle 3 # 7-68, Barrio Centro.</p>
                     </div>
                 </div>
                 <div class="glass-card sede-card reveal">
@@ -1818,7 +1687,7 @@
                     <div class="sede-body">
                         <h3 style="margin-bottom: 8px;">Francisco de P. Santander</h3>
                         <p style="font-size: 0.9rem; color: var(--primary); margin-bottom: 12px;">Básica Primaria</p>
-                        <p style="font-size: 0.9rem; color: var(--text-muted);">Espacio dedicado a la formación inicial con metodologías lúdicas y formativas.</p>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Espacio dedicado a la formación inicial con metodologías lúdicas.</p>
                     </div>
                 </div>
                 <div class="glass-card sede-card reveal">
@@ -1829,7 +1698,11 @@
                     <div class="sede-body">
                         <h3 style="margin-bottom: 8px;">Sede Rafael Tello</h3>
                         <p style="font-size: 0.9rem; color: var(--primary); margin-bottom: 12px;">Básica Primaria</p>
-                        <p style="font-size: 0.9rem; color: var(--text-muted);">Ambiente acogedor diseñado para el desarrollo cognitivo y social de los niños.</p>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Ambiente acogedor para el desarrollo cognitivo y social.</p>
+                        <a href="https://rafaeltello.weebly.com/" target="_blank" rel="noopener noreferrer" class="sede-link-hint">
+                            Toca para abrir
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </a>
                     </div>
                 </div>
                 <div class="glass-card sede-card reveal">
@@ -1840,14 +1713,13 @@
                     <div class="sede-body">
                         <h3 style="margin-bottom: 8px;">José E. Sandoval</h3>
                         <p style="font-size: 0.9rem; color: var(--primary); margin-bottom: 12px;">Básica Primaria</p>
-                        <p style="font-size: 0.9rem; color: var(--text-muted);">Instalaciones enfocadas en el acompañamiento temprano y crecimiento integral.</p>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Instalaciones para el acompañamiento temprano y crecimiento integral.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Accesos -->
     <section class="section-padding" id="accesos">
         <div class="container">
             <h2 class="section-title reveal">Accesos <span class="text-green">Rápidos</span></h2>
@@ -1927,7 +1799,6 @@
         </div>
     </section>
 
-    <!-- Emisora -->
     <section class="section-padding pt-0">
         <div class="container reveal">
             <div class="emisora-banner">
@@ -1952,7 +1823,6 @@
         </div>
     </section>
 
-    <!-- Noticias -->
     <section class="section-padding" style="background-color: var(--bg-panel);" id="noticias">
         <div class="container">
             <h2 class="section-title reveal">Noticias y <span class="text-green">Eventos</span></h2>
@@ -2000,24 +1870,6 @@
         </div>
     </section>
 
-    <!-- Modal Genérico -->
-    <div class="modal" id="genericModal">
-        <div class="modal-content" id="genericModalContent">
-            <button class="modal-close" id="genericModalClose" aria-label="Cerrar">&times;</button>
-            <img class="modal-hero" id="genericModalImg" src="" alt="">
-            <div class="modal-body">
-                <span class="modal-category" id="genericModalCategory"></span>
-                <h2 class="modal-title" id="genericModalTitle"></h2>
-                <div class="modal-meta">
-                    <span id="genericModalDate"></span>
-                    <span id="genericModalAuthor"></span>
-                </div>
-                <div id="genericModalText"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Galería -->
     <section class="section-padding" id="galeria">
         <div class="container">
             <h2 class="section-title reveal">Galería <span class="text-green">Institucional</span></h2>
@@ -2043,13 +1895,6 @@
         </div>
     </section>
 
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox">
-        <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar imagen">&times;</button>
-        <img src="" id="lightboxImg" alt="Imagen en grande">
-    </div>
-
-    <!-- Reconocimiento -->
     <section class="section-padding" style="background-color: var(--bg-panel);">
         <div class="container">
             <div class="glass-card reconocimiento-card reveal" onclick="openModal('reconocimiento-gersain')" role="button" tabindex="0" aria-label="Ver reconocimiento al Magister Gersaín León Franco">
@@ -2066,7 +1911,6 @@
         </div>
     </section>
 
-    <!-- Contacto -->
     <section class="section-padding" id="contacto">
         <div class="container">
             <h2 class="section-title reveal">Ponte en <span class="text-green">Contacto</span></h2>
@@ -2113,7 +1957,7 @@
                             </div>
                             <div>
                                 <h4 style="margin-bottom: 4px;">Teléfono</h4>
-                                <p style="color: var(--text-muted);">+57 (2) 829-2177</p>
+                                <p style="color: var(--text-muted);">318 3308974</p>
                             </div>
                         </div>
 
@@ -2123,7 +1967,7 @@
                             </div>
                             <div>
                                 <h4 style="margin-bottom: 4px;">Correo</h4>
-                                <p style="color: var(--text-muted);">info@instecnico.edu.co</p>
+                                <p style="color: var(--text-muted);">rectoria@instecnico.edu.co</p>
                             </div>
                         </div>
                     </div>
@@ -2136,7 +1980,29 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    </main>
+
+    <div class="modal" id="genericModal">
+        <div class="modal-content" id="genericModalContent">
+            <button class="modal-close" id="genericModalClose" aria-label="Cerrar">&times;</button>
+            <img class="modal-hero" id="genericModalImg" src="" alt="">
+            <div class="modal-body">
+                <span class="modal-category" id="genericModalCategory"></span>
+                <h2 class="modal-title" id="genericModalTitle"></h2>
+                <div class="modal-meta">
+                    <span id="genericModalDate"></span>
+                    <span id="genericModalAuthor"></span>
+                </div>
+                <div id="genericModalText"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar imagen">&times;</button>
+        <img src="" id="lightboxImg" alt="Imagen en grande">
+    </div>
+
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -2147,13 +2013,10 @@
                     </a>
                     <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">Institución Educativa oficial dedicada a la formación de líderes en Santander de Quilichao, Cauca.</p>
                     <div class="social-links">
-                        <a href="#" class="social-link" aria-label="Facebook">
+                        <a href="https://www.facebook.com/IT.TECNICO2013/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook">
                             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
                         </a>
-                        <a href="#" class="social-link" aria-label="Instagram">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-                        </a>
-                        <a href="#" class="social-link" aria-label="YouTube">
+                        <a href="https://www.youtube.com/channel/UCwMarfY8Bpd3uRq8pfGAJbw" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="YouTube">
                             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.16 1 12 1 12s0 3.84.46 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.84 23 12 23 12s0-3.84-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
                         </a>
                     </div>
@@ -2185,6 +2048,7 @@
                         <a href="#">Políticas de Privacidad</a>
                         <a href="#">Términos de Uso</a>
                         <a href="#">Manual de Convivencia</a>
+                        <a href="https://institucion-educativa-instituto-tecnico-1.micolombiadigital.gov.co/" target="_blank" rel="noopener noreferrer">Portal de Transparencia</a>
                     </div>
                 </div>
             </div>
@@ -2196,13 +2060,123 @@
         </div>
     </footer>
 
-    <!-- Botón Volver Arriba -->
     <div class="back-to-top" id="backToTop" aria-label="Volver arriba">
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
     </div>
 
     <script>
-        // ============ DATOS DE LOS MODALES ============
+        // ============================================================
+        // SISTEMA DE AUDIO ROBUSTO
+        // Se crea un único AudioContext y se "desbloquea" con el primer
+        // gesto real del usuario (click, tap o tecla). Todos los sonidos
+        // verifican `audioReady` antes de reproducirse.
+        // ============================================================
+        let sharedAudioCtx = null;
+        let audioReady = false;
+
+        function getAudioCtx() {
+            if (!sharedAudioCtx) {
+                try {
+                    sharedAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) { return null; }
+            }
+            return sharedAudioCtx;
+        }
+
+        function tryUnlockAudio() {
+            const ctx = getAudioCtx();
+            if (!ctx) return;
+            if (ctx.state === 'running') {
+                audioReady = true;
+                return;
+            }
+            if (ctx.state === 'suspended') {
+                ctx.resume().then(() => {
+                    audioReady = (ctx.state === 'running');
+                }).catch(() => {});
+            }
+        }
+
+        // Escuchar gestos reales de usuario (los navegadores solo permiten
+        // activar el audio con una interacción explícita).
+        ['click', 'touchstart', 'keydown', 'pointerdown'].forEach(ev => {
+            document.addEventListener(ev, tryUnlockAudio, { capture: true, passive: true });
+        });
+
+        // ============================================================
+        // SONIDO PARA ACCESOS RÁPIDOS (pop premium con dos capas)
+        // ============================================================
+        function playQuickAccessSound() {
+            const ctx = getAudioCtx();
+            if (!ctx || !audioReady) return;
+            try {
+                if (ctx.state === 'suspended') ctx.resume();
+                const now = ctx.currentTime;
+
+                // Capa principal: sine con pitch ascendente suave
+                const osc1 = ctx.createOscillator();
+                const gain1 = ctx.createGain();
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(420, now);
+                osc1.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+                osc1.frequency.exponentialRampToValueAtTime(660, now + 0.22);
+
+                gain1.gain.setValueAtTime(0.0001, now);
+                gain1.gain.exponentialRampToValueAtTime(0.22, now + 0.015);
+                gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+
+                osc1.connect(gain1);
+                gain1.connect(ctx.destination);
+                osc1.start(now);
+                osc1.stop(now + 0.3);
+
+                // Capa superior: agudo cristalino muy corto
+                const osc2 = ctx.createOscillator();
+                const gain2 = ctx.createGain();
+                osc2.type = 'triangle';
+                osc2.frequency.setValueAtTime(1600, now);
+                osc2.frequency.exponentialRampToValueAtTime(2400, now + 0.06);
+
+                gain2.gain.setValueAtTime(0.06, now);
+                gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
+
+                osc2.connect(gain2);
+                gain2.connect(ctx.destination);
+                osc2.start(now);
+                osc2.stop(now + 0.16);
+            } catch (e) {}
+        }
+
+        // ============================================================
+        // SONIDO PARA CONTADORES (tick corto y limpio)
+        // ============================================================
+        function playCounterSound() {
+            const ctx = getAudioCtx();
+            if (!ctx || !audioReady) return;
+            try {
+                if (ctx.state === 'suspended') ctx.resume();
+                const now = ctx.currentTime;
+
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, now);
+                osc.frequency.exponentialRampToValueAtTime(440, now + 0.07);
+
+                gain.gain.setValueAtTime(0.0001, now);
+                gain.gain.exponentialRampToValueAtTime(0.16, now + 0.008);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.11);
+            } catch (e) {}
+        }
+
+        // ============================================================
+        // DATOS MODALES
+        // ============================================================
         const modalData = {
             'noticia-feria': {
                 titulo: 'Feria Universitaria para el grado 11°',
@@ -2273,7 +2247,7 @@
                         <li>Carne de vacunación (para Preescolar y Primaria).</li>
                     </ul>
                     <h3>Mayor información</h3>
-                    <p>Puedes acercarte a la Secretaría Académica de la Sede Principal (Calle 3 # 7-68, Barrio Centro), llamar al <strong>+57 (2) 829-2177</strong> o escribirnos a <strong>info@instecnico.edu.co</strong>. También puedes consultar el cronograma completo en nuestras oficinas.</p>
+                    <p>Puedes acercarte a la Secretaría Académica de la Sede Principal (Calle 3 # 7-68, Barrio Centro), llamar al <strong>318 3308974</strong> o escribirnos a <strong>rectoria@instecnico.edu.co</strong>. También puedes consultar el cronograma completo en nuestras oficinas.</p>
                     <p>¡Te esperamos para seguir construyendo juntos más de un siglo de historia y excelencia educativa!</p>
                 `
             },
@@ -2324,13 +2298,12 @@
             const sections = document.querySelectorAll('section[id]');
             const navLinkEls = document.querySelectorAll('.nav-link');
 
+            // ============ SONIDO DE CLIC EN ACCESOS RÁPIDOS ============
+            document.querySelectorAll('.acceso-card').forEach(card => {
+                card.addEventListener('click', playQuickAccessSound);
+            });
+
             // ============ SCROLL: header + back-to-top + nav activo ============
-            // Antes esto eran DOS listeners de scroll separados (uno para el header
-            // y otro para marcar el link activo). Los unimos en uno solo y lo
-            // sincronizamos con requestAnimationFrame para que el navegador nunca
-            // haga este trabajo más de una vez por frame, sin importar cuántas
-            // veces dispare el evento "scroll" (en algunos celulares puede disparar
-            // decenas de veces por segundo). Resultado: scroll más fluido.
             let scrollTicking = false;
             function onScrollFrame() {
                 const scrollY = window.scrollY;
@@ -2351,7 +2324,7 @@
                     scrollTicking = true;
                 }
             }, { passive: true });
-            onScrollFrame(); // estado inicial correcto si la página carga con scroll (ej. recargar a mitad de página)
+            onScrollFrame();
 
             // ============ MENÚ MÓVIL ============
             mobileToggle.addEventListener('click', (e) => {
@@ -2381,13 +2354,11 @@
                 resizeTimer = setTimeout(() => {
                     const isMobileNow = window.innerWidth <= 768;
 
-                    // Cerrar menú si pasamos a desktop
                     if (!isMobileNow) {
                         navLinks.classList.remove('mobile-active');
                         headerCta.classList.remove('mobile-active');
                     }
 
-                    // Re-evaluar dispositivo PC/Móvil (para optimizaciones CSS)
                     const root = document.documentElement;
                     root.classList.toggle('device-mobile', isMobileNow);
                     root.classList.toggle('device-pc', !isMobileNow);
@@ -2396,14 +2367,8 @@
             }, { passive: true });
 
             // ============ REVEAL ANIMATIONS ============
-
-            // Auto-stagger: calcula el retraso de cada tarjeta según su posición
-            // dentro de su propio grid (Sedes, Accesos, Noticias), en vez de
-            // depender de clases "delay-1/2/3" puestas a mano en el HTML.
-            // Ventaja real: si mañana agregas o quitas una tarjeta, el
-            // escalonado se reacomoda solo, sin tener que editar el HTML.
-            const STAGGER_STEP = 90;  // ms entre una tarjeta y la siguiente
-            const STAGGER_MAX = 4;    // tope de "escalones" para que listas largas no tarden de más
+            const STAGGER_STEP = 120;
+            const STAGGER_MAX = 4;
             document.querySelectorAll('.reveal-group').forEach(group => {
                 const items = group.querySelectorAll(':scope > .reveal');
                 items.forEach((item, i) => {
@@ -2419,7 +2384,7 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+            }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
 
             revealElements.forEach(el => revealOnScroll.observe(el));
 
@@ -2448,37 +2413,11 @@
                 requestAnimationFrame(step);
             }
 
-            let audioCtx;
-            function playBubbleSound() {
-                try {
-                    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-                    if (audioCtx.state === 'suspended') audioCtx.resume();
-
-                    const now = audioCtx.currentTime;
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(180, now);
-                    osc.frequency.exponentialRampToValueAtTime(760, now + 0.10);
-                    osc.frequency.exponentialRampToValueAtTime(340, now + 0.22);
-
-                    gain.gain.setValueAtTime(0.0001, now);
-                    gain.gain.exponentialRampToValueAtTime(0.35, now + 0.02);
-                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
-
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start(now);
-                    osc.stop(now + 0.3);
-                } catch (err) { /* silent */ }
-            }
-
             const counters = document.querySelectorAll('.counter');
             const counterObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        animateCounterEl(entry.target, 2000);
+                        animateCounterEl(entry.target, 2400);
                         observer.unobserve(entry.target);
                     }
                 });
@@ -2491,7 +2430,7 @@
                 if (!counterEl) return;
 
                 function resetAndReplay() {
-                    playBubbleSound();
+                    playCounterSound();
                     animateCounterEl(counterEl, 900);
                     item.classList.remove('stat-clicked');
                     void item.offsetWidth;
@@ -2558,10 +2497,6 @@
                 }, 1500);
             };
 
-            // ============ NAV ACTIVE ON SCROLL ============
-            // (fusionado arriba, dentro de onScrollFrame, para no tener dos
-            // listeners de "scroll" compitiendo por el mismo trabajo)
-
             // ============ MODAL GENÉRICO ============
             const genericModal = document.getElementById('genericModal');
             const genericModalClose = document.getElementById('genericModalClose');
@@ -2598,13 +2533,10 @@
             const isTouch = !window.matchMedia('(hover: hover)').matches;
 
             if (aboutFlip) {
-                // Bug real: el HTML siempre decía "Doble clic", incluso en
-                // celular donde la interacción de verdad es un solo toque.
-                // Corregimos el texto visible y el aria-label según el dispositivo.
                 if (isTouch) {
                     const frontHint = aboutFlip.querySelector('.about-image-caption-hint');
                     const backHint = aboutFlip.querySelector('.flip-back-hint');
-                    if (frontHint) frontHint.textContent = '↻ Toca para ver nuestra historia';
+                    if (frontHint) frontHint.textContent = '↻ Toca para ver historia rápida';
                     if (backHint) backHint.textContent = '↻ Toca para volver';
                     aboutFlip.setAttribute('aria-label', 'Toca para ver la historia del Instituto Técnico');
 
@@ -2616,7 +2548,6 @@
                         e.preventDefault();
                         aboutFlip.classList.toggle('flipped');
                     });
-                    // Accesibilidad: Enter/Espacio
                     aboutFlip.addEventListener('keydown', (e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
@@ -2624,7 +2555,6 @@
                         }
                     });
                 }
-                // Prevenir selección de texto al hacer doble clic
                 aboutFlip.addEventListener('mousedown', (e) => {
                     if (e.detail > 1) e.preventDefault();
                 });

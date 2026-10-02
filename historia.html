@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        (function () {
+            var ua = navigator.userAgent || '';
+            var isMobileUA = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile|webOS/i.test(ua);
+            var isMobile = isMobileUA || window.innerWidth <= 768;
+            var root = document.documentElement;
+            root.classList.add(isMobile ? 'device-mobile' : 'device-pc');
+            window.__isMobileDevice = isMobile;
+        })();
+    </script>
+
+    <title>Historia del Instituto Técnico | Un siglo de legado</title>
+    <meta name="description" content="Historia completa de la Institución Educativa Instituto Técnico de Santander de Quilichao, Cauca. Desde 1913 hasta el presente.">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Historia del Instituto Técnico | 113 años de legado">
+    <meta property="og:description" content="Desde 1913 hasta hoy: la historia completa del Instituto Técnico de Santander de Quilichao, Cauca.">
+    <meta property="og:image" content="assets/images/historia-hero-bg.jpg">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #000000;
+            --bg-panel: #0a0a0a;
+            --bg-card: #111111;
+            --bg-elevated: #1a1a1a;
+
+            --primary: #00ff88;
+            --primary-hover: #00cc6a;
+            --primary-dim: rgba(0, 255, 136, 0.1);
+            --primary-glow: rgba(0, 255, 136, 0.3);
+
+            --text-main: #ffffff;
+            --text-muted: #999999;
+            --text-dark: #000000;
+
+            --border-color: #222222;
+            --border-light: rgba(255, 255, 255, 0.05);
+
+            --font-body: 'Inter', sans-serif;
+            --font-heading: 'Space Grotesk', sans-serif;
+            --font-elegant: 'Instrument Serif', serif;
+
+            --radius-md: 12px;
+            --radius-lg: 16px;
+
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+            html { scroll-behavior: auto; }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(0, 255, 136, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(0, 255, 136, 0.04) 0%, transparent 50%);
+        }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; line-height: 1.2; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .text-green { color: var(--primary); }
+        .text-muted { color: var(--text-muted); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .btn--primary {
+            background-color: var(--primary);
+            color: var(--text-dark);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .btn--primary:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 0 25px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn--outline {
+            background-color: transparent;
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn--outline:hover {
+            background-color: var(--primary-dim);
+            box-shadow: 0 0 15px var(--primary-dim);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================
+           HEADER — mismo estilo que el index
+           ========================================================== */
+        .header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+            padding: 20px 0;
+            border-bottom: 1px solid transparent;
+        }
+
+        .header.scrolled {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            height: 48px;
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            height: 100%;
+            width: auto;
+            max-width: 140px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover, .nav-link.active { color: var(--text-main); }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0; width: 0%; height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+        .header-cta {
+            flex-shrink: 0;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        /* ==========================================================
+           HERO de la página de historia
+           ========================================================== */
+        .history-hero {
+            position: relative;
+            min-height: 75vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 100px;
+            padding-bottom: 60px;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .history-hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+            background: var(--bg-base);
+            overflow: hidden;
+        }
+
+        .history-hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.18;
+            animation: heroBgZoom 3.5s var(--ease-premium) forwards;
+        }
+
+        @keyframes heroBgZoom {
+            from { transform: scale(1.15); opacity: 0.05; }
+            to { transform: scale(1); opacity: 0.18; }
+        }
+
+        .history-hero-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, var(--bg-base) 100%);
+        }
+
+        .history-hero-grid {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+        }
+
+        .history-hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .history-hero-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            background: var(--primary-dim);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            animation: heroFadeInUp 1.4s var(--ease-premium) 0.3s backwards;
+        }
+
+        .history-hero-title {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #A0A0A0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+            animation: heroClipReveal 2.2s var(--ease-premium) 0.5s forwards;
+        }
+
+        .history-hero-title .text-green {
+            -webkit-text-fill-color: var(--primary);
+            font-family: var(--font-elegant);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        @keyframes heroClipReveal {
+            from { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
+            to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        }
+
+        @keyframes heroFadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .history-hero-desc {
+            font-size: clamp(1.1rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto; margin-right: auto;
+            animation: heroFadeInUp 1.6s var(--ease-premium) 1.4s backwards;
+        }
+
+        .history-hero-meta {
+            display: flex;
+            gap: 48px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: heroFadeInUp 1.6s var(--ease-premium) 1.8s backwards;
+        }
+
+        .history-hero-meta-item {
+            text-align: center;
+        }
+
+        .history-hero-meta-num {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .history-hero-meta-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ==========================================================
+           SECCIONES
+           ========================================================== */
+        .section-padding {
+            padding: 100px 0;
+            content-visibility: auto;
+            contain-intrinsic-size: 1px 900px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* Época: bloque con imagen y texto */
+        .epoch {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 100px;
+        }
+
+        .epoch:last-child {
+            margin-bottom: 0;
+        }
+
+        .epoch--reverse .epoch-text {
+            order: 2;
+        }
+
+        .epoch--reverse .epoch-img-wrap {
+            order: 1;
+        }
+
+        .epoch-year-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            background: var(--primary-dim);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .epoch-title {
+            font-family: var(--font-elegant);
+            font-weight: 400;
+            font-style: italic;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            margin-bottom: 20px;
+            line-height: 1.15;
+            color: #fff;
+        }
+
+        .epoch-title .text-green {
+            font-style: italic;
+            text-shadow: 0 0 24px rgba(0, 255, 136, 0.4);
+        }
+
+        .epoch-text p {
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            font-size: 1.05rem;
+            line-height: 1.75;
+        }
+
+        .epoch-text p strong {
+            color: #fff;
+        }
+
+        .epoch-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .epoch-img-wrap {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .epoch-img-wrap img {
+            width: 100%;
+            height: 100%;
+            min-height: 420px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .epoch-img-wrap:hover img {
+            transform: scale(1.05);
+        }
+
+        .epoch-img-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.5) 100%);
+            pointer-events: none;
+        }
+
+        .epoch-img-label {
+            position: absolute;
+            bottom: 20px;
+            left: 24px;
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--primary);
+            font-weight: 600;
+            z-index: 2;
+            opacity: 0.9;
+        }
+
+        /* ==========================================================
+           LÍNEA DE TIEMPO
+           ========================================================== */
+        .timeline-section {
+            background-color: var(--bg-panel);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+            transform: translateX(-50%);
+        }
+
+        .timeline-line-glow {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 2px;
+            height: 0%;
+            background: linear-gradient(180deg, var(--primary), rgba(0, 255, 136, 0.1));
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px var(--primary-glow);
+            transition: height 0.1s linear;
+        }
+
+        .timeline-item {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 60px 1fr;
+            gap: 0;
+            margin-bottom: 50px;
+            align-items: center;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            grid-column: 2;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--bg-base);
+            border: 2px solid var(--border-color);
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            transition: var(--transition);
+        }
+
+        .timeline-item.reveal.active .timeline-dot {
+            border-color: var(--primary);
+            background: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+            animation: dotPulse 1.8s var(--ease-premium) forwards;
+        }
+
+        @keyframes dotPulse {
+            0% { box-shadow: 0 0 0 0 var(--primary-glow); }
+            100% { box-shadow: 0 0 0 18px rgba(0, 255, 136, 0); }
+        }
+
+        .timeline-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            transition: var(--transition);
+        }
+
+        .timeline-card:hover {
+            border-color: rgba(0, 255, 136, 0.3);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px var(--primary-dim);
+            transform: translateY(-3px);
+        }
+
+        .timeline-item--left .timeline-card {
+            grid-column: 1;
+            text-align: right;
+        }
+
+        .timeline-item--right .timeline-card {
+            grid-column: 3;
+        }
+
+        .timeline-year {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .timeline-card h3 {
+            font-size: 1.15rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .timeline-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ==========================================================
+           HITOS DESTACADOS
+           ========================================================== */
+        .hitos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .hito-card {
+            text-align: center;
+            padding: 32px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hito-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .hito-card:hover {
+            border-color: rgba(0, 255, 136, 0.3);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px var(--primary-dim);
+            transform: translateY(-5px);
+        }
+
+        .hito-card:hover::before { opacity: 1; }
+
+        .hito-year {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .hito-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* ==========================================================
+           LEGADO
+           ========================================================== */
+        .legado-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .legado-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            transition: var(--transition);
+        }
+
+        .legado-card:hover {
+            border-color: rgba(0, 255, 136, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px var(--primary-dim);
+            transform: translateY(-5px);
+        }
+
+        .legado-card h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .legado-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.75;
+            margin-bottom: 12px;
+        }
+
+        .legado-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .legado-card strong {
+            color: #fff;
+        }
+
+        /* ==========================================================
+           SÍMBOLOS INSTITUCIONALES
+           ========================================================== */
+        .simbolos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .simbolo-card {
+            text-align: center;
+            padding: 40px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            transition: var(--transition);
+        }
+
+        .simbolo-card:hover {
+            border-color: rgba(0, 255, 136, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px var(--primary-dim);
+            transform: translateY(-5px);
+        }
+
+        .simbolo-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.3));
+            display: inline-block;
+        }
+
+        .simbolo-card h3 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .simbolo-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .simbolo-lema {
+            font-family: var(--font-elegant);
+            font-style: italic;
+            font-size: 1.4rem;
+            color: #fff;
+            margin: 12px 0;
+            letter-spacing: 0.5px;
+        }
+
+        /* ==========================================================
+           ACTUALIDAD / RECONOCIMIENTO LEGAL
+           ========================================================== */
+        .actualidad-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .actualidad-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--primary);
+            border-radius: var(--radius-md);
+            padding: 28px 32px;
+            transition: var(--transition);
+        }
+
+        .actualidad-card:hover {
+            border-color: rgba(0, 255, 136, 0.3);
+            border-left-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px var(--primary-dim);
+            transform: translateX(5px);
+        }
+
+        .actualidad-year {
+            display: inline-block;
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .actualidad-card h3 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .actualidad-card p {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.75;
+        }
+
+        .actualidad-card strong {
+            color: #fff;
+        }
+
+        /* ==========================================================
+           BOTÓN VOLVER
+           ========================================================== */
+        .back-btn-wrap {
+            text-align: center;
+            padding: 40px 0 80px;
+        }
+
+        /* ==========================================================
+           FOOTER — mismo estilo que el index
+           ========================================================== */
+        .footer {
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-card);
+            padding: 80px 0 24px;
+            content-visibility: auto;
+            contain-intrinsic-size: 1px 500px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-title { color: var(--text-main); font-size: 1.1rem; margin-bottom: 20px; }
+        .footer-links { display: flex; flex-direction: column; gap: 12px; }
+        .footer-links a { color: var(--text-muted); font-size: 0.95rem; }
+        .footer-links a:hover { color: var(--primary); padding-left: 5px; }
+
+        .social-links { display: flex; gap: 16px; }
+        .social-link {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-main);
+            transition: var(--transition);
+        }
+        .social-link:hover { background: var(--primary); color: var(--bg-base); }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 24px;
+            display: flex; justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ==========================================================
+           REVEAL
+           ========================================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1.4s var(--ease-premium),
+                        transform 1.4s var(--ease-premium);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.15s; }
+        .delay-2 { transition-delay: 0.3s; }
+        .delay-3 { transition-delay: 0.45s; }
+
+        .btn, .nav-link, .mobile-toggle, .back-to-top, .timeline-card, .hito-card, .legado-card, .simbolo-card, .actualidad-card {
+            touch-action: manipulation;
+        }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 999;
+            opacity: 0; pointer-events: none;
+            transition: var(--transition);
+        }
+        .back-to-top.visible { opacity: 1; pointer-events: all; }
+        .back-to-top:hover { background: var(--primary); color: var(--bg-base); transform: translateY(-5px); }
+
+        /* ==========================================================
+           RESPONSIVE
+           ========================================================== */
+        @media (max-width: 992px) {
+            .epoch { grid-template-columns: 1fr; gap: 40px; }
+            .epoch--reverse .epoch-text { order: 1; }
+            .epoch--reverse .epoch-img-wrap { order: 2; }
+            .epoch-img-wrap img { min-height: 320px; }
+            .legado-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .header-cta { display: none; }
+            .mobile-toggle { display: block; }
+
+            .nav-links.mobile-active {
+                display: flex; flex-direction: column;
+                position: absolute; top: 100%; left: 0; width: 100%;
+                background: rgba(10, 10, 10, 0.98);
+                backdrop-filter: blur(16px);
+                padding: 24px; border-bottom: 1px solid var(--border-color);
+                align-items: flex-start;
+            }
+            .nav-links.mobile-active .nav-link {
+                font-size: 1.2rem; width: 100%;
+                padding: 12px 0;
+                border-bottom: 1px solid var(--border-light);
+            }
+            .header-cta.mobile-active {
+                display: flex; width: 100%;
+                margin-top: 20px; justify-content: center;
+            }
+
+            .section-padding { padding: 64px 0; }
+            .container { padding: 0 18px; }
+
+            .history-hero { min-height: 60vh; padding-top: 90px; }
+            .history-hero-meta { gap: 28px; }
+            .history-hero-meta-num { font-size: 1.8rem; }
+
+            .epoch { margin-bottom: 64px; }
+            .epoch-img-wrap img { min-height: 240px; }
+
+            /* Timeline: línea a la izquierda en móvil */
+            .timeline-line { left: 20px; }
+            .timeline-line-glow { left: 20px; }
+            .timeline-item {
+                grid-template-columns: 40px 1fr;
+                gap: 16px;
+            }
+            .timeline-item--left .timeline-card,
+            .timeline-item--right .timeline-card {
+                grid-column: 2;
+                grid-row: 1;
+                text-align: left;
+            }
+            .timeline-dot {
+                grid-column: 1;
+                grid-row: 1;
+                margin: 0;
+            }
+
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px 20px; margin-bottom: 40px; }
+            .footer-bottom { flex-direction: column; gap: 12px; text-align: center; font-size: 0.8rem; }
+
+            .back-to-top { width: 44px; height: 44px; bottom: 20px; right: 20px; }
+
+            .legado-card, .simbolo-card, .actualidad-card { padding: 24px; }
+        }
+
+        @media (max-width: 480px) {
+            .history-hero-meta { flex-direction: column; gap: 16px; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .social-links { justify-content: center; }
+        }
+
+        /* Optimización móvil */
+        .device-mobile .header.scrolled,
+        .device-mobile .timeline-card,
+        .device-mobile .legado-card,
+        .device-mobile .simbolo-card,
+        .device-mobile .actualidad-card {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        .device-mobile .header.scrolled { background: rgba(0, 0, 0, 0.96); }
+        .device-mobile .epoch-img-wrap:hover img { transform: none; }
+        .device-mobile .timeline-card:hover,
+        .device-mobile .hito-card:hover,
+        .device-mobile .legado-card:hover,
+        .device-mobile .simbolo-card:hover,
+        .device-mobile .actualidad-card:hover { transform: none; }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================================
+         HEADER
+         ========================================================== -->
+    <header class="header" id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="Logo Instituto Técnico">
+                <span>Ins<span class="text-green">Tecnico</span></span>
+            </a>
+
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html" class="nav-link">Inicio</a></li>
+                    <li><a href="index.html#nosotros" class="nav-link">Nosotros</a></li>
+                    <li><a href="index.html#sedes" class="nav-link">Sedes</a></li>
+                    <li><a href="index.html#accesos" class="nav-link">Accesos</a></li>
+                    <li><a href="index.html#noticias" class="nav-link">Noticias</a></li>
+                    <li><a href="historia.html" class="nav-link active">Historia</a></li>
+                    <li><a href="index.html#contacto" class="nav-link">Contacto</a></li>
+                    <li><a href="chat-global.html" target="_blank" rel="noopener noreferrer" class="nav-link" aria-label="Chat Global (en desarrollo, abre en pestaña nueva)">Chat Global</a></li>
+                </ul>
+            </nav>
+
+            <a href="https://accounts.google.com/ServiceLogin?service=classroom" target="_blank" rel="noopener noreferrer" class="btn btn--primary header-cta" id="headerCta">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                Classroom
+            </a>
+
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menú">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+    </header>
+
+    <main>
+
+    <!-- ==========================================================
+         HERO
+         ========================================================== -->
+    <section class="history-hero" id="inicio">
+        <div class="history-hero-bg">
+            <!-- 📷 IMAGEN: historia-hero-bg.jpg — Foto panorámica del edificio principal -->
+            <img src="assets/images/historia-hero-bg.jpg" alt="Edificio del Instituto Técnico">
+        </div>
+        <div class="history-hero-overlay"></div>
+        <div class="history-hero-grid"></div>
+
+        <div class="container history-hero-content">
+            <span class="history-hero-badge">1913 — Presente</span>
+            <h1 class="history-hero-title">Un siglo de <span class="text-green">legado</span></h1>
+            <p class="history-hero-desc">
+                Desde su fundación en 1913 hasta la transformación digital de hoy, descubre la historia de una institución que ha formado a generaciones enteras en Santander de Quilichao, Cauca.
+            </p>
+
+            <div class="history-hero-meta">
+                <div class="history-hero-meta-item">
+                    <div class="history-hero-meta-num">113+</div>
+                    <div class="history-hero-meta-label">Años de historia</div>
+                </div>
+                <div class="history-hero-meta-item">
+                    <div class="history-hero-meta-num">4</div>
+                    <div class="history-hero-meta-label">Sedes educativas</div>
+                </div>
+                <div class="history-hero-meta-item">
+                    <div class="history-hero-meta-num">3300+</div>
+                    <div class="history-hero-meta-label">Estudiantes activos</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================
+         ÉPOCAS
+         ========================================================== -->
+    <section class="section-padding" id="epocas">
+        <div class="container">
+            <h2 class="section-title reveal">Las <span class="text-green">Épocas</span></h2>
+            <p class="section-subtitle reveal">Un recorrido por los momentos que definieron nuestra institución.</p>
+
+            <!-- Época 1: Fundación -->
+            <div class="epoch reveal">
+                <div class="epoch-text">
+                    <span class="epoch-year-badge">1913 — 1940</span>
+                    <h3 class="epoch-title">Fundación y <span class="text-green">primeros pasos</span></h3>
+                    <p>
+                        El <strong>3 de abril de 1913</strong>, mediante el Proyecto de Ordenanza No. 13 impulsado por el Diputado <strong>Marcial Lemus Nates</strong>, nace a la vida jurídica el Instituto Técnico como una entidad de carácter público en el Municipio de Santander de Quilichao, Cauca. Su creación respondió a la necesidad de formar a las nuevas generaciones en principios éticos, morales y científicos.
+                    </p>
+                    <p>
+                        Su primer rector fue <strong>Rafael Tello R.</strong>, quien sentó las bases de una educación rigurosa y comprometida con la región. En 1915, la institución comenzó a operar como entidad independiente en un local del centro del municipio, para luego trasladarse en 1949 a su sede actual en la Calle 3 # 7-68.
+                    </p>
+                </div>
+                <div class="epoch-img-wrap">
+                    <!-- 📷 IMAGEN: historia-fundacion.jpg — Foto antigua del edificio o primer local -->
+                    <img src="assets/images/historia-fundacion.jpg" alt="Edificio histórico - Fundación" loading="lazy">
+                    <span class="epoch-img-label">Fundación · 1913</span>
+                </div>
+            </div>
+
+            <!-- Época 2: Consolidación -->
+            <div class="epoch epoch--reverse reveal">
+                <div class="epoch-text">
+                    <span class="epoch-year-badge">1940 — 1970</span>
+                    <h3 class="epoch-title">Consolidación y <span class="text-green">crecimiento</span></h3>
+                    <p>
+                        En <strong>1944</strong>, el Instituto Técnico fue nacionalizado mediante la <strong>Ley 75 del 31 de diciembre</strong>, fortaleciendo su estructura y garantizando su sostenimiento por parte del Gobierno Nacional. Durante las décadas de 1930 y 1940, la institución adoptó un carácter mixto, aunque posteriormente se restableció la jornada masculina.
+                    </p>
+                    <p>
+                        En <strong>1960</strong>, entregó su <strong>primera promoción de bachilleres</strong>, un hito que marcó el desarrollo cultural y educativo de la región. Entre los primeros egresados se encuentran Aníbal Olaya, Óscar Medina, Eduardo Cabrera, Carlos Velasco y Silvio Medina, entre otros.
+                    </p>
+                </div>
+                <div class="epoch-img-wrap">
+                    <!-- 📷 IMAGEN: historia-consolidacion.jpg — Foto de graduación antigua o del edificio -->
+                    <img src="assets/images/historia-consolidacion.jpg" alt="Consolidación - Edificio histórico" loading="lazy">
+                    <span class="epoch-img-label">Consolidación · 1944-1960</span>
+                </div>
+            </div>
+
+            <!-- Época 3: Expansión -->
+            <div class="epoch reveal">
+                <div class="epoch-text">
+                    <span class="epoch-year-badge">1970 — 2000</span>
+                    <h3 class="epoch-title">Expansión y <span class="text-green">jornadas</span></h3>
+                    <p>
+                        En <strong>1972</strong> se abrió la <strong>jornada nocturna</strong>, ampliando el acceso a la educación para jóvenes y adultos trabajadores. Tres años después, en <strong>1975</strong>, se creó la <strong>jornada de la tarde</strong>, consolidando la oferta educativa para la creciente población estudiantil.
+                    </p>
+                    <p>
+                        En <strong>1985</strong>, la institución recuperó su <strong>carácter mixto</strong>, consolidándose como un espacio inclusivo y diverso que reflejaba los valores de la comunidad quilichagüeña. Durante esta época, el Instituto Técnico fue reconocido entre los <strong>100 mejores colegios de Colombia</strong>, distinción reflejada en los galardones otorgados a sus mejores bachilleres por entidades como Coltejer, Ecopetrol y Andrés Bello.
+                    </p>
+                </div>
+                <div class="epoch-img-wrap">
+                    <!-- 📷 IMAGEN: historia-expansion.jpg — Foto de aula o grupo de esa época -->
+                    <img src="assets/images/historia-expansion.jpg" alt="Expansión - Aula de clase" loading="lazy">
+                    <span class="epoch-img-label">Expansión · 1972-1985</span>
+                </div>
+            </div>
+
+            <!-- Época 4: Fusión -->
+            <div class="epoch epoch--reverse reveal">
+                <div class="epoch-text">
+                    <span class="epoch-year-badge">2000 — 2010</span>
+                    <h3 class="epoch-title">Fusión y <span class="text-green">reconocimiento</span></h3>
+                    <p>
+                        En <strong>2003</strong>, mediante la <strong>Resolución Departamental No. 1181</strong>, se fusionaron los centros educativos <strong>Rafael Tello</strong>, <strong>José Edmundo Sandoval</strong> y <strong>Francisco de Paula Santander</strong>, dando origen a la actual <strong>Institución Educativa Instituto Técnico</strong>.
+                    </p>
+                    <p>
+                        Un año después, en <strong>2004</strong>, recibió la aprobación oficial mediante la <strong>Resolución 0448 de abril</strong>, consolidando su carácter como institución de educación formal. Bajo la dirección del Coordinador <strong>Ernesto Villegas</strong>, la institución pasó a tener una población escolar de más de 4.000 estudiantes en sus cuatro sedes.
+                    </p>
+                </div>
+                <div class="epoch-img-wrap">
+                    <!-- 📷 IMAGEN: historia-fusion.jpg — Foto de las sedes o documento oficial -->
+                    <img src="assets/images/historia-fusion.jpg" alt="Fusión - Edificio educativo" loading="lazy">
+                    <span class="epoch-img-label">Fusión · 2003-2004</span>
+                </div>
+            </div>
+
+            <!-- Época 5: Era digital -->
+            <div class="epoch reveal">
+                <div class="epoch-text">
+                    <span class="epoch-year-badge">2010 — Presente</span>
+                    <h3 class="epoch-title">Era digital y <span class="text-green">modernización</span></h3>
+                    <p>
+                        En <strong>2017</strong>, el Magister <strong>Gersaín León Franco</strong> implementó el <strong>primer sitio web oficial</strong>, marcando el inicio de la transformación digital de la institución. Su visión permitió que estudiantes, padres de familia y docentes tuvieran acceso a información oportuna y de calidad.
+                    </p>
+                    <p>
+                        Hoy, con más de <strong>3.300 estudiantes</strong> en sus cuatro sedes y una planta física que incluye 31 aulas, 4 laboratorios de química y física, 2 aulas de cómputo, cafetería y biblioteca, el Instituto Técnico continúa siendo un referente educativo, formando líderes con excelencia académica, valores y compromiso social. Este nuevo sitio web es la continuación de aquel legado.
+                    </p>
+                </div>
+                <div class="epoch-img-wrap">
+                    <!-- 📷 IMAGEN: historia-era-digital.jpg — Foto de estudiantes con tecnología -->
+                    <img src="assets/images/historia-era-digital.jpg" alt="Era digital - Estudiantes con tecnología" loading="lazy">
+                    <span class="epoch-img-label">Era Digital · 2017-Presente</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================
+         LÍNEA DE TIEMPO
+         ========================================================== -->
+    <section class="section-padding timeline-section" id="linea-de-tiempo">
+        <div class="container">
+            <h2 class="section-title reveal">Línea de <span class="text-green">Tiempo</span></h2>
+            <p class="section-subtitle reveal">Los hitos que marcaron nuestra trayectoria.</p>
+
+            <div class="timeline" id="timeline">
+                <div class="timeline-line"></div>
+                <div class="timeline-line-glow" id="timelineGlow"></div>
+
+                <div class="timeline-item timeline-item--left reveal">
+                    <div class="timeline-card">
+                        <div class="timeline-year">1913</div>
+                        <h3>Fundación</h3>
+                        <p>Mediante la Ordenanza No. 13, impulsada por el Diputado Marcial Lemus Nates, nace el Instituto Técnico como entidad pública.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item timeline-item--right reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-year">1944</div>
+                        <h3>Nacionalización</h3>
+                        <p>Mediante la Ley 75 del 31 de diciembre, el Gobierno Nacional se hace cargo del sostenimiento y desarrollo de la institución.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item timeline-item--left reveal">
+                    <div class="timeline-card">
+                        <div class="timeline-year">1960</div>
+                        <h3>Primera Promoción</h3>
+                        <p>Se gradúa la primera promoción de bachilleres, un hito para la región. Entre los egresados: Aníbal Olaya, Óscar Medina, Eduardo Cabrera y más.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item timeline-item--right reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-year">1972</div>
+                        <h3>Jornada Nocturna</h3>
+                        <p>Se abre la jornada nocturna para jóvenes y adultos trabajadores, ampliando el acceso a la educación.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item timeline-item--left reveal">
+                    <div class="timeline-card">
+                        <div class="timeline-year">1975</div>
+                        <h3>Jornada de la Tarde</h3>
+                        <p>Se crea la jornada de la tarde, consolidando la oferta educativa para la creciente población estudiantil.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item timeline-item--right reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-year">1985</div>
+                        <h3>Carácter Mixto</h3>
+                        <p>La institución recupera su carácter mixto, consolidándose como un espacio inclusivo y diverso.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item timeline-item--left reveal">
+                    <div class="timeline-card">
+                        <div class="timeline-year">2003</div>
+                        <h3>Fusión de Sedes</h3>
+                        <p>Mediante la Resolución Departamental No. 1181, se fusionan los centros educativos Rafael Tello, José E. Sandoval y Francisco de P. Santander.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item timeline-item--right reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-year">2004</div>
+                        <h3>Reconocimiento Oficial</h3>
+                        <p>Aprobación mediante Resolución Departamental No. 0448 de abril de 2004. La institución pasa a denominarse legalmente Institución Educativa Instituto Técnico.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item timeline-item--left reveal">
+                    <div class="timeline-card">
+                        <div class="timeline-year">2012</div>
+                        <h3>Ley 1576 de 2012</h3>
+                        <p>El Congreso de Colombia se vincula oficialmente a la celebración de los 100 años de la institución y autoriza apropiaciones presupuestales para proyectos de infraestructura y dotación.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item timeline-item--right reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-year">2017</div>
+                        <h3>Primer Sitio Web</h3>
+                        <p>El Magister Gersaín León Franco implementa el primer sitio web institucional oficial, iniciando la transformación digital.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item timeline-item--left reveal">
+                    <div class="timeline-card">
+                        <div class="timeline-year">2024</div>
+                        <h3>Nueva Rectoría</h3>
+                        <p>Isabel Cristina Cabal Godoy asume como rectora, con una visión enfocada en la calidad educativa y el bienestar estudiantil.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item timeline-item--right reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-year">2025</div>
+                        <h3>Mejoras de Infraestructura</h3>
+                        <p>Se inicia la construcción de cubiertas para las canchas polideportivas, beneficiando a más de 6.000 estudiantes.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item timeline-item--left reveal">
+                    <div class="timeline-card">
+                        <div class="timeline-year">2026</div>
+                        <h3>Transformación Digital</h3>
+                        <p>Nuevo sitio web moderno, responsivo y con tecnología de punta para la comunidad educativa.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================
+         HITOS DESTACADOS
+         ========================================================== -->
+    <section class="section-padding">
+        <div class="container">
+            <h2 class="section-title reveal">Hitos <span class="text-green">Destacados</span></h2>
+            <p class="section-subtitle reveal">Los momentos que definen nuestro legado.</p>
+
+            <div class="hitos-grid">
+                <div class="hito-card reveal">
+                    <div class="hito-year">1913</div>
+                    <div class="hito-label">Fundación</div>
+                </div>
+                <div class="hito-card reveal delay-1">
+                    <div class="hito-year">1944</div>
+                    <div class="hito-label">Nacionalización</div>
+                </div>
+                <div class="hito-card reveal delay-2">
+                    <div class="hito-year">1960</div>
+                    <div class="hito-label">1ra Promoción</div>
+                </div>
+                <div class="hito-card reveal delay-3">
+                    <div class="hito-year">1972</div>
+                    <div class="hito-label">Jornada Nocturna</div>
+                </div>
+                <div class="hito-card reveal">
+                    <div class="hito-year">1975</div>
+                    <div class="hito-label">Jornada Tarde</div>
+                </div>
+                <div class="hito-card reveal delay-1">
+                    <div class="hito-year">1985</div>
+                    <div class="hito-label">Carácter Mixto</div>
+                </div>
+                <div class="hito-card reveal delay-2">
+                    <div class="hito-year">2003</div>
+                    <div class="hito-label">Fusión de Sedes</div>
+                </div>
+                <div class="hito-card reveal delay-3">
+                    <div class="hito-year">2004</div>
+                    <div class="hito-label">Reconocimiento Oficial</div>
+                </div>
+                <div class="hito-card reveal">
+                    <div class="hito-year">2012</div>
+                    <div class="hito-label">Ley 1576</div>
+                </div>
+                <div class="hito-card reveal delay-1">
+                    <div class="hito-year">2017</div>
+                    <div class="hito-label">Primer Sitio Web</div>
+                </div>
+                <div class="hito-card reveal delay-2">
+                    <div class="hito-year">2024</div>
+                    <div class="hito-label">Nueva Rectoría</div>
+                </div>
+                <div class="hito-card reveal delay-3">
+                    <div class="hito-year">2026</div>
+                    <div class="hito-label">Transformación Digital</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================
+         LEGADO
+         ========================================================== -->
+    <section class="section-padding" style="background-color: var(--bg-panel);">
+        <div class="container">
+            <h2 class="section-title reveal">Nuestro <span class="text-green">Legado</span></h2>
+            <p class="section-subtitle reveal">Egresados que han dejado huella en Colombia y el mundo.</p>
+
+            <div class="legado-grid">
+                <div class="legado-card reveal">
+                    <h3>🏆 Entre los mejores de Colombia</h3>
+                    <p>
+                        El Instituto Técnico ha sido reconocido entre los <strong>100 mejores colegios de Colombia</strong>, distinción reflejada en las condecoraciones otorgadas a sus mejores bachilleres por entidades como <strong>Coltejer</strong>, <strong>Ecopetrol</strong> y <strong>Andrés Bello</strong>.
+                    </p>
+                    <p>
+                        Este reconocimiento es el resultado de décadas de compromiso con la excelencia académica y la formación integral de sus estudiantes, y ha sido ponente en foros nacionales convocados por el Ministerio de Educación.
+                    </p>
+                </div>
+
+                <div class="legado-card reveal delay-1">
+                    <h3>🔬 Samir Alberto Medina Perlaza</h3>
+                    <p>
+                        Egresado destacado que a los <strong>13 años</strong> recibió su título de bachiller. Continuó su formación en la <strong>Universidad del Cauca</strong>, luego se especializó en Bogotá y posteriormente realizó investigaciones en <strong>Estados Unidos y Francia</strong>.
+                    </p>
+                    <p>
+                        Hoy es reconocido como uno de los <strong>mejores científicos jóvenes de Colombia</strong>, un orgullo para nuestra institución.
+                    </p>
+                </div>
+
+                <div class="legado-card reveal">
+                    <h3>🎓 Generaciones de profesionales</h3>
+                    <p>
+                        A lo largo de más de un siglo, el Instituto Técnico ha formado a <strong>generaciones enteras de profesionales</strong> que hoy ocupan posiciones importantes en Colombia y el exterior.
+                    </p>
+                    <p>
+                        Entre ellos: <strong>Jairo Renán Flórez Hurtado</strong>, <strong>Lyda Sabogal Paz</strong>, <strong>Renzo Mina</strong>, <strong>Arcelio Ararath Guazá</strong>, <strong>Néstor Racines Carabalí</strong>, <strong>Diana Patricia Ocampo Holguín</strong> y <strong>Richard Navia</strong>, entre muchos otros.
+                    </p>
+                </div>
+
+                <div class="legado-card reveal delay-1">
+                    <h3>📜 Lema Institucional</h3>
+                    <p class="simbolo-lema">"Labor Omnia Vincit Improbus"</p>
+                    <p>
+                        Del latín: <em>"El trabajo de todos vence las dificultades"</em>. Este aforismo, que adorna el escudo del colegio, resume el espíritu de esfuerzo, dedicación y superación que caracteriza a la comunidad del Instituto Técnico.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================
+         SÍMBOLOS INSTITUCIONALES
+         ========================================================== -->
+    <section class="section-padding">
+        <div class="container">
+            <h2 class="section-title reveal">Símbolos <span class="text-green">Institucionales</span></h2>
+            <p class="section-subtitle reveal">Los elementos que representan nuestra identidad.</p>
+
+            <div class="simbolos-grid">
+                <div class="simbolo-card reveal">
+                    <div class="simbolo-icon">🛡️</div>
+                    <h3>Escudo</h3>
+                    <p>Representa la historia y los valores de la institución. En él se inscribe nuestro lema <em>"Labor Omnia Vincit Improbus"</em>, recordando que el esfuerzo constante vence cualquier obstáculo.</p>
+                </div>
+
+                <div class="simbolo-card reveal delay-1">
+                    <div class="simbolo-icon">🇨🇴</div>
+                    <h3>Bandera</h3>
+                    <p>Porta los colores que identifican a nuestra comunidad educativa, ondeando en cada acto cívico como símbolo del compromiso con la patria y la formación ciudadana.</p>
+                </div>
+
+                <div class="simbolo-card reveal delay-2">
+                    <div class="simbolo-icon">🎵</div>
+                    <h3>Himno</h3>
+                    <p>Entonado con orgullo por estudiantes, docentes y egresados, recoge en sus estrofas el sentir de una institución que por más de un siglo ha formado a la juventud quilichagüeña.</p>
+                </div>
+
+                <div class="simbolo-card reveal delay-3">
+                    <div class="simbolo-icon">📜</div>
+                    <h3>Lema</h3>
+                    <p class="simbolo-lema">"Labor Omnia Vincit Improbus"</p>
+                    <p>Frase latina que significa <em>"El trabajo de todos vence las dificultades"</em>. Es el principio que guía el esfuerzo diario de nuestra comunidad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================
+         RECONOCIMIENTO LEGAL
+         ========================================================== -->
+    <section class="section-padding" style="background-color: var(--bg-panel);">
+        <div class="container">
+            <h2 class="section-title reveal">Reconocimiento <span class="text-green">Legal</span></h2>
+            <p class="section-subtitle reveal">El Congreso de Colombia se vinculó a nuestra historia.</p>
+
+            <div class="actualidad-grid">
+                <div class="actualidad-card reveal">
+                    <span class="actualidad-year">Ley 1576 de 2012</span>
+                    <h3>Vinculación de la Nación al Centenario</h3>
+                    <p>
+                        A través de la <strong>Ley 1576 de 2012</strong>, el Congreso de Colombia se vinculó oficialmente a la celebración de los <strong>100 años</strong> del Instituto Técnico y autorizó apropiaciones presupuestales para proyectos de infraestructura, como la terminación del aula máxima, la dotación de tableros electrónicos y la construcción de nuevas aulas.
+                    </p>
+                    <p>
+                        Este reconocimiento legal reafirma el papel histórico y educativo de la institución en el desarrollo del norte del Cauca y su aporte a la educación pública colombiana.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================
+         ACTUALIDAD
+         ========================================================== -->
+    <section class="section-padding">
+        <div class="container">
+            <h2 class="section-title reveal">La Institución <span class="text-green">Hoy</span></h2>
+            <p class="section-subtitle reveal">Un presente de crecimiento y transformación.</p>
+
+            <div class="actualidad-grid">
+                <div class="actualidad-card reveal">
+                    <span class="actualidad-year">2024</span>
+                    <h3>Nueva Rectoría</h3>
+                    <p>
+                        Desde el <strong>28 de agosto de 2024</strong>, <strong>Isabel Cristina Cabal Godoy</strong> asume como rectora de la institución. Egresada de Trabajo Social de la Universidad del Valle, llega con una visión enfocada en mejorar la calidad educativa y fomentar un ambiente seguro y feliz para los estudiantes.
+                    </p>
+                </div>
+
+                <div class="actualidad-card reveal delay-1">
+                    <span class="actualidad-year">2025</span>
+                    <h3>Mejoras de Infraestructura</h3>
+                    <p>
+                        El gobierno municipal inició un proyecto de mejoramiento de la infraestructura educativa en el Instituto Técnico y en la Institución Educativa Fernández Guerra. Se están construyendo <strong>cubiertas para las canchas polideportivas</strong>, beneficiando a más de <strong>6.000 estudiantes</strong> de ambas instituciones.
+                    </p>
+                </div>
+
+                <div class="actualidad-card reveal delay-2">
+                    <span class="actualidad-year">2025</span>
+                    <h3>Feria de Universidades</h3>
+                    <p>
+                        La institución fue sede de una <strong>Feria de Universidades</strong>, atrayendo a estudiantes de toda la región para explorar opciones de educación superior. Un espacio que se consolida como puente entre la educación media y la formación profesional.
+                    </p>
+                </div>
+
+                <div class="actualidad-card reveal delay-3">
+                    <span class="actualidad-year">2026</span>
+                    <h3>Transformación Digital</h3>
+                    <p>
+                        Este nuevo sitio web institucional representa la continuación del legado del Magister Gersaín León Franco, con tecnología moderna, diseño responsivo y una experiencia pensada para toda la comunidad educativa. Un paso firme hacia el futuro, sin olvidar más de un siglo de historia.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <!-- ==========================================================
+         BOTÓN VOLVER
+         ========================================================== -->
+    <div class="back-btn-wrap">
+        <a href="index.html" class="btn btn--outline">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Volver al Inicio
+        </a>
+    </div>
+
+    <!-- ==========================================================
+         FOOTER
+         ========================================================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="logo" style="margin-bottom: 20px;">
+                        <img src="assets/images/logo.png" alt="Logo">
+                        <span>Ins<span class="text-green">Tecnico</span></span>
+                    </a>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">Institución Educativa oficial dedicada a la formación de líderes en Santander de Quilichao, Cauca.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/IT.TECNICO2013/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                        <a href="https://www.youtube.com/channel/UCwMarfY8Bpd3uRq8pfGAJbw" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="YouTube">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.16 1 12 1 12s0 3.84.46 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.84 23 12 23 12s0-3.84-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Institución</h4>
+                    <div class="footer-links">
+                        <a href="index.html#nosotros">Historia</a>
+                        <a href="index.html#sedes">Nuestras Sedes</a>
+                        <a href="index.html#noticias">Noticias y Eventos</a>
+                        <a href="index.html#galeria">Galería</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Accesos</h4>
+                    <div class="footer-links">
+                        <a href="https://accounts.google.com/ServiceLogin?service=classroom">Google Classroom</a>
+                        <a href="https://tecnico.educa20.com/portal/menu/" target="_blank" rel="noopener noreferrer">Portal de Notas</a>
+                        <a href="https://educa20.com/gegar-soft.com/" target="_blank" rel="noopener noreferrer">Sistema Académico</a>
+                        <a href="http://cp.usastreams.com/html5-player-barra-meter.aspx?stream=http://freeuk19.listen2myradio.com:16129/;" target="_blank" rel="noopener noreferrer">Emisora en Vivo</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Legal</h4>
+                    <div class="footer-links">
+                        <a href="#">Políticas de Privacidad</a>
+                        <a href="#">Términos de Uso</a>
+                        <a href="#">Manual de Convivencia</a>
+                        <a href="https://institucion-educativa-instituto-tecnico-1.micolombiadigital.gov.co/" target="_blank" rel="noopener noreferrer">Portal de Transparencia</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2026</span> Instituto Técnico. Todos los derechos reservados.</p>
+                <p>Diseñado y desarrollado por <span class="text-green">Dev Keiner A Tegue</span> y <span class="text-green">Grupo Frontend</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="back-to-top" id="backToTop" aria-label="Volver arriba">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.getElementById('header');
+            const backToTop = document.getElementById('backToTop');
+            const navLinks = document.getElementById('navLinks');
+            const headerCta = document.getElementById('headerCta');
+            const mobileToggle = document.getElementById('mobileToggle');
+
+            // ============ SCROLL: header + back-to-top + timeline glow ============
+            let scrollTicking = false;
+            function onScrollFrame() {
+                const scrollY = window.scrollY;
+                header.classList.toggle('scrolled', scrollY > 50);
+                backToTop.classList.toggle('visible', scrollY > 50);
+
+                // Línea de tiempo: glow que avanza con el scroll
+                const timeline = document.getElementById('timeline');
+                const glow = document.getElementById('timelineGlow');
+                if (timeline && glow) {
+                    const rect = timeline.getBoundingClientRect();
+                    const viewportH = window.innerHeight;
+                    const timelineTop = rect.top + scrollY;
+                    const timelineBottom = rect.bottom + scrollY;
+                    const scrollProgress = Math.max(0, Math.min(1, (scrollY + viewportH * 0.5 - timelineTop) / (timelineBottom - timelineTop)));
+                    glow.style.height = (scrollProgress * 100) + '%';
+                }
+
+                scrollTicking = false;
+            }
+            window.addEventListener('scroll', () => {
+                if (!scrollTicking) {
+                    requestAnimationFrame(onScrollFrame);
+                    scrollTicking = true;
+                }
+            }, { passive: true });
+            onScrollFrame();
+
+            // ============ MENÚ MÓVIL ============
+            mobileToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                navLinks.classList.toggle('mobile-active');
+                headerCta.classList.toggle('mobile-active');
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('mobile-active');
+                    headerCta.classList.remove('mobile-active');
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!navLinks.contains(e.target) && !mobileToggle.contains(e.target)) {
+                    navLinks.classList.remove('mobile-active');
+                    headerCta.classList.remove('mobile-active');
+                }
+            });
+
+            // Cerrar menú al redimensionar a desktop
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    const isMobileNow = window.innerWidth <= 768;
+                    if (!isMobileNow) {
+                        navLinks.classList.remove('mobile-active');
+                        headerCta.classList.remove('mobile-active');
+                    }
+                    const root = document.documentElement;
+                    root.classList.toggle('device-mobile', isMobileNow);
+                    root.classList.toggle('device-pc', !isMobileNow);
+                    window.__isMobileDevice = isMobileNow;
+                }, 150);
+            }, { passive: true });
+
+            // ============ REVEAL ANIMATIONS ============
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+
+            revealElements.forEach(el => revealOnScroll.observe(el));
+
+            // ============ BACK TO TOP ============
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // ============ AÑO AUTOMÁTICO ============
+            const yearEl = document.getElementById('currentYear');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
