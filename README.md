@@ -1,4 +1,4 @@
-# 🏫 Sitio Web Instituto Técnico
+# Sitio Web Instituto Técnico
 
 Sitio web institucional moderno de la **Institución Educativa Instituto Técnico** de Santander de Quilichao, Cauca, Colombia.
 
