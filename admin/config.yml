@@ -1,0 +1,42 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/images/noticias"
+public_folder: "/assets/images/noticias"
+
+locale: 'es'
+
+collections:
+  - name: "noticias"
+    label: "📰 Noticias y Eventos"
+    label_singular: "Noticia"
+    description: "Administra las noticias y eventos que aparecen en la página principal"
+    files:
+      - name: "lista"
+        label: "Todas las Noticias"
+        file: "content/noticias.json"
+        fields:
+          - name: "items"
+            label: "Noticias publicadas"
+            label_singular: "Noticia"
+            widget: "list"
+            summary: "{{fields.date}} — {{fields.title}}"
+            fields:
+              - { label: "Título", name: "title", widget: "string", hint: "Ej: Feria Universitaria para el grado 11°" }
+              - { label: "Fecha", name: "date", widget: "datetime", format: "DD MMMM, YYYY", date_format: "DD MMMM, YYYY", time_format: false }
+              - label: "Categoría"
+                name: "category"
+                widget: "select"
+                options:
+                  - "Evento Académico"
+                  - "Celebración"
+                  - "Admisiones"
+                  - "Comunicado"
+                  - "Deportes"
+                  - "Cultura"
+                  - "Institucional"
+              - { label: "Imagen de Portada", name: "image", widget: "image", hint: "Sube una imagen desde tu computador" }
+              - { label: "Extracto corto", name: "excerpt", widget: "text", hint: "Descripción breve que aparece en la tarjeta" }
+              - { label: "Contenido completo", name: "body", widget: "markdown", hint: "Escribe aquí la noticia completa" }
+              - { label: "Autor", name: "author", widget: "string", default: "Instituto Técnico" }

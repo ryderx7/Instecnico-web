@@ -74,7 +74,7 @@
                 transition-duration: 0.001ms !important;
             }
             html { scroll-behavior: auto; }
-            .reveal, .about-image-caption { opacity: 1 !important; transform: none !important; }
+            .reveal, .reveal-top, .about-image-caption { opacity: 1 !important; transform: none !important; }
             .about-flip-float { animation: none !important; }
             .hero-badge, .hero-title, .hero-desc, .hero-actions, .scroll-indicator {
                 animation: none !important;
@@ -82,6 +82,7 @@
                 clip-path: none !important;
                 transform: none !important;
             }
+            .gallery-marquee-track { animation: none !important; }
         }
         
         body {
@@ -204,6 +205,7 @@
         
         .glass-card:hover::before { opacity: 1; }
 
+        /* Header */
         .header {
             position: fixed;
             top: 0; left: 0; width: 100%;
@@ -280,9 +282,9 @@
             padding: 8px;
         }
 
-        /* ======================================================
-           HERO con animaciones de entrada cinematográficas
-           ====================================================== */
+        /* ============================================================
+           HERO con imagen real (mismo método que historia.html)
+           ============================================================ */
         .hero {
             position: relative;
             min-height: 100vh;
@@ -295,23 +297,30 @@
         .hero-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('assets/images/hero-bg.jpg');
-            background-size: cover;
-            background-position: center;
             background-color: var(--bg-base);
             z-index: -2;
-            animation: heroBgZoom 3s var(--ease-premium) forwards;
+            overflow: hidden;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            opacity: 0.15;
+            animation: heroBgZoom 3.5s var(--ease-premium) forwards;
+            will-change: transform, opacity;
         }
 
         @keyframes heroBgZoom {
-            from { transform: scale(1.15); opacity: 0.4; }
-            to { transform: scale(1); opacity: 1; }
+            from { transform: scale(1.15); opacity: 0.08; }
+            to { transform: scale(1); opacity: 0.32; }
         }
         
         .hero-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, var(--bg-base) 100%);
+            background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, var(--bg-base) 100%);
             z-index: -1;
         }
 
@@ -319,8 +328,8 @@
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
             background-size: 40px 40px;
             z-index: -1;
             mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
@@ -415,6 +424,7 @@
             60% { transform: translateY(-5px) translateX(-50%); }
         }
 
+        /* Nosotros */
         .nosotros-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -475,6 +485,7 @@
             margin-bottom: 8px;
         }
 
+        /* Flip card */
         .about-flip-wrap {
             position: relative;
             perspective: 1600px;
@@ -774,6 +785,7 @@
             flex-shrink: 0;
         }
 
+        /* Sedes */
         .sedes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -867,6 +879,43 @@
             margin-top: 12px;
         }
 
+        /* Botón Ver más sedes (solo móvil) */
+        .ver-mas-sedes {
+            display: none;
+            margin: 28px auto 0;
+            padding: 14px 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            color: var(--text-main);
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ver-mas-sedes:hover {
+            border-color: var(--primary);
+            background: var(--primary-dim);
+            color: var(--primary);
+            box-shadow: 0 0 20px var(--primary-dim);
+        }
+
+        .ver-mas-sedes svg {
+            transition: transform 0.4s var(--ease-premium);
+        }
+
+        .ver-mas-sedes[aria-expanded="true"] svg {
+            transform: rotate(180deg);
+        }
+
+        /* Accesos */
         .accesos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -904,6 +953,7 @@
             transform: scale(1.1);
         }
 
+        /* Emisora */
         .emisora-banner {
             background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-base) 100%);
             border: 1px solid var(--primary-dim);
@@ -939,6 +989,7 @@
             100% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0); }
         }
 
+        /* Noticias */
         .news-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -989,6 +1040,7 @@
         .news-link svg { transition: transform 0.3s; }
         .news-link:hover svg { transform: translateX(5px); }
 
+        /* Modal */
         .modal {
             position: fixed;
             inset: 0;
@@ -1153,52 +1205,102 @@
             .modal-meta { font-size: 0.82rem; gap: 12px; }
         }
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: 220px;
-            gap: 16px;
+        /* Galería Marquee */
+        .gallery-marquee {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 12px 0 20px;
+            -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
         }
 
-        .gallery-item {
+        .gallery-marquee-track {
+            display: flex;
+            gap: 20px;
+            width: max-content;
+            animation: galleryMarquee 50s linear infinite;
+            will-change: transform;
+            backface-visibility: hidden;
+        }
+
+        @media (hover: hover) {
+            .gallery-marquee:hover .gallery-marquee-track {
+                animation-play-state: paused;
+            }
+        }
+
+        @keyframes galleryMarquee {
+            from { transform: translate3d(0, 0, 0); }
+            to { transform: translate3d(-50%, 0, 0); }
+        }
+
+        .gallery-marquee-item {
+            flex-shrink: 0;
+            width: 340px;
+            height: 220px;
             border-radius: var(--radius-md);
             overflow: hidden;
             cursor: pointer;
             position: relative;
             background: var(--bg-elevated);
+            transition: transform 0.6s var(--ease-premium), box-shadow 0.6s var(--ease-premium);
         }
 
-        /* Primera foto destacada: ocupa 2 columnas y 2 filas */
-        .gallery-item:first-child {
-            grid-column: span 2;
-            grid-row: span 2;
+        .gallery-marquee-item:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--primary-dim);
         }
 
-        .gallery-item img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.5s;
+        .gallery-marquee-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.7s var(--ease-premium);
         }
 
-        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-marquee-item:hover img {
+            transform: scale(1.08);
+        }
 
-        .gallery-item::after {
+        .gallery-marquee-item::after {
             content: '';
-            position: absolute; inset: 0;
-            background: rgba(0,255,136,0.2);
-            opacity: 0; transition: var(--transition);
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 60%, rgba(0, 255, 136, 0.15) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
         }
 
-        .gallery-item:hover::after { opacity: 1; }
+        .gallery-marquee-item:hover::after {
+            opacity: 1;
+        }
 
         @media (max-width: 768px) {
-            .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 160px; gap: 12px; }
-            .gallery-item:first-child { grid-column: span 2; grid-row: span 2; }
+            .gallery-marquee {
+                -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+                mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+            }
+            .gallery-marquee-track {
+                gap: 14px;
+                animation-duration: 38s;
+            }
+            .gallery-marquee-item {
+                width: 260px;
+                height: 180px;
+            }
         }
 
         @media (max-width: 480px) {
-            .gallery-grid { grid-auto-rows: 140px; gap: 10px; }
+            .gallery-marquee-item {
+                width: 220px;
+                height: 160px;
+            }
         }
 
+        /* Lightbox */
         .lightbox {
             position: fixed; inset: 0;
             background: rgba(0,0,0,0.95);
@@ -1216,6 +1318,7 @@
             font-size: 2rem; cursor: pointer;
         }
 
+        /* Reconocimiento */
         .reconocimiento-card {
             display: flex;
             align-items: center;
@@ -1239,6 +1342,7 @@
             flex-shrink: 0;
         }
 
+        /* Contacto */
         .contacto-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1272,6 +1376,7 @@
             margin-top: 20px;
         }
 
+        /* Footer */
         .footer {
             border-top: 1px solid var(--border-color);
             background: var(--bg-card);
@@ -1313,6 +1418,7 @@
             font-size: 0.85rem;
         }
 
+        /* Back to top */
         .back-to-top {
             position: fixed; bottom: 30px; right: 30px;
             width: 50px; height: 50px;
@@ -1328,9 +1434,7 @@
         .back-to-top.visible { opacity: 1; pointer-events: all; }
         .back-to-top:hover { background: var(--primary); color: var(--bg-base); transform: translateY(-5px); }
 
-        /* ======================================================
-           Reveal: animaciones de scroll más lentas y elegantes
-           ====================================================== */
+        /* Reveal */
         .reveal {
             opacity: 0;
             transform: translateY(50px);
@@ -1343,13 +1447,27 @@
             transform: translateY(0);
             will-change: auto;
         }
+
+        .reveal-top {
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: opacity 1.4s var(--ease-premium),
+                        transform 1.4s var(--ease-premium);
+            will-change: opacity, transform;
+        }
+        .reveal-top.active {
+            opacity: 1;
+            transform: translateY(0);
+            will-change: auto;
+        }
+
         .delay-1 { transition-delay: 0.15s; }
         .delay-2 { transition-delay: 0.3s; }
         .delay-3 { transition-delay: 0.45s; }
 
-        .btn, .nav-link, .stat-item, .acceso-card, .gallery-item,
+        .btn, .nav-link, .stat-item, .acceso-card, .gallery-marquee-item,
         .mobile-toggle, .back-to-top, .modal-close, .lightbox-close,
-        .sede-card, .history-btn {
+        .sede-card, .history-btn, .ver-mas-sedes {
             touch-action: manipulation;
         }
 
@@ -1361,7 +1479,7 @@
         }
 
         @media (max-width: 768px) {
-            .nav-links, .header-cta { display: none; }
+            .nav-links { display: none; }
             .mobile-toggle { display: block; }
             
             .nav-links.mobile-active {
@@ -1373,13 +1491,37 @@
                 align-items: flex-start;
             }
             .nav-links.mobile-active .nav-link { font-size: 1.2rem; width: 100%; padding: 12px 0; border-bottom: 1px solid var(--border-light); }
-            .header-cta.mobile-active { display: flex; width: 100%; margin-top: 20px; justify-content: center; }
 
             .hero-actions { flex-direction: column; }
             .emisora-banner { flex-direction: column; text-align: center; gap: 24px; }
             .footer-grid { grid-template-columns: 1fr; }
             .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
             .scroll-indicator { display: none; }
+
+            .sedes-grid:not(.expanded) .sede-extra {
+                display: none;
+            }
+
+            .ver-mas-sedes {
+                display: inline-flex;
+            }
+        }
+
+        @keyframes sedeReveal {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sedes-grid.expanded .sede-extra {
+                animation: sedeReveal 0.7s var(--ease-premium) forwards;
+            }
         }
 
         .device-mobile .glass-card,
@@ -1452,6 +1594,7 @@
             .back-to-top { width: 44px; height: 44px; bottom: 20px; right: 20px; }
 
             .reveal { transform: translateY(35px); transition-duration: 1.1s; }
+            .reveal-top { transform: translateY(-35px); transition-duration: 1.1s; }
         }
 
         @media (max-width: 480px) {
@@ -1468,6 +1611,7 @@
 </head>
 <body>
 
+    <!-- Header -->
     <header class="header" id="header">
         <div class="container nav-container">
             <a href="#inicio" class="logo">
@@ -1483,14 +1627,9 @@
                     <li><a href="#accesos" class="nav-link">Accesos</a></li>
                     <li><a href="#noticias" class="nav-link">Noticias</a></li>
                     <li><a href="#contacto" class="nav-link">Contacto</a></li>
-                    <li><a href="chat-global.html" target="_blank" rel="noopener noreferrer" class="nav-link" aria-label="Chat Global (en desarrollo, abre en pestaña nueva)">Chat Global</a></li>
+                    <li><a href="chat-global.html" target="_blank" rel="noopener noreferrer" class="nav-link">Chat Global</a></li>
                 </ul>
             </nav>
-            
-            <a href="https://accounts.google.com/ServiceLogin?service=classroom" target="_blank" rel="noopener noreferrer" class="btn btn--primary header-cta" id="headerCta">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
-                Classroom
-            </a>
 
             <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menú">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
@@ -1500,8 +1639,11 @@
 
     <main>
 
+    <!-- Hero -->
     <section class="hero" id="inicio">
-        <div class="hero-bg"></div>
+        <div class="hero-bg">
+            <img src="assets/images/hero-image.jpg" alt="Instituto Técnico" fetchpriority="high" decoding="async">
+        </div>
         <div class="hero-overlay"></div>
         <div class="hero-grid"></div>
         
@@ -1522,6 +1664,7 @@
         </div>
     </section>
 
+    <!-- Nosotros -->
     <section class="section-padding" id="nosotros">
         <div class="container">
             <div class="nosotros-grid">
@@ -1652,7 +1795,7 @@
                         </div>
                     </div>
                     <div class="history-btn-wrap">
-                        <a href="historia.html" class="history-btn" id="openHistoryModal">
+                        <a href="historia.html" class="history-btn">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
                             Ver Historia Completa
                         </a>
@@ -1662,12 +1805,13 @@
         </div>
     </section>
 
+    <!-- Sedes -->
     <section class="section-padding" style="background-color: var(--bg-panel);" id="sedes">
         <div class="container">
             <h2 class="section-title reveal">Nuestras <span class="text-green">Sedes</span></h2>
             <p class="section-subtitle reveal">Infraestructura distribuida para brindar educación de calidad en diferentes niveles a la comunidad quilichagüeña.</p>
 
-            <div class="sedes-grid reveal-group">
+            <div class="sedes-grid reveal-group" id="sedesGrid">
                 <div class="glass-card sede-card reveal">
                     <div class="sede-img-wrap">
                         <span class="sede-badge">2 Jornadas</span>
@@ -1679,7 +1823,7 @@
                         <p style="font-size: 0.9rem; color: var(--text-muted);">El corazón de nuestra institución. Calle 3 # 7-68, Barrio Centro.</p>
                     </div>
                 </div>
-                <div class="glass-card sede-card reveal">
+                <div class="glass-card sede-card sede-extra reveal">
                     <div class="sede-img-wrap">
                         <span class="sede-badge">Primaria</span>
                         <img src="assets/images/sede-francisco.jpg" alt="Sede Francisco de Paula Santander" loading="lazy" decoding="async">
@@ -1690,7 +1834,7 @@
                         <p style="font-size: 0.9rem; color: var(--text-muted);">Espacio dedicado a la formación inicial con metodologías lúdicas.</p>
                     </div>
                 </div>
-                <div class="glass-card sede-card reveal">
+                <div class="glass-card sede-card sede-extra reveal">
                     <div class="sede-img-wrap">
                         <span class="sede-badge">Primaria</span>
                         <img src="assets/images/sede-tello.jpg" alt="Sede Rafael Tello" loading="lazy" decoding="async">
@@ -1705,7 +1849,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="glass-card sede-card reveal">
+                <div class="glass-card sede-card sede-extra reveal">
                     <div class="sede-img-wrap">
                         <span class="sede-badge">Primaria</span>
                         <img src="assets/images/sede-edmundo.jpg" alt="Sede José Edmundo Sandoval" loading="lazy" decoding="async">
@@ -1717,9 +1861,15 @@
                     </div>
                 </div>
             </div>
+
+            <button class="ver-mas-sedes" id="verMasSedes" aria-expanded="false" aria-controls="sedesGrid">
+                <span class="btn-text">Ver más sedes</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
         </div>
     </section>
 
+    <!-- Accesos -->
     <section class="section-padding" id="accesos">
         <div class="container">
             <h2 class="section-title reveal">Accesos <span class="text-green">Rápidos</span></h2>
@@ -1799,6 +1949,7 @@
         </div>
     </section>
 
+    <!-- Emisora -->
     <section class="section-padding pt-0">
         <div class="container reveal">
             <div class="emisora-banner">
@@ -1823,78 +1974,60 @@
         </div>
     </section>
 
+    <!-- Noticias -->
     <section class="section-padding" style="background-color: var(--bg-panel);" id="noticias">
         <div class="container">
-            <h2 class="section-title reveal">Noticias y <span class="text-green">Eventos</span></h2>
+            <h2 class="section-title reveal-top">Noticias y <span class="text-green">Eventos</span></h2>
             
-            <div class="news-grid reveal-group">
-                <article class="glass-card news-card reveal">
-                    <img src="assets/images/noticia-feria.jpg" class="news-img" alt="Feria Universitaria" loading="lazy" decoding="async">
-                    <div class="news-content">
-                        <span class="news-date">24 Septiembre, 2026</span>
-                        <h3 class="news-title">Feria Universitaria para el grado 11°</h3>
-                        <p class="news-excerpt">Las principales universidades de la región visitaron nuestra institución para orientar a los futuros bachilleres.</p>
-                        <button class="news-link" onclick="openModal('noticia-feria')" aria-label="Leer más sobre Feria Universitaria">
-                            Leer más
-                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                        </button>
-                    </div>
-                </article>
-
-                <article class="glass-card news-card reveal">
-                    <img src="assets/images/noticia-docente.jpg" class="news-img" alt="Día del Docente" loading="lazy" decoding="async">
-                    <div class="news-content">
-                        <span class="news-date">15 Mayo, 2026</span>
-                        <h3 class="news-title">Celebración Día del Maestro</h3>
-                        <p class="news-excerpt">Rendimos homenaje a nuestros educadores por su invaluable labor y compromiso con la excelencia educativa.</p>
-                        <button class="news-link" onclick="openModal('noticia-docente')" aria-label="Leer más sobre Celebración Día del Maestro">
-                            Leer más
-                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                        </button>
-                    </div>
-                </article>
-
-                <article class="glass-card news-card reveal">
-                    <img src="assets/images/noticia-admisiones.jpg" class="news-img" alt="Admisiones" loading="lazy" decoding="async">
-                    <div class="news-content">
-                        <span class="news-date">20 Enero, 2027</span>
-                        <h3 class="news-title">Apertura de Inscripciones 2027</h3>
-                        <p class="news-excerpt">Conoce el cronograma, requisitos y proceso de inscripción para nuevos estudiantes en todas nuestras sedes.</p>
-                        <button class="news-link" onclick="openModal('noticia-admisiones')" aria-label="Leer más sobre Apertura de Inscripciones 2027">
-                            Leer más
-                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                        </button>
-                    </div>
-                </article>
-            </div>
+            <div class="news-grid reveal-group" id="newsGrid"></div>
         </div>
     </section>
 
+    <!-- Galería -->
     <section class="section-padding" id="galeria">
         <div class="container">
             <h2 class="section-title reveal">Galería <span class="text-green">Institucional</span></h2>
             <p class="section-subtitle reveal">Momentos que construyen nuestra historia.</p>
+        </div>
 
-            <div class="gallery-grid reveal">
-                <div class="gallery-item" onclick="openLightbox(this)">
+        <div class="gallery-marquee reveal" role="region" aria-label="Galería de fotos institucional">
+            <div class="gallery-marquee-track">
+                <div class="gallery-marquee-item" onclick="openLightbox(this)">
                     <img src="assets/images/galeria-1.jpg" alt="Feria Universitaria" loading="lazy" decoding="async">
                 </div>
-                <div class="gallery-item" onclick="openLightbox(this)">
+                <div class="gallery-marquee-item" onclick="openLightbox(this)">
                     <img src="assets/images/galeria-2.jpg" alt="Grupo de Docentes" loading="lazy" decoding="async">
                 </div>
-                <div class="gallery-item" onclick="openLightbox(this)">
+                <div class="gallery-marquee-item" onclick="openLightbox(this)">
                     <img src="assets/images/galeria-3.jpg" alt="Instalaciones" loading="lazy" decoding="async">
                 </div>
-                <div class="gallery-item" onclick="openLightbox(this)">
+                <div class="gallery-marquee-item" onclick="openLightbox(this)">
                     <img src="assets/images/galeria-4.jpg" alt="Sede Principal" loading="lazy" decoding="async">
                 </div>
-                <div class="gallery-item" onclick="openLightbox(this)">
+                <div class="gallery-marquee-item" onclick="openLightbox(this)">
                     <img src="assets/images/galeria-5.jpg" alt="Laboratorio" loading="lazy" decoding="async">
+                </div>
+
+                <div class="gallery-marquee-item" onclick="openLightbox(this)" aria-hidden="true">
+                    <img src="assets/images/galeria-1.jpg" alt="" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-marquee-item" onclick="openLightbox(this)" aria-hidden="true">
+                    <img src="assets/images/galeria-2.jpg" alt="" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-marquee-item" onclick="openLightbox(this)" aria-hidden="true">
+                    <img src="assets/images/galeria-3.jpg" alt="" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-marquee-item" onclick="openLightbox(this)" aria-hidden="true">
+                    <img src="assets/images/galeria-4.jpg" alt="" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-marquee-item" onclick="openLightbox(this)" aria-hidden="true">
+                    <img src="assets/images/galeria-5.jpg" alt="" loading="lazy" decoding="async">
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Reconocimiento -->
     <section class="section-padding" style="background-color: var(--bg-panel);">
         <div class="container">
             <div class="glass-card reconocimiento-card reveal" onclick="openModal('reconocimiento-gersain')" role="button" tabindex="0" aria-label="Ver reconocimiento al Magister Gersaín León Franco">
@@ -1911,6 +2044,7 @@
         </div>
     </section>
 
+    <!-- Contacto -->
     <section class="section-padding" id="contacto">
         <div class="container">
             <h2 class="section-title reveal">Ponte en <span class="text-green">Contacto</span></h2>
@@ -1982,6 +2116,7 @@
 
     </main>
 
+    <!-- Modal -->
     <div class="modal" id="genericModal">
         <div class="modal-content" id="genericModalContent">
             <button class="modal-close" id="genericModalClose" aria-label="Cerrar">&times;</button>
@@ -1998,11 +2133,13 @@
         </div>
     </div>
 
+    <!-- Lightbox -->
     <div class="lightbox" id="lightbox">
         <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar imagen">&times;</button>
         <img src="" id="lightboxImg" alt="Imagen en grande">
     </div>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -2035,7 +2172,6 @@
                 <div>
                     <h4 class="footer-title">Accesos</h4>
                     <div class="footer-links">
-                        <a href="https://accounts.google.com/ServiceLogin?service=classroom">Google Classroom</a>
                         <a href="https://tecnico.educa20.com/portal/menu/" target="_blank" rel="noopener noreferrer">Portal de Notas</a>
                         <a href="https://educa20.com/gegar-soft.com/" target="_blank" rel="noopener noreferrer">Sistema Académico</a>
                         <a href="http://cp.usastreams.com/html5-player-barra-meter.aspx?stream=http://freeuk19.listen2myradio.com:16129/;" target="_blank" rel="noopener noreferrer">Emisora en Vivo</a>
@@ -2055,22 +2191,18 @@
 
             <div class="footer-bottom">
                 <p>&copy; <span id="currentYear">2026</span> Instituto Técnico. Todos los derechos reservados.</p>
-                <p>Diseñado y desarrollado por <span class="text-green">Dev Keiner A Tegue</span> y <span class="text-green">Grupo Frontend</span></p>
+                <p>Diseñado y desarrollado por <span class="text-green">DevKeiner</span> y <span class="text-green">Ali Sinesterra</span></p>
             </div>
         </div>
     </footer>
 
+    <!-- Back to top -->
     <div class="back-to-top" id="backToTop" aria-label="Volver arriba">
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
     </div>
 
     <script>
-        // ============================================================
-        // SISTEMA DE AUDIO ROBUSTO
-        // Se crea un único AudioContext y se "desbloquea" con el primer
-        // gesto real del usuario (click, tap o tecla). Todos los sonidos
-        // verifican `audioReady` antes de reproducirse.
-        // ============================================================
+        // Audio compartido
         let sharedAudioCtx = null;
         let audioReady = false;
 
@@ -2086,97 +2218,65 @@
         function tryUnlockAudio() {
             const ctx = getAudioCtx();
             if (!ctx) return;
-            if (ctx.state === 'running') {
-                audioReady = true;
-                return;
-            }
+            if (ctx.state === 'running') { audioReady = true; return; }
             if (ctx.state === 'suspended') {
-                ctx.resume().then(() => {
-                    audioReady = (ctx.state === 'running');
-                }).catch(() => {});
+                ctx.resume().then(() => { audioReady = (ctx.state === 'running'); }).catch(() => {});
             }
         }
 
-        // Escuchar gestos reales de usuario (los navegadores solo permiten
-        // activar el audio con una interacción explícita).
         ['click', 'touchstart', 'keydown', 'pointerdown'].forEach(ev => {
             document.addEventListener(ev, tryUnlockAudio, { capture: true, passive: true });
         });
 
-        // ============================================================
-        // SONIDO PARA ACCESOS RÁPIDOS (pop premium con dos capas)
-        // ============================================================
         function playQuickAccessSound() {
             const ctx = getAudioCtx();
             if (!ctx || !audioReady) return;
             try {
                 if (ctx.state === 'suspended') ctx.resume();
                 const now = ctx.currentTime;
-
-                // Capa principal: sine con pitch ascendente suave
                 const osc1 = ctx.createOscillator();
                 const gain1 = ctx.createGain();
                 osc1.type = 'sine';
                 osc1.frequency.setValueAtTime(420, now);
                 osc1.frequency.exponentialRampToValueAtTime(880, now + 0.08);
                 osc1.frequency.exponentialRampToValueAtTime(660, now + 0.22);
-
                 gain1.gain.setValueAtTime(0.0001, now);
                 gain1.gain.exponentialRampToValueAtTime(0.22, now + 0.015);
                 gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+                osc1.connect(gain1); gain1.connect(ctx.destination);
+                osc1.start(now); osc1.stop(now + 0.3);
 
-                osc1.connect(gain1);
-                gain1.connect(ctx.destination);
-                osc1.start(now);
-                osc1.stop(now + 0.3);
-
-                // Capa superior: agudo cristalino muy corto
                 const osc2 = ctx.createOscillator();
                 const gain2 = ctx.createGain();
                 osc2.type = 'triangle';
                 osc2.frequency.setValueAtTime(1600, now);
                 osc2.frequency.exponentialRampToValueAtTime(2400, now + 0.06);
-
                 gain2.gain.setValueAtTime(0.06, now);
                 gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
-
-                osc2.connect(gain2);
-                gain2.connect(ctx.destination);
-                osc2.start(now);
-                osc2.stop(now + 0.16);
+                osc2.connect(gain2); gain2.connect(ctx.destination);
+                osc2.start(now); osc2.stop(now + 0.16);
             } catch (e) {}
         }
 
-        // ============================================================
-        // SONIDO PARA CONTADORES (tick corto y limpio)
-        // ============================================================
         function playCounterSound() {
             const ctx = getAudioCtx();
             if (!ctx || !audioReady) return;
             try {
                 if (ctx.state === 'suspended') ctx.resume();
                 const now = ctx.currentTime;
-
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(880, now);
                 osc.frequency.exponentialRampToValueAtTime(440, now + 0.07);
-
                 gain.gain.setValueAtTime(0.0001, now);
                 gain.gain.exponentialRampToValueAtTime(0.16, now + 0.008);
                 gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
-
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(now);
-                osc.stop(now + 0.11);
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.start(now); osc.stop(now + 0.11);
             } catch (e) {}
         }
 
-        // ============================================================
-        // DATOS MODALES
-        // ============================================================
         const modalData = {
             'noticia-feria': {
                 titulo: 'Feria Universitaria para el grado 11°',
@@ -2289,21 +2389,103 @@
             }
         };
 
+        function convertirMarkdownAHtml(md) {
+            if (!md) return '';
+            let html = md
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/^### (.*)$/gm, '<h3>$1</h3>')
+                .replace(/^## (.*)$/gm, '<h3>$1</h3>')
+                .replace(/^# (.*)$/gm, '<h3>$1</h3>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+            html = html.replace(/((?:^- .*$\n?)+)/gm, (match) => {
+                const items = match.trim().split('\n').map(line =>
+                    '<li>' + line.replace(/^- /, '') + '</li>'
+                ).join('');
+                return '<ul>' + items + '</ul>';
+            });
+
+            html = html.split(/\n\n+/).map(block => {
+                if (block.trim().startsWith('<h3>') ||
+                    block.trim().startsWith('<ul>') ||
+                    block.trim().startsWith('<p>')) {
+                    return block;
+                }
+                return '<p>' + block.replace(/\n/g, '<br>') + '</p>';
+            }).join('\n');
+
+            return html;
+        }
+
+        async function cargarNoticias() {
+            const grid = document.getElementById('newsGrid');
+            if (!grid) return;
+            try {
+                const response = await fetch('content/noticias.json');
+                if (!response.ok) throw new Error('No se pudo cargar el archivo de noticias');
+                const data = await response.json();
+                const noticias = data.items || [];
+
+                if (noticias.length === 0) {
+                    grid.innerHTML = '<p style="text-align: center; color: var(--text-muted); grid-column: 1 / -1;">No hay noticias publicadas todavía.</p>';
+                    return;
+                }
+
+                noticias.forEach((noticia, index) => {
+                    const id = `noticia-dinamica-${index}`;
+                    modalData[id] = {
+                        titulo: noticia.title,
+                        fecha: noticia.date,
+                        autor: 'Por: ' + (noticia.author || 'Instituto Técnico'),
+                        categoria: noticia.category || 'Noticia',
+                        imagen: noticia.image,
+                        contenido: convertirMarkdownAHtml(noticia.body)
+                    };
+                });
+
+                grid.innerHTML = noticias.map((noticia, index) => `
+                    <article class="glass-card news-card reveal">
+                        <img src="${noticia.image}" class="news-img" alt="${noticia.title}" loading="lazy" decoding="async">
+                        <div class="news-content">
+                            <span class="news-date">${noticia.date}</span>
+                            <h3 class="news-title">${noticia.title}</h3>
+                            <p class="news-excerpt">${noticia.excerpt}</p>
+                            <button class="news-link" onclick="openModal('noticia-dinamica-${index}')" aria-label="Leer más sobre ${noticia.title}">
+                                Leer más
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </article>
+                `).join('');
+
+                const revealElements = grid.querySelectorAll('.reveal');
+                revealElements.forEach(el => {
+                    setTimeout(() => el.classList.add('active'), 100);
+                });
+            } catch (error) {
+                console.error('Error cargando noticias:', error);
+                grid.innerHTML = '<p style="text-align: center; color: var(--text-muted); grid-column: 1 / -1;">No se pudieron cargar las noticias.</p>';
+            }
+        }
+
+        cargarNoticias();
+
         document.addEventListener('DOMContentLoaded', () => {
             const header = document.getElementById('header');
             const backToTop = document.getElementById('backToTop');
             const navLinks = document.getElementById('navLinks');
-            const headerCta = document.getElementById('headerCta');
             const mobileToggle = document.getElementById('mobileToggle');
             const sections = document.querySelectorAll('section[id]');
             const navLinkEls = document.querySelectorAll('.nav-link');
 
-            // ============ SONIDO DE CLIC EN ACCESOS RÁPIDOS ============
             document.querySelectorAll('.acceso-card').forEach(card => {
                 card.addEventListener('click', playQuickAccessSound);
             });
 
-            // ============ SCROLL: header + back-to-top + nav activo ============
             let scrollTicking = false;
             function onScrollFrame() {
                 const scrollY = window.scrollY;
@@ -2326,39 +2508,39 @@
             }, { passive: true });
             onScrollFrame();
 
-            // ============ MENÚ MÓVIL ============
             mobileToggle.addEventListener('click', (e) => {
                 e.stopPropagation();
                 navLinks.classList.toggle('mobile-active');
-                headerCta.classList.toggle('mobile-active');
             });
 
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', () => {
                     navLinks.classList.remove('mobile-active');
-                    headerCta.classList.remove('mobile-active');
                 });
             });
 
             document.addEventListener('click', (e) => {
                 if (!navLinks.contains(e.target) && !mobileToggle.contains(e.target)) {
                     navLinks.classList.remove('mobile-active');
-                    headerCta.classList.remove('mobile-active');
                 }
             });
 
-            // ============ RESIZE UNIFICADO + DEBOUNCE ============
             let resizeTimer;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(() => {
                     const isMobileNow = window.innerWidth <= 768;
-
                     if (!isMobileNow) {
                         navLinks.classList.remove('mobile-active');
-                        headerCta.classList.remove('mobile-active');
+                        const sg = document.getElementById('sedesGrid');
+                        const vm = document.getElementById('verMasSedes');
+                        if (sg) sg.classList.remove('expanded');
+                        if (vm) {
+                            vm.setAttribute('aria-expanded', 'false');
+                            const t = vm.querySelector('.btn-text');
+                            if (t) t.textContent = 'Ver más sedes';
+                        }
                     }
-
                     const root = document.documentElement;
                     root.classList.toggle('device-mobile', isMobileNow);
                     root.classList.toggle('device-pc', !isMobileNow);
@@ -2366,7 +2548,6 @@
                 }, 150);
             }, { passive: true });
 
-            // ============ REVEAL ANIMATIONS ============
             const STAGGER_STEP = 120;
             const STAGGER_MAX = 4;
             document.querySelectorAll('.reveal-group').forEach(group => {
@@ -2376,7 +2557,7 @@
                 });
             });
 
-            const revealElements = document.querySelectorAll('.reveal');
+            const revealElements = document.querySelectorAll('.reveal, .reveal-top');
             const revealOnScroll = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -2388,7 +2569,6 @@
 
             revealElements.forEach(el => revealOnScroll.observe(el));
 
-            // ============ CONTADORES ============
             function easeOutCubicCounter(t) { return 1 - Math.pow(1 - t, 3); }
 
             function animateCounterEl(el, duration) {
@@ -2403,11 +2583,8 @@
                     const progress = Math.min(elapsed / duration, 1);
                     const eased = easeOutCubicCounter(progress);
                     el.innerText = Math.floor(eased * finalValue);
-                    if (progress < 1) {
-                        requestAnimationFrame(step);
-                    } else {
-                        el.innerText = finalValue;
-                    }
+                    if (progress < 1) requestAnimationFrame(step);
+                    else el.innerText = finalValue;
                 }
                 el.innerText = '0';
                 requestAnimationFrame(step);
@@ -2446,16 +2623,34 @@
                 });
             });
 
-            // ============ BACK TO TOP ============
+            const verMasSedes = document.getElementById('verMasSedes');
+            const sedesGrid = document.getElementById('sedesGrid');
+
+            if (verMasSedes && sedesGrid) {
+                verMasSedes.addEventListener('click', () => {
+                    const expanded = sedesGrid.classList.toggle('expanded');
+                    verMasSedes.setAttribute('aria-expanded', expanded);
+                    const btnText = verMasSedes.querySelector('.btn-text');
+                    if (btnText) btnText.textContent = expanded ? 'Ver menos sedes' : 'Ver más sedes';
+
+                    const extras = sedesGrid.querySelectorAll('.sede-extra');
+                    if (expanded) {
+                        extras.forEach((card, i) => {
+                            setTimeout(() => card.classList.add('active'), i * 120);
+                        });
+                    } else {
+                        extras.forEach(card => card.classList.remove('active'));
+                    }
+                });
+            }
+
             backToTop.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
-            // ============ AÑO AUTOMÁTICO ============
             const yearEl = document.getElementById('currentYear');
             if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-            // ============ LIGHTBOX ============
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightboxImg');
             const lightboxClose = document.getElementById('lightboxClose');
@@ -2473,21 +2668,17 @@
                 if (e.target === lightbox) lightbox.classList.remove('active');
             });
 
-            // ============ FORMULARIO ============
             window.handleFormSubmit = function(e) {
                 e.preventDefault();
                 const btn = e.target.querySelector('button[type="submit"]');
                 const originalText = btn.innerHTML;
-                
                 btn.innerHTML = 'Enviando...';
                 btn.style.opacity = '0.7';
-                
                 setTimeout(() => {
                     btn.innerHTML = '¡Mensaje Enviado!';
                     btn.style.backgroundColor = 'var(--primary-hover)';
                     btn.style.color = 'var(--text-dark)';
                     e.target.reset();
-                    
                     setTimeout(() => {
                         btn.innerHTML = originalText;
                         btn.style.backgroundColor = '';
@@ -2497,14 +2688,12 @@
                 }, 1500);
             };
 
-            // ============ MODAL GENÉRICO ============
             const genericModal = document.getElementById('genericModal');
             const genericModalClose = document.getElementById('genericModalClose');
 
             window.openModal = function(id) {
                 const data = modalData[id];
                 if (!data) return;
-
                 document.getElementById('genericModalImg').src = data.imagen;
                 document.getElementById('genericModalImg').alt = data.titulo;
                 document.getElementById('genericModalCategory').textContent = data.categoria;
@@ -2512,7 +2701,6 @@
                 document.getElementById('genericModalDate').innerHTML = '📅 ' + data.fecha;
                 document.getElementById('genericModalAuthor').innerHTML = '✍️ ' + data.autor;
                 document.getElementById('genericModalText').innerHTML = data.contenido;
-
                 genericModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 document.getElementById('genericModalContent').scrollTop = 0;
@@ -2528,7 +2716,6 @@
                 if (e.target === genericModal) closeModal();
             });
 
-            // ============ FLIP CARD: DOBLE CLIC / TAP ============
             const aboutFlip = document.getElementById('aboutFlip');
             const isTouch = !window.matchMedia('(hover: hover)').matches;
 
@@ -2539,10 +2726,7 @@
                     if (frontHint) frontHint.textContent = '↻ Toca para ver historia rápida';
                     if (backHint) backHint.textContent = '↻ Toca para volver';
                     aboutFlip.setAttribute('aria-label', 'Toca para ver la historia del Instituto Técnico');
-
-                    aboutFlip.addEventListener('click', () => {
-                        aboutFlip.classList.toggle('flipped');
-                    });
+                    aboutFlip.addEventListener('click', () => aboutFlip.classList.toggle('flipped'));
                 } else {
                     aboutFlip.addEventListener('dblclick', (e) => {
                         e.preventDefault();
@@ -2560,7 +2744,6 @@
                 });
             }
 
-            // ============ ESCAPE: cerrar modal y lightbox ============
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     closeModal();
