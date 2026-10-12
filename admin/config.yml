@@ -1,749 +1,117 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="robots" content="noindex" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="color-scheme" content="dark" />
-  <title>Panel de Administración · Instituto Técnico</title>
-
-  <link rel="icon" type="image/png" href="/assets/images/logo.png" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Pantalla de carga -->
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #000;
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    #custom-loading {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 22px;
-      background:
-        radial-gradient(circle at 50% 40%, rgba(0, 255, 136, 0.08) 0%, transparent 60%),
-        #000;
-      z-index: 999999;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-
-    #custom-loading.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .loader-logo {
-      width: 72px;
-      height: 72px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .loader-ring {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      border: 2px solid rgba(0, 255, 136, 0.15);
-      border-top-color: #00ff88;
-      animation: spin 1s linear infinite;
-    }
-
-    .loader-ring::after {
-      content: '';
-      position: absolute;
-      inset: -12px;
-      border-radius: 50%;
-      border: 1px solid rgba(0, 255, 136, 0.1);
-      animation: pulse 2s ease-out infinite;
-    }
-
-    .loader-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #00ff88;
-      box-shadow: 0 0 24px #00ff88;
-      animation: floatDot 2s ease-in-out infinite;
-    }
-
-    .loader-text {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #fff;
-    }
-
-    .loader-text .green { color: #00ff88; }
-
-    .loader-sub {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.72rem;
-      color: #666;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-top: -6px;
-      font-weight: 600;
-    }
-
-    .loader-bar {
-      width: 180px;
-      height: 3px;
-      background: #1a1a1a;
-      border-radius: 3px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .loader-bar::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -40%;
-      width: 40%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, #00ff88, transparent);
-      animation: barSlide 1.6s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(0.85); opacity: 0.8; }
-      100% { transform: scale(1.2); opacity: 0; }
-    }
-
-    @keyframes floatDot {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes barSlide {
-      0% { left: -40%; }
-      100% { left: 100%; }
-    }
-  </style>
-
-  <!-- Tema personalizado del CMS -->
-  <style id="decap-custom-theme">
-    /* === Variables === */
-    :root {
-      --a-bg: #000000;
-      --a-bg-1: #0a0a0a;
-      --a-bg-2: #111111;
-      --a-bg-3: #161616;
-      --a-bg-4: #1a1a1a;
-      --a-border: #222222;
-      --a-border-strong: #2f2f2f;
-      --a-primary: #00ff88;
-      --a-primary-hover: #00cc6a;
-      --a-primary-dim: rgba(0, 255, 136, 0.1);
-      --a-text: #ffffff;
-      --a-text-2: #cccccc;
-      --a-text-muted: #999999;
-      --a-text-dim: #666666;
-      --a-danger: #ff5252;
-      --a-danger-dim: rgba(255, 82, 82, 0.1);
-      --a-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --a-font-heading: 'Space Grotesk', sans-serif;
-      --a-radius: 12px;
-      --a-radius-sm: 8px;
-      --a-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-      --a-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.6);
-    }
-
-    /* === Base === */
-    html, body, #nc-root {
-      background: var(--a-bg) !important;
-      color: var(--a-text) !important;
-      font-family: var(--a-font) !important;
-      -webkit-font-smoothing: antialiased !important;
-      -moz-osx-font-smoothing: grayscale !important;
-      min-height: 100vh !important;
-    }
-
-    #nc-root *, #nc-root *::before, #nc-root *::after {
-      font-family: var(--a-font);
-      box-sizing: border-box;
-    }
-
-    #nc-root h1, #nc-root h2, #nc-root h3, #nc-root h4, #nc-root h5 {
-      font-family: var(--a-font-heading) !important;
-      letter-spacing: -0.02em !important;
-      color: var(--a-text) !important;
-    }
-
-    /* Forzar color claro en todo, salvo excepciones */
-    #nc-root *:not(svg):not(path) {
-      color: var(--a-text-2);
-    }
-
-    #nc-root h1, #nc-root h2, #nc-root h3, #nc-root h4, #nc-root h5,
-    #nc-root strong, #nc-root b {
-      color: var(--a-text) !important;
-    }
-
-    /* Scrollbar */
-    #nc-root ::-webkit-scrollbar,
-    body::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
-
-    #nc-root ::-webkit-scrollbar-track,
-    body::-webkit-scrollbar-track {
-      background: var(--a-bg-1);
-    }
-
-    #nc-root ::-webkit-scrollbar-thumb,
-    body::-webkit-scrollbar-thumb {
-      background: var(--a-border-strong);
-      border-radius: 5px;
-      border: 2px solid var(--a-bg-1);
-    }
-
-    #nc-root ::-webkit-scrollbar-thumb:hover,
-    body::-webkit-scrollbar-thumb:hover {
-      background: var(--a-primary);
-    }
-
-    /* === Login === */
-    [class*="LoginPage"] {
-      background:
-        radial-gradient(circle at 50% 30%, rgba(0, 255, 136, 0.06) 0%, transparent 60%),
-        var(--a-bg) !important;
-    }
-
-    /* === Header === */
-    #nc-root header,
-    #nc-root [class*="AppHeader"],
-    #nc-root [class*="TopBar"] {
-      background: rgba(10, 10, 10, 0.98) !important;
-      border-bottom: 1px solid var(--a-border) !important;
-    }
-
-    #nc-root header * {
-      color: var(--a-text) !important;
-    }
-
-    /* === Sidebar === */
-    #nc-root aside,
-    #nc-root [class*="Sidebar"] {
-      background: var(--a-bg-1) !important;
-      border-right: 1px solid var(--a-border) !important;
-    }
-
-    #nc-root a[href*="#/collections/"] {
-      color: var(--a-text-2) !important;
-      padding: 12px 16px !important;
-      border-radius: var(--a-radius-sm) !important;
-      margin: 3px 8px !important;
-      transition: all 0.2s ease !important;
-      font-weight: 500 !important;
-      border-left: 3px solid transparent !important;
-      display: block !important;
-      text-decoration: none !important;
-    }
-
-    #nc-root a[href*="#/collections/"]:hover {
-      background: var(--a-bg-3) !important;
-      color: var(--a-text) !important;
-    }
-
-    #nc-root a[href*="#/collections/"][class*="active"],
-    #nc-root a[href*="#/collections/"][aria-current="page"] {
-      background: var(--a-primary-dim) !important;
-      color: var(--a-primary) !important;
-      border-left-color: var(--a-primary) !important;
-    }
-
-    /* === Área principal === */
-    #nc-root main {
-      background: var(--a-bg) !important;
-    }
-
-    /* === Título grande de la colección === */
-    #nc-root h1[class*="Collection"],
-    #nc-root h1[class*="collection"] {
-      color: var(--a-text) !important;
-      font-size: 1.6rem !important;
-      font-weight: 700 !important;
-      margin-bottom: 12px !important;
-    }
-
-    /* === Descripción de la colección === */
-    #nc-root [class*="Description"],
-    #nc-root [class*="description"],
-    #nc-root p[class*="hint"],
-    #nc-root div[class*="hint"] {
-      background: var(--a-bg-2) !important;
-      color: var(--a-text-muted) !important;
-      padding: 16px 20px !important;
-      border-radius: var(--a-radius) !important;
-      border: 1px solid var(--a-border) !important;
-      font-size: 0.92rem !important;
-      line-height: 1.6 !important;
-      margin-bottom: 20px !important;
-    }
-
-    #nc-root [class*="Description"] * {
-      color: var(--a-text-muted) !important;
-    }
-
-    /* === Tarjetas de noticias === */
-    #nc-root [class*="ListItem"],
-    #nc-root [class*="list-item"] {
-      background: var(--a-bg-2) !important;
-      border: 1px solid var(--a-border) !important;
-      border-radius: var(--a-radius) !important;
-      margin-bottom: 12px !important;
-      padding: 16px 20px !important;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-      overflow: hidden !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 14px !important;
-    }
-
-    #nc-root [class*="ListItem"]:hover {
-      border-color: rgba(0, 255, 136, 0.3) !important;
-      background: var(--a-bg-3) !important;
-      transform: translateY(-2px) !important;
-      box-shadow: var(--a-shadow) !important;
-    }
-
-    /* Título dentro de cada noticia */
-    #nc-root [class*="ListItem"] h1,
-    #nc-root [class*="ListItem"] h2,
-    #nc-root [class*="ListItem"] h3 {
-      color: var(--a-text) !important;
-      font-weight: 600 !important;
-      font-size: 1rem !important;
-      margin: 0 !important;
-      line-height: 1.3 !important;
-    }
-
-    /* Texto secundario (fecha) */
-    #nc-root [class*="ListItem"] small,
-    #nc-root [class*="ListItem"] [class*="subtext"] {
-      color: var(--a-text-muted) !important;
-      font-size: 0.8rem !important;
-    }
-
-    /* Iconos de cada card (a la izquierda) */
-    #nc-root [class*="ListItem"] svg {
-      color: var(--a-primary) !important;
-      fill: var(--a-primary) !important;
-      flex-shrink: 0 !important;
-    }
-
-    /* === Botón "+ Añadir" === */
-    #nc-root a[href*="new"],
-    #nc-root a[class*="new"],
-    #nc-root button[class*="add"] {
-      display: inline-flex !important;
-      align-items: center !important;
-      gap: 8px !important;
-      background: var(--a-primary) !important;
-      color: #000 !important;
-      font-family: var(--a-font-heading) !important;
-      font-weight: 700 !important;
-      padding: 12px 24px !important;
-      border-radius: 100px !important;
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2) !important;
-      border: none !important;
-      text-decoration: none !important;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-      min-height: 44px !important;
-    }
-
-    #nc-root a[href*="new"]:hover,
-    #nc-root button[class*="add"]:hover {
-      background: var(--a-primary-hover) !important;
-      transform: translateY(-1px) !important;
-      box-shadow: 0 8px 30px rgba(0, 255, 136, 0.3) !important;
-    }
-
-    #nc-root a[href*="new"] *,
-    #nc-root button[class*="add"] * {
-      color: #000 !important;
-      fill: #000 !important;
-    }
-
-    /* === Toolbar (Ordenar por, filtros, vista) === */
-    #nc-root [class*="Toolbar"] {
-      background: transparent !important;
-      border: none !important;
-      padding: 14px 0 !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 12px !important;
-    }
-
-    #nc-root [class*="Toolbar"] button {
-      color: var(--a-text-2) !important;
-      background: var(--a-bg-3) !important;
-      border: 1px solid var(--a-border) !important;
-      padding: 8px 14px !important;
-      border-radius: var(--a-radius-sm) !important;
-      font-size: 0.85rem !important;
-      cursor: pointer !important;
-    }
-
-    #nc-root [class*="Toolbar"] button:hover {
-      background: var(--a-primary-dim) !important;
-      color: var(--a-primary) !important;
-      border-color: var(--a-primary) !important;
-    }
-
-    /* Toggle de vista (lista/grid) */
-    #nc-root [class*="ViewToggle"],
-    #nc-root [class*="view-toggle"] {
-      background: var(--a-bg-3) !important;
-      border: 1px solid var(--a-border) !important;
-      border-radius: var(--a-radius-sm) !important;
-      padding: 4px !important;
-      display: inline-flex !important;
-    }
-
-    /* === Inputs === */
-    #nc-root input[type="text"],
-    #nc-root input[type="email"],
-    #nc-root input[type="number"],
-    #nc-root input[type="url"],
-    #nc-root input[type="datetime-local"],
-    #nc-root input[type="date"],
-    #nc-root input[type="time"],
-    #nc-root input[type="password"],
-    #nc-root textarea,
-    #nc-root select {
-      background: var(--a-bg-3) !important;
-      color: var(--a-text) !important;
-      border: 1px solid var(--a-border) !important;
-      border-radius: var(--a-radius-sm) !important;
-      padding: 12px 14px !important;
-      font-family: var(--a-font) !important;
-      font-size: 0.95rem !important;
-      transition: all 0.25s ease !important;
-      line-height: 1.5 !important;
-      width: 100% !important;
-    }
-
-    #nc-root input:hover,
-    #nc-root textarea:hover,
-    #nc-root select:hover {
-      border-color: var(--a-border-strong) !important;
-    }
-
-    #nc-root input:focus,
-    #nc-root textarea:focus,
-    #nc-root select:focus {
-      outline: none !important;
-      border-color: var(--a-primary) !important;
-      box-shadow: 0 0 0 3px var(--a-primary-dim) !important;
-      background: var(--a-bg-4) !important;
-    }
-
-    #nc-root input::placeholder,
-    #nc-root textarea::placeholder {
-      color: var(--a-text-dim) !important;
-    }
-
-    /* Labels */
-    #nc-root label {
-      color: var(--a-text) !important;
-      font-family: var(--a-font-heading) !important;
-      font-weight: 500 !important;
-      font-size: 0.9rem !important;
-      letter-spacing: -0.005em !important;
-      margin-bottom: 8px !important;
-      display: block !important;
-    }
-
-    /* Hints debajo de cada campo */
-    #nc-root small,
-    #nc-root [class*="hint"] {
-      color: var(--a-text-dim) !important;
-      font-size: 0.78rem !important;
-      line-height: 1.5 !important;
-      margin-top: 4px !important;
-      display: block !important;
-    }
-
-    /* === Botones primarios === */
-    #nc-root button[class*="primary"],
-    #nc-root button[type="submit"] {
-      background: var(--a-primary) !important;
-      color: #000 !important;
-      border: none !important;
-      padding: 12px 24px !important;
-      font-weight: 700 !important;
-      font-family: var(--a-font-heading) !important;
-      border-radius: 100px !important;
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2) !important;
-      min-height: 44px !important;
-      cursor: pointer !important;
-    }
-
-    #nc-root button[class*="primary"] *,
-    #nc-root button[type="submit"] * {
-      color: #000 !important;
-    }
-
-    #nc-root button[class*="primary"]:hover,
-    #nc-root button[type="submit"]:hover {
-      background: var(--a-primary-hover) !important;
-      box-shadow: 0 8px 30px rgba(0, 255, 136, 0.3) !important;
-      transform: translateY(-1px) !important;
-    }
-
-    /* === Botones de eliminar === */
-    #nc-root button[class*="danger"],
-    #nc-root button[class*="delete"] {
-      background: transparent !important;
-      color: var(--a-danger) !important;
-      border: 1px solid var(--a-danger) !important;
-      border-radius: var(--a-radius-sm) !important;
-      padding: 8px 16px !important;
-      font-weight: 600 !important;
-    }
-
-    #nc-root button[class*="danger"]:hover {
-      background: var(--a-danger-dim) !important;
-    }
-
-    /* === Editor de contenido (markdown) === */
-    #nc-root [contenteditable="true"] {
-      background: var(--a-bg-3) !important;
-      color: var(--a-text) !important;
-      border: 1px solid var(--a-border) !important;
-      border-radius: var(--a-radius-sm) !important;
-      min-height: 220px !important;
-      padding: 18px !important;
-      line-height: 1.75 !important;
-      font-size: 1rem !important;
-      transition: all 0.25s ease !important;
-    }
-
-    #nc-root [contenteditable="true"]:focus {
-      border-color: var(--a-primary) !important;
-      box-shadow: 0 0 0 3px var(--a-primary-dim) !important;
-      outline: none !important;
-    }
-
-    /* === Widget de imagen === */
-    #nc-root [class*="ImageWidget"] {
-      background: var(--a-bg-2) !important;
-      border: 1px dashed var(--a-border-strong) !important;
-      border-radius: var(--a-radius) !important;
-      padding: 16px !important;
-      transition: all 0.3s ease !important;
-    }
-
-    #nc-root [class*="ImageWidget"]:hover {
-      border-color: var(--a-primary) !important;
-      background: var(--a-bg-3) !important;
-    }
-
-    /* === Modales === */
-    #nc-root [class*="Modal"] {
-      background: var(--a-bg-2) !important;
-      border: 1px solid var(--a-border) !important;
-      border-radius: var(--a-radius) !important;
-      box-shadow: var(--a-shadow-lg) !important;
-    }
-
-    /* === Toasts === */
-    #nc-root [class*="Toast"] {
-      background: var(--a-bg-3) !important;
-      border: 1px solid var(--a-border-strong) !important;
-      color: var(--a-text) !important;
-      border-radius: var(--a-radius) !important;
-      box-shadow: var(--a-shadow-lg) !important;
-      padding: 14px 20px !important;
-    }
-
-    #nc-root [class*="Toast"] * {
-      color: var(--a-text) !important;
-    }
-
-    /* === Dropdown / menús === */
-    #nc-root [role="listbox"],
-    #nc-root [role="menu"] {
-      background: var(--a-bg-3) !important;
-      border: 1px solid var(--a-border-strong) !important;
-      border-radius: var(--a-radius-sm) !important;
-      box-shadow: var(--a-shadow-lg) !important;
-      padding: 6px !important;
-    }
-
-    #nc-root [role="option"] {
-      padding: 10px 14px !important;
-      border-radius: 6px !important;
-      color: var(--a-text-2) !important;
-      transition: all 0.2s ease !important;
-      cursor: pointer !important;
-      font-size: 0.92rem !important;
-    }
-
-    #nc-root [role="option"]:hover {
-      background: var(--a-primary-dim) !important;
-      color: var(--a-primary) !important;
-    }
-
-    /* === Checkbox === */
-    #nc-root input[type="checkbox"] {
-      accent-color: var(--a-primary) !important;
-      width: 18px !important;
-      height: 18px !important;
-      cursor: pointer !important;
-    }
-
-    /* === Focus visible === */
-    #nc-root *:focus-visible {
-      outline: 2px solid var(--a-primary) !important;
-      outline-offset: 2px !important;
-    }
-
-    /* === Móvil === */
-    @media (max-width: 768px) {
-      #nc-root header {
-        padding: 12px 16px !important;
-        background: rgba(10, 10, 10, 0.98) !important;
-      }
-
-      #nc-root button {
-        min-height: 44px !important;
-        font-size: 0.95rem !important;
-        padding: 12px 20px !important;
-      }
-
-      #nc-root input[type="text"],
-      #nc-root input[type="email"],
-      #nc-root input[type="number"],
-      #nc-root input[type="url"],
-      #nc-root input[type="datetime-local"],
-      #nc-root input[type="date"],
-      #nc-root input[type="time"],
-      #nc-root input[type="password"],
-      #nc-root textarea,
-      #nc-root select {
-        font-size: 16px !important;
-        padding: 14px 16px !important;
-        min-height: 48px !important;
-      }
-
-      #nc-root label {
-        font-size: 0.95rem !important;
-        margin-bottom: 10px !important;
-      }
-
-      #nc-root [class*="ListItem"] {
-        padding: 14px 16px !important;
-        gap: 12px !important;
-      }
-
-      #nc-root [class*="Description"] {
-        padding: 14px 16px !important;
-        font-size: 0.88rem !important;
-      }
-
-      #nc-root [contenteditable="true"] {
-        min-height: 260px !important;
-        padding: 16px !important;
-        font-size: 16px !important;
-      }
-
-      #nc-root a[href*="new"],
-      #nc-root button[class*="add"] {
-        width: 100% !important;
-        justify-content: center !important;
-      }
-    }
-
-    /* === Reducir movimiento === */
-    @media (prefers-reduced-motion: reduce) {
-      #nc-root *,
-      #nc-root *::before,
-      #nc-root *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Pantalla de carga -->
-  <div id="custom-loading" role="status" aria-live="polite">
-    <div class="loader-logo">
-      <div class="loader-ring"></div>
-      <div class="loader-dot"></div>
-    </div>
-    <div class="loader-text">Ins<span class="green">Tecnico</span></div>
-    <div class="loader-sub">Panel de administración</div>
-    <div class="loader-bar"></div>
-  </div>
-
-  <!-- Netlify Identity Widget -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-  <!-- Decap CMS -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-
-  <script>
-    (function () {
-      var loading = document.getElementById('custom-loading');
-      var startTime = Date.now();
-      var MIN_DISPLAY = 800;
-      var MAX_WAIT = 5000;
-      var hidden = false;
-
-      function hide() {
-        if (hidden || !loading) return;
-        hidden = true;
-        var elapsed = Date.now() - startTime;
-        var remaining = Math.max(0, MIN_DISPLAY - elapsed);
-        setTimeout(function () {
-          loading.classList.add('hidden');
-          setTimeout(function () {
-            if (loading && loading.parentNode) {
-              loading.parentNode.removeChild(loading);
-            }
-          }, 700);
-        }, remaining);
-      }
-
-      if (document.readyState === 'complete') {
-        setTimeout(hide, 300);
-      } else {
-        window.addEventListener('load', function () {
-          setTimeout(hide, 300);
-        });
-      }
-
-      setTimeout(hide, MAX_WAIT);
-    })();
-  </script>
-
-</body>
-</html>
+# ============================================================
+# CONFIGURACIÓN DEL PANEL DE ADMINISTRACIÓN
+# Instituto Técnico · Sistema de noticias y eventos
+# ============================================================
+
+backend:
+  name: git-gateway
+  branch: main
+
+# Carpeta donde se suben las imágenes desde el panel
+media_folder: "assets/images/noticias"
+public_folder: "/assets/images/noticias"
+
+# Idioma del panel
+locale: 'es'
+
+# ============================================================
+# COLECCIONES DE CONTENIDO
+# ============================================================
+collections:
+  - name: "noticias"
+    label: "📰 Noticias y Eventos"
+    label_singular: "Noticia"
+    description: >
+      Administra las noticias y eventos que aparecen en la página principal.
+      Puedes agregar, editar, reordenar o eliminar noticias desde aquí.
+    files:
+      - name: "lista"
+        label: "📋 Todas las Noticias"
+        file: "content/noticias.json"
+        description: >
+          Arrastra las noticias para cambiar el orden (las primeras aparecen arriba).
+          Usa el botón "+" para agregar una nueva.
+        fields:
+          - name: "items"
+            label: "Noticias publicadas"
+            label_singular: "Noticia"
+            widget: "list"
+            summary: "{{fields.date}} — {{fields.title}}"
+            collapsed: true
+            minimize_collapsed: true
+            add_to_top: true
+            allow_add: true
+            allow_delete: true
+            fields:
+              - label: "📌 Título de la noticia"
+                name: "title"
+                widget: "string"
+                hint: >
+                  Escribe un título claro y corto (máximo 80 caracteres).
+                  Ejemplo: "Feria Universitaria para el grado 11°"
+                pattern: ['^.{5,100}$', 'El título debe tener entre 5 y 100 caracteres']
+
+              - label: "📅 Fecha"
+                name: "date"
+                widget: "datetime"
+                format: "DD MMMM, YYYY"
+                date_format: "DD MMMM, YYYY"
+                time_format: false
+                picker_utc: false
+                hint: "Selecciona el día en que se publica o sucede la noticia."
+
+              - label: "🏷️ Categoría"
+                name: "category"
+                widget: "select"
+                default: "Institucional"
+                hint: "Elige la categoría que mejor describa la noticia."
+                options:
+                  - { label: "🎓 Evento Académico", value: "Evento Académico" }
+                  - { label: "🎉 Celebración", value: "Celebración" }
+                  - { label: "📝 Admisiones", value: "Admisiones" }
+                  - { label: "📢 Comunicado", value: "Comunicado" }
+                  - { label: "⚽ Deportes", value: "Deportes" }
+                  - { label: "🎭 Cultura", value: "Cultura" }
+                  - { label: "🇬🇧 Inglés", value: "Inglés" }
+                  - { label: "🔬 Ciencia y Tecnología", value: "Ciencia y Tecnología" }
+                  - { label: "🏫 Institucional", value: "Institucional" }
+
+              - label: "🖼️ Imagen de portada"
+                name: "image"
+                widget: "image"
+                media_library:
+                  config:
+                    multiple: false
+                choose_url: false
+                hint: >
+                  Sube una foto horizontal (ideal: 1200x800 px, menos de 500 KB).
+
+              - label: "✏️ Extracto corto"
+                name: "excerpt"
+                widget: "text"
+                pattern: ['^.{20,220}$', 'El extracto debe tener entre 20 y 220 caracteres']
+                hint: >
+                  Resumen breve (1-2 líneas) que aparece en la tarjeta.
+
+              - label: "📄 Contenido completo"
+                name: "body"
+                widget: "markdown"
+                hint: >
+                  Aquí va la noticia completa. Puedes usar negrita, listas,
+                  subtítulos y enlaces.
+
+              - label: "✍️ Autor"
+                name: "author"
+                widget: "string"
+                default: "Instituto Técnico"
+                required: false
+                hint: >
+                  ¿Quién escribe la noticia? Puede ser un área, un cargo o una persona.
+
+              - label: "⭐ Marcar como destacada"
+                name: "featured"
+                widget: "boolean"
+                default: false
+                required: false
+                hint: >
+                  Actívala si quieres que esta noticia llame más la atención.
