@@ -2,13 +2,683 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="robots" content="noindex" />
-  <title>Panel de Administración | Instituto Técnico</title>
-  <link href="https://unpkg.com/decap-cms@^3.0.0/dist/main.css" rel="stylesheet" />
+  <meta name="theme-color" content="#000000" />
+  <title>Panel de Administración · Instituto Técnico</title>
+
+  <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Pantalla de carga previa al CMS */
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #custom-loading {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 22px;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(0, 255, 136, 0.08) 0%, transparent 60%),
+        #000;
+      z-index: 999999;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+
+    #custom-loading.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-logo {
+      width: 72px;
+      height: 72px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .loader-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 255, 136, 0.15);
+      border-top-color: #00ff88;
+      animation: spin 1s linear infinite;
+    }
+
+    .loader-ring::after {
+      content: '';
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 255, 136, 0.1);
+      animation: pulse 2s ease-out infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.85); opacity: 0.8; }
+      100% { transform: scale(1.2); opacity: 0; }
+    }
+
+    .loader-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 24px #00ff88;
+      animation: floatDot 2s ease-in-out infinite;
+    }
+
+    @keyframes floatDot {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loader-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .loader-text .green { color: #00ff88; }
+
+    .loader-sub {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      color: #666;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: -6px;
+      font-weight: 600;
+    }
+
+    .loader-bar {
+      width: 180px;
+      height: 3px;
+      background: #1a1a1a;
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .loader-bar::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -40%;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, #00ff88, transparent);
+      animation: barSlide 1.6s ease-in-out infinite;
+    }
+
+    @keyframes barSlide {
+      0% { left: -40%; }
+      100% { left: 100%; }
+    }
+  </style>
+
+  <!-- Tema personalizado para Decap CMS -->
+  <style id="decap-custom-theme">
+    /* === Variables de diseño === */
+    :root {
+      --a-bg: #000000;
+      --a-bg-1: #0a0a0a;
+      --a-bg-2: #111111;
+      --a-bg-3: #161616;
+      --a-bg-4: #1a1a1a;
+      --a-bg-hover: #1e1e1e;
+      --a-border: #222222;
+      --a-border-strong: #2f2f2f;
+      --a-primary: #00ff88;
+      --a-primary-hover: #00cc6a;
+      --a-primary-dim: rgba(0, 255, 136, 0.1);
+      --a-primary-glow: rgba(0, 255, 136, 0.3);
+      --a-text: #ffffff;
+      --a-text-2: #cccccc;
+      --a-text-muted: #999999;
+      --a-text-dim: #666666;
+      --a-danger: #ff5252;
+      --a-danger-dim: rgba(255, 82, 82, 0.1);
+      --a-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --a-font-heading: 'Space Grotesk', sans-serif;
+      --a-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      --a-radius: 12px;
+      --a-radius-sm: 8px;
+      --a-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      --a-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    /* === Base global === */
+    html, body, #nc-root {
+      background: var(--a-bg) !important;
+      color: var(--a-text) !important;
+      font-family: var(--a-font) !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      min-height: 100vh !important;
+    }
+
+    #nc-root *, #nc-root *::before, #nc-root *::after {
+      font-family: var(--a-font);
+      box-sizing: border-box;
+    }
+
+    #nc-root h1, #nc-root h2, #nc-root h3, #nc-root h4 {
+      font-family: var(--a-font-heading) !important;
+      letter-spacing: -0.02em !important;
+      color: var(--a-text) !important;
+    }
+
+    /* Scrollbar personalizado */
+    #nc-root ::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    #nc-root ::-webkit-scrollbar-track,
+    body::-webkit-scrollbar-track {
+      background: var(--a-bg-1);
+    }
+
+    #nc-root ::-webkit-scrollbar-thumb,
+    body::-webkit-scrollbar-thumb {
+      background: var(--a-border-strong);
+      border-radius: 5px;
+      border: 2px solid var(--a-bg-1);
+    }
+
+    #nc-root ::-webkit-scrollbar-thumb:hover,
+    body::-webkit-scrollbar-thumb:hover {
+      background: var(--a-primary);
+    }
+
+    #nc-root ::selection {
+      background: var(--a-primary);
+      color: #000;
+    }
+
+    /* === Pantalla de login === */
+    [class*="LoginPage"],
+    [class*="login-page"],
+    [class*="Login"] {
+      background:
+        radial-gradient(circle at 50% 30%, rgba(0, 255, 136, 0.06) 0%, transparent 60%),
+        var(--a-bg) !important;
+    }
+
+    /* === Botones generales === */
+    #nc-root button {
+      font-family: var(--a-font-heading) !important;
+      font-weight: 600 !important;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      border-radius: var(--a-radius-sm) !important;
+      letter-spacing: -0.005em !important;
+    }
+
+    /* === Header superior === */
+    #nc-root header,
+    #nc-root [class*="TopBar"],
+    #nc-root [class*="topBar"],
+    #nc-root [class*="AppHeader"] {
+      background: rgba(10, 10, 10, 0.95) !important;
+      border-bottom: 1px solid var(--a-border) !important;
+      backdrop-filter: blur(20px) saturate(160%) !important;
+      -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    }
+
+    #nc-root header * {
+      color: var(--a-text) !important;
+    }
+
+    /* === Sidebar === */
+    #nc-root aside,
+    #nc-root [class*="Sidebar"] {
+      background: var(--a-bg-1) !important;
+      border-right: 1px solid var(--a-border) !important;
+    }
+
+    /* Enlaces de colecciones */
+    #nc-root a[href*="#/collections/"] {
+      color: var(--a-text-2) !important;
+      padding: 12px 16px !important;
+      border-radius: var(--a-radius-sm) !important;
+      margin: 3px 8px !important;
+      transition: all 0.2s ease !important;
+      font-weight: 500 !important;
+      border-left: 3px solid transparent !important;
+      display: block !important;
+      text-decoration: none !important;
+    }
+
+    #nc-root a[href*="#/collections/"]:hover {
+      background: var(--a-bg-3) !important;
+      color: var(--a-text) !important;
+      text-decoration: none !important;
+    }
+
+    #nc-root a[href*="#/collections/"][class*="active"],
+    #nc-root a[href*="#/collections/"][aria-current="page"] {
+      background: var(--a-primary-dim) !important;
+      color: var(--a-primary) !important;
+      border-left-color: var(--a-primary) !important;
+    }
+
+    /* === Área principal === */
+    #nc-root main {
+      background: var(--a-bg) !important;
+    }
+
+    /* === Inputs, textarea, select === */
+    #nc-root input[type="text"],
+    #nc-root input[type="email"],
+    #nc-root input[type="number"],
+    #nc-root input[type="url"],
+    #nc-root input[type="datetime-local"],
+    #nc-root input[type="date"],
+    #nc-root textarea,
+    #nc-root select {
+      background: var(--a-bg-3) !important;
+      color: var(--a-text) !important;
+      border: 1px solid var(--a-border) !important;
+      border-radius: var(--a-radius-sm) !important;
+      padding: 12px 14px !important;
+      font-family: var(--a-font) !important;
+      font-size: 0.95rem !important;
+      transition: all 0.25s ease !important;
+      line-height: 1.5 !important;
+      width: 100% !important;
+    }
+
+    #nc-root input[type="text"]:hover,
+    #nc-root input[type="email"]:hover,
+    #nc-root input[type="number"]:hover,
+    #nc-root input[type="url"]:hover,
+    #nc-root textarea:hover,
+    #nc-root select:hover {
+      border-color: var(--a-border-strong) !important;
+    }
+
+    #nc-root input[type="text"]:focus,
+    #nc-root input[type="email"]:focus,
+    #nc-root input[type="number"]:focus,
+    #nc-root input[type="url"]:focus,
+    #nc-root input[type="datetime-local"]:focus,
+    #nc-root input[type="date"]:focus,
+    #nc-root textarea:focus,
+    #nc-root select:focus {
+      outline: none !important;
+      border-color: var(--a-primary) !important;
+      box-shadow: 0 0 0 3px var(--a-primary-dim) !important;
+      background: var(--a-bg-4) !important;
+    }
+
+    #nc-root input::placeholder,
+    #nc-root textarea::placeholder {
+      color: var(--a-text-dim) !important;
+    }
+
+    /* Labels */
+    #nc-root label {
+      color: var(--a-text-2) !important;
+      font-family: var(--a-font-heading) !important;
+      font-weight: 500 !important;
+      font-size: 0.88rem !important;
+      letter-spacing: -0.005em !important;
+      margin-bottom: 6px !important;
+      display: block !important;
+    }
+
+    /* Hints / textos pequeños */
+    #nc-root [class*="hint"],
+    #nc-root small {
+      color: var(--a-text-dim) !important;
+      font-size: 0.78rem !important;
+      line-height: 1.5 !important;
+    }
+
+    /* === Botones primarios === */
+    #nc-root button[class*="primary"],
+    #nc-root button[class*="Primary"],
+    #nc-root button[type="submit"] {
+      background: var(--a-primary) !important;
+      color: #000 !important;
+      border: none !important;
+      padding: 12px 24px !important;
+      font-weight: 700 !important;
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2) !important;
+    }
+
+    #nc-root button[class*="primary"]:hover,
+    #nc-root button[type="submit"]:hover {
+      background: var(--a-primary-hover) !important;
+      box-shadow: 0 8px 30px rgba(0, 255, 136, 0.3) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    #nc-root button[class*="danger"],
+    #nc-root button[class*="Danger"] {
+      background: transparent !important;
+      color: var(--a-danger) !important;
+      border: 1px solid var(--a-danger) !important;
+    }
+
+    #nc-root button[class*="danger"]:hover {
+      background: var(--a-danger-dim) !important;
+    }
+
+    /* === Lista de items (noticias) === */
+    #nc-root [class*="ListItem"],
+    #nc-root [class*="list-item"] {
+      background: var(--a-bg-2) !important;
+      border: 1px solid var(--a-border) !important;
+      border-radius: var(--a-radius) !important;
+      margin-bottom: 12px !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      overflow: hidden !important;
+    }
+
+    #nc-root [class*="ListItem"]:hover {
+      border-color: rgba(0, 255, 136, 0.3) !important;
+      background: var(--a-bg-3) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: var(--a-shadow) !important;
+    }
+
+    /* === Toolbar === */
+    #nc-root [class*="Toolbar"] {
+      background: var(--a-bg-1) !important;
+      border-bottom: 1px solid var(--a-border) !important;
+      padding: 12px 16px !important;
+    }
+
+    /* === Checkbox === */
+    #nc-root input[type="checkbox"] {
+      accent-color: var(--a-primary) !important;
+      width: 18px !important;
+      height: 18px !important;
+      cursor: pointer !important;
+    }
+
+    /* === Preview panel === */
+    #nc-root [class*="Preview"] {
+      background: var(--a-bg-1) !important;
+      border-left: 1px solid var(--a-border) !important;
+    }
+
+    /* === Modales === */
+    #nc-root [class*="Modal"] {
+      background: var(--a-bg-2) !important;
+      border: 1px solid var(--a-border) !important;
+      border-radius: var(--a-radius) !important;
+      box-shadow: var(--a-shadow-lg) !important;
+    }
+
+    /* === Toasts / Notificaciones === */
+    #nc-root [class*="Toast"] {
+      background: var(--a-bg-3) !important;
+      border: 1px solid var(--a-border-strong) !important;
+      color: var(--a-text) !important;
+      border-radius: var(--a-radius) !important;
+      box-shadow: var(--a-shadow-lg) !important;
+      font-family: var(--a-font) !important;
+    }
+
+    /* === Enlaces === */
+    #nc-root a {
+      color: var(--a-primary) !important;
+      text-decoration: none !important;
+      transition: color 0.2s ease !important;
+    }
+
+    #nc-root a:hover {
+      color: var(--a-primary-hover) !important;
+    }
+
+    /* === Code editor / Markdown === */
+    #nc-root [class*="CodeEditor"],
+    #nc-root [class*="codemirror"],
+    #nc-root .CodeMirror {
+      background: var(--a-bg-1) !important;
+      border: 1px solid var(--a-border) !important;
+      border-radius: var(--a-radius-sm) !important;
+      color: var(--a-text) !important;
+      font-family: var(--a-font-mono) !important;
+    }
+
+    #nc-root [contenteditable="true"] {
+      background: var(--a-bg-3) !important;
+      color: var(--a-text) !important;
+      border: 1px solid var(--a-border) !important;
+      border-radius: var(--a-radius-sm) !important;
+      min-height: 220px !important;
+      padding: 18px !important;
+      line-height: 1.75 !important;
+      font-size: 1rem !important;
+      transition: all 0.25s ease !important;
+    }
+
+    #nc-root [contenteditable="true"]:focus {
+      border-color: var(--a-primary) !important;
+      box-shadow: 0 0 0 3px var(--a-primary-dim) !important;
+      outline: none !important;
+    }
+
+    /* === Dropdown / Menús === */
+    #nc-root [role="listbox"],
+    #nc-root [role="menu"] {
+      background: var(--a-bg-3) !important;
+      border: 1px solid var(--a-border-strong) !important;
+      border-radius: var(--a-radius-sm) !important;
+      box-shadow: var(--a-shadow-lg) !important;
+      padding: 6px !important;
+    }
+
+    #nc-root [role="option"] {
+      padding: 10px 14px !important;
+      border-radius: 6px !important;
+      color: var(--a-text-2) !important;
+      transition: all 0.2s ease !important;
+      cursor: pointer !important;
+      font-size: 0.92rem !important;
+    }
+
+    #nc-root [role="option"]:hover {
+      background: var(--a-primary-dim) !important;
+      color: var(--a-primary) !important;
+    }
+
+    /* === Image / Media widget === */
+    #nc-root [class*="ImageWidget"] {
+      background: var(--a-bg-2) !important;
+      border: 1px solid var(--a-border) !important;
+      border-radius: var(--a-radius) !important;
+      padding: 8px !important;
+    }
+
+    /* === Focus visible para accesibilidad === */
+    #nc-root *:focus-visible {
+      outline: 2px solid var(--a-primary) !important;
+      outline-offset: 2px !important;
+    }
+
+    /* ========================================================
+       MÓVIL: optimizaciones específicas
+       ======================================================== */
+    @media (max-width: 768px) {
+      /* Header más compacto */
+      #nc-root header {
+        padding: 12px 16px !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(10, 10, 10, 0.98) !important;
+      }
+
+      /* Botones táctiles */
+      #nc-root button {
+        min-height: 44px !important;
+        font-size: 0.95rem !important;
+        padding: 12px 20px !important;
+      }
+
+      /* Inputs de 16px evitan el zoom automático en iOS */
+      #nc-root input[type="text"],
+      #nc-root input[type="email"],
+      #nc-root input[type="number"],
+      #nc-root input[type="url"],
+      #nc-root input[type="datetime-local"],
+      #nc-root input[type="date"],
+      #nc-root textarea,
+      #nc-root select {
+        font-size: 16px !important;
+        padding: 14px 16px !important;
+        min-height: 48px !important;
+      }
+
+      /* Labels más legibles */
+      #nc-root label {
+        font-size: 0.95rem !important;
+        margin-bottom: 8px !important;
+      }
+
+      /* Sidebar en móvil */
+      #nc-root aside,
+      #nc-root [class*="Sidebar"] {
+        box-shadow: 20px 0 60px rgba(0, 0, 0, 0.6) !important;
+      }
+
+      /* Colecciones en sidebar más grandes */
+      #nc-root a[href*="#/collections/"] {
+        padding: 16px 18px !important;
+        font-size: 1rem !important;
+        margin: 4px 8px !important;
+      }
+
+      /* Items más espaciosos */
+      #nc-root [class*="ListItem"] {
+        padding: 14px !important;
+      }
+
+      /* Modal full screen */
+      #nc-root [class*="Modal"] {
+        border-radius: 16px !important;
+        margin: 12px !important;
+      }
+
+      /* Contenteditable con altura cómoda */
+      #nc-root [contenteditable="true"] {
+        min-height: 260px !important;
+        padding: 16px !important;
+        font-size: 16px !important;
+      }
+    }
+
+    /* ========================================================
+       DESKTOP: ajustes finos
+       ======================================================== */
+    @media (min-width: 1200px) {
+      #nc-root main {
+        max-width: 1400px !important;
+      }
+    }
+
+    /* Suavizar scroll */
+    #nc-root {
+      scroll-behavior: smooth !important;
+    }
+
+    /* Reducir movimiento */
+    @media (prefers-reduced-motion: reduce) {
+      #nc-root *,
+      #nc-root *::before,
+      #nc-root *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
 <body>
+
+  <!-- Pantalla de carga personalizada -->
+  <div id="custom-loading" role="status" aria-live="polite">
+    <div class="loader-logo">
+      <div class="loader-ring"></div>
+      <div class="loader-dot"></div>
+    </div>
+    <div class="loader-text">Ins<span class="green">Tecnico</span></div>
+    <div class="loader-sub">Panel de administración</div>
+    <div class="loader-bar"></div>
+  </div>
+
+  <!-- Netlify Identity Widget (procesa invitaciones y login) -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <!-- Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+  <script>
+    /* Ocultar la pantalla de carga cuando el CMS esté listo */
+    (function () {
+      var loading = document.getElementById('custom-loading');
+      var startTime = Date.now();
+      var MIN_DISPLAY = 800;
+      var MAX_WAIT = 5000;
+      var hidden = false;
+
+      function hide() {
+        if (hidden || !loading) return;
+        hidden = true;
+        var elapsed = Date.now() - startTime;
+        var remaining = Math.max(0, MIN_DISPLAY - elapsed);
+        setTimeout(function () {
+          loading.classList.add('hidden');
+          setTimeout(function () {
+            if (loading && loading.parentNode) {
+              loading.parentNode.removeChild(loading);
+            }
+          }, 700);
+        }, remaining);
+      }
+
+      /* Ocultar cuando la ventana esté completamente cargada */
+      if (document.readyState === 'complete') {
+        setTimeout(hide, 300);
+      } else {
+        window.addEventListener('load', function () {
+          setTimeout(hide, 300);
+        });
+      }
+
+      /* Seguro por si load nunca dispara */
+      setTimeout(hide, MAX_WAIT);
+    })();
+  </script>
+
 </body>
 </html>

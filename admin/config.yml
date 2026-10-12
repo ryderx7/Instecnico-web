@@ -1,42 +1,143 @@
+
+# CONFIGURACIÓN DEL PANEL DE ADMINISTRACIÓN / Holii
+
 backend:
   name: git-gateway
   branch: main
 
+# Carpeta donde se suben las imágenes desde el panel
 media_folder: "assets/images/noticias"
 public_folder: "/assets/images/noticias"
 
+# Idioma del panel
 locale: 'es'
 
+# Mensajes que aparecen al publicar
+publish_mode: simple
+
+# ============================================================
+# COLECCIONES DE CONTENIDO
+# ============================================================
 collections:
   - name: "noticias"
     label: "📰 Noticias y Eventos"
     label_singular: "Noticia"
-    description: "Administra las noticias y eventos que aparecen en la página principal"
+    description: >
+      Administra las noticias y eventos que aparecen en la página principal.
+      Puedes agregar, editar, reordenar o eliminar noticias desde aquí.
+      Los cambios se publican automáticamente en pocos segundos.
     files:
       - name: "lista"
-        label: "Todas las Noticias"
+        label: "📋 Todas las Noticias"
         file: "content/noticias.json"
+        description: >
+          Arrastra las noticias para cambiar el orden (las primeras aparecen arriba).
+          Usa el botón "+" para agregar una nueva.
         fields:
           - name: "items"
             label: "Noticias publicadas"
             label_singular: "Noticia"
             widget: "list"
             summary: "{{fields.date}} — {{fields.title}}"
+            collapsed: true
+            minimize_collapsed: true
+            add_to_top: true
+            allow_add: true
+            allow_delete: true
             fields:
-              - { label: "Título", name: "title", widget: "string", hint: "Ej: Feria Universitaria para el grado 11°" }
-              - { label: "Fecha", name: "date", widget: "datetime", format: "DD MMMM, YYYY", date_format: "DD MMMM, YYYY", time_format: false }
-              - label: "Categoría"
+              # ---------- TÍTULO ----------
+              - label: "📌 Título de la noticia"
+                name: "title"
+                widget: "string"
+                hint: >
+                  Escribe un título claro y corto (máximo 80 caracteres).
+                  Ejemplo: "Feria Universitaria para el grado 11°"
+                pattern: ['^.{5,100}$', 'El título debe tener entre 5 y 100 caracteres']
+
+              # ---------- FECHA ----------
+              - label: "📅 Fecha"
+                name: "date"
+                widget: "datetime"
+                format: "DD MMMM, YYYY"
+                date_format: "DD MMMM, YYYY"
+                time_format: false
+                picker_utc: false
+                hint: "Selecciona el día en que se publica o sucede la noticia."
+
+              # ---------- CATEGORÍA ----------
+              - label: "🏷️ Categoría"
                 name: "category"
                 widget: "select"
+                default: "Institucional"
+                hint: "Elige la categoría que mejor describa la noticia."
                 options:
-                  - "Evento Académico"
-                  - "Celebración"
-                  - "Admisiones"
-                  - "Comunicado"
-                  - "Deportes"
-                  - "Cultura"
-                  - "Institucional"
-              - { label: "Imagen de Portada", name: "image", widget: "image", hint: "Sube una imagen desde tu computador" }
-              - { label: "Extracto corto", name: "excerpt", widget: "text", hint: "Descripción breve que aparece en la tarjeta" }
-              - { label: "Contenido completo", name: "body", widget: "markdown", hint: "Escribe aquí la noticia completa" }
-              - { label: "Autor", name: "author", widget: "string", default: "Instituto Técnico" }
+                  - { label: "🎓 Evento Académico", value: "Evento Académico" }
+                  - { label: "🎉 Celebración", value: "Celebración" }
+                  - { label: "📝 Admisiones", value: "Admisiones" }
+                  - { label: "📢 Comunicado", value: "Comunicado" }
+                  - { label: "⚽ Deportes", value: "Deportes" }
+                  - { label: "🎭 Cultura", value: "Cultura" }
+                  - { label: "🇬🇧 Inglés", value: "Inglés" }
+                  - { label: "🔬 Ciencia y Tecnología", value: "Ciencia y Tecnología" }
+                  - { label: "🏫 Institucional", value: "Institucional" }
+
+              # ---------- IMAGEN ----------
+              - label: "🖼️ Imagen de portada"
+                name: "image"
+                widget: "image"
+                media_library:
+                  config:
+                    multiple: false
+                choose_url: false
+                hint: >
+                  Sube una foto horizontal (ideal: 1200x800 px, menos de 500 KB).
+                  Se mostrará como portada en la tarjeta y en el modal.
+
+              # ---------- EXTRACTO ----------
+              - label: "✏️ Extracto corto"
+                name: "excerpt"
+                widget: "text"
+                pattern: ['^.{20,220}$', 'El extracto debe tener entre 20 y 220 caracteres']
+                hint: >
+                  Resumen breve (1-2 líneas) que aparece en la tarjeta.
+                  Ejemplo: "Conoce el cronograma, requisitos y proceso de inscripción."
+
+              # ---------- CONTENIDO ----------
+              - label: "📄 Contenido completo"
+                name: "body"
+                widget: "markdown"
+                buttons:
+                  - bold
+                  - italic
+                  - link
+                  - heading-two
+                  - heading-three
+                  - list
+                  - numbered-list
+                  - quote
+                editor_components:
+                  - image
+                  - code-block
+                hint: >
+                  Aquí va la noticia completa. Puedes usar negrita, listas,
+                  subtítulos y enlaces. Se mostrará cuando el visitante haga clic en "Leer más".
+
+              # ---------- AUTOR ----------
+              - label: "✍️ Autor"
+                name: "author"
+                widget: "string"
+                default: "Instituto Técnico"
+                required: false
+                hint: >
+                  ¿Quién escribe la noticia? Puede ser un área, un cargo o una persona.
+                  Ejemplos: "Coordinación Académica", "Rectoría", "Secretaría".
+
+              # ---------- DESTACADA ----------
+              - label: "⭐ Marcar como destacada"
+                name: "featured"
+                widget: "boolean"
+                default: false
+                required: false
+                hint: >
+                  Actívala si quieres que esta noticia llame más la atención.
+                  Aparecerá primero en la lista principal.

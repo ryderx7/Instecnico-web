@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <script>
+        (function () {
+            var ua = navigator.userAgent || '';
+            var isMobileUA = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile|webOS/i.test(ua);
+            var isMobile = isMobileUA || window.innerWidth <= 768;
+            var root = document.documentElement;
+            root.classList.add(isMobile ? 'device-mobile' : 'device-pc');
+            window.__isMobileDevice = isMobile;
+        })();
+    </script>
+
+    <title>Galería Institucional | Instituto Técnico</title>
+    <meta name="description" content="Galería fotográfica del Instituto Técnico de Santander de Quilichao, Cauca. Infraestructura, eventos académicos, memoria histórica y nuestras sedes.">
+    <meta name="theme-color" content="#000000">
+    <meta name="color-scheme" content="dark">
+
+    <meta property="og:title" content="Galería Institucional | Instituto Técnico">
+    <meta property="og:description" content="Momentos que construyen nuestra historia. Desde 1913 hasta hoy.">
+    <meta property="og:image" content="assets/images/galeria-1.jpg">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #000000;
+            --bg-panel: #0a0a0a;
+            --bg-card: #111111;
+            --bg-elevated: #1a1a1a;
+
+            --primary: #00ff88;
+            --primary-hover: #00cc6a;
+            --primary-dim: rgba(0, 255, 136, 0.1);
+
+            --text-main: #ffffff;
+            --text-muted: #999999;
+            --text-dark: #000000;
+
+            --border-color: #222222;
+            --border-light: rgba(255, 255, 255, 0.05);
+
+            --font-body: 'Inter', sans-serif;
+            --font-heading: 'Space Grotesk', sans-serif;
+            --font-elegant: 'Instrument Serif', serif;
+
+            --radius-md: 12px;
+            --radius-lg: 16px;
+
+            --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-cinematic: cubic-bezier(0.19, 1, 0.22, 1);
+
+            --section-pad-y: clamp(72px, 10vw, 120px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 140px;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+            html { scroll-behavior: auto; }
+            .gallery-item { opacity: 1 !important; transform: none !important; }
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-image:
+                radial-gradient(circle at 15% 30%, rgba(0, 255, 136, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 85% 70%, rgba(0, 255, 136, 0.04) 0%, transparent 50%);
+        }
+
+        body.no-scroll { overflow: hidden; }
+
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; line-height: 1.15; letter-spacing: -0.015em; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        img { max-width: 100%; height: auto; display: block; }
+        button { font-family: inherit; }
+
+        .container {
+            width: 100%;
+            max-width: 1320px;
+            margin: 0 auto;
+            padding-left: max(20px, calc(var(--safe-left) + 18px));
+            padding-right: max(20px, calc(var(--safe-right) + 18px));
+        }
+
+        .text-green { color: var(--primary); }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 100;
+            transition: background 0.4s ease, padding 0.4s ease, border-color 0.4s ease;
+            padding: calc(20px + var(--safe-top)) 0 20px;
+            border-bottom: 1px solid transparent;
+        }
+
+        .header.scrolled {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            padding: calc(12px + var(--safe-top)) 0 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            height: 42px;
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            height: 100%;
+            width: auto;
+            max-width: 130px;
+            object-fit: contain;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 100px;
+            border: 1px solid var(--border-color);
+            background: rgba(17, 17, 17, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--text-main);
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.35s var(--ease-premium);
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+
+        .back-link:hover {
+            border-color: var(--primary);
+            background: var(--primary-dim);
+            color: var(--primary);
+        }
+
+        /* Hero */
+        .gallery-hero {
+            position: relative;
+            padding-top: calc(150px + var(--safe-top));
+            padding-bottom: 50px;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .gallery-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+            z-index: -1;
+        }
+
+        .gallery-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 18px;
+            border-radius: 100px;
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            color: var(--primary);
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            font-family: var(--font-heading);
+            animation: fadeUp 0.9s var(--ease-cinematic) 0.1s backwards;
+        }
+
+        .gallery-hero-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 12px var(--primary);
+            animation: dotPulse 2.4s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gallery-hero-title {
+            font-size: clamp(2.2rem, 6vw, 4.5rem);
+            line-height: 1;
+            letter-spacing: -0.04em;
+            margin-bottom: 20px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #B8B8B8 55%, #6a6a6a 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeUp 1.1s var(--ease-cinematic) 0.25s backwards;
+        }
+
+        .gallery-hero-title .accent {
+            font-family: var(--font-elegant);
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            background: linear-gradient(180deg, var(--primary) 0%, #00b866 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.3));
+        }
+
+        .gallery-hero-desc {
+            font-size: clamp(0.98rem, 1.8vw, 1.15rem);
+            color: var(--text-muted);
+            max-width: 620px;
+            margin: 0 auto 30px;
+            line-height: 1.7;
+            font-weight: 300;
+            animation: fadeUp 1.2s var(--ease-cinematic) 0.45s backwards;
+        }
+
+        .gallery-hero-stats {
+            display: inline-flex;
+            align-items: center;
+            gap: 24px;
+            padding: 12px 26px;
+            border-radius: 100px;
+            background: rgba(17, 17, 17, 0.7);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            animation: fadeUp 1.3s var(--ease-cinematic) 0.65s backwards;
+        }
+
+        .gallery-hero-stat {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-family: var(--font-heading);
+        }
+
+        .gallery-hero-stat strong {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .gallery-hero-stat-divider {
+            width: 1px;
+            height: 18px;
+            background: var(--border-color);
+        }
+
+        /* Filtros */
+        .gallery-filters {
+            position: sticky;
+            top: calc(70px + var(--safe-top));
+            z-index: 50;
+            padding: 14px 0;
+            margin-bottom: 36px;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(16px) saturate(160%);
+            -webkit-backdrop-filter: blur(16px) saturate(160%);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .gallery-filters-inner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 2px 2px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .gallery-filters-inner::-webkit-scrollbar { display: none; }
+
+        @media (min-width: 769px) {
+            .gallery-filters-inner { justify-content: center; }
+        }
+
+        .filter-btn {
+            flex-shrink: 0;
+            padding: 10px 18px;
+            border-radius: 100px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.84rem;
+            cursor: pointer;
+            transition: all 0.35s var(--ease-premium);
+            min-height: 42px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            touch-action: manipulation;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            color: var(--text-main);
+            border-color: rgba(0, 255, 136, 0.4);
+            background: var(--primary-dim);
+        }
+
+        .filter-btn.is-active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--text-dark);
+            box-shadow: 0 6px 24px rgba(0, 255, 136, 0.25);
+        }
+
+        .filter-btn .filter-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px;
+            height: 22px;
+            padding: 0 6px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .filter-btn.is-active .filter-count {
+            background: rgba(0, 0, 0, 0.15);
+            color: var(--text-dark);
+        }
+
+        /* Grid */
+        .gallery-section {
+            padding-bottom: var(--section-pad-y);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: border-color 0.4s var(--ease-premium), transform 0.5s var(--ease-premium), box-shadow 0.4s var(--ease-premium);
+            touch-action: manipulation;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.9s var(--ease-premium);
+        }
+
+        .gallery-item:hover {
+            border-color: rgba(0, 255, 136, 0.35);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .gallery-item:hover img { transform: scale(1.08); }
+
+        .gallery-item-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0) 40%,
+                rgba(0, 0, 0, 0.6) 75%,
+                rgba(0, 0, 0, 0.92) 100%
+            );
+            opacity: 0.85;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+        .gallery-item-info {
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            padding: 20px 20px 18px;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transform: translateY(4px);
+            transition: transform 0.4s var(--ease-premium);
+        }
+
+        .gallery-item:hover .gallery-item-info { transform: translateY(0); }
+
+        .gallery-item-cat {
+            font-family: var(--font-heading);
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--primary);
+        }
+
+        .gallery-item-title {
+            font-family: var(--font-heading);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        .gallery-item-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 3;
+            padding: 5px 12px;
+            border-radius: 100px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: var(--primary);
+            font-family: var(--font-heading);
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: opacity 0.35s var(--ease-premium), transform 0.35s var(--ease-premium);
+        }
+
+        .gallery-item:hover .gallery-item-badge {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-item-zoom {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 3;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.35s var(--ease-premium), transform 0.35s var(--ease-premium);
+        }
+
+        .gallery-item:hover .gallery-item-zoom {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        @keyframes galleryItemIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.97);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox-stage {
+            position: relative;
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .lightbox-image-wrap {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--border-color);
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 200px;
+            min-height: 200px;
+        }
+
+        .lightbox-image-wrap img {
+            max-width: 100%;
+            max-height: 78vh;
+            width: auto;
+            height: auto;
+            display: block;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .lightbox-image-wrap img.loaded { opacity: 1; }
+
+        .lightbox-info {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 0 16px;
+        }
+
+        .lightbox-cat {
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: var(--primary);
+        }
+
+        .lightbox-title {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: -0.01em;
+        }
+
+        .lightbox-counter {
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            font-variant-numeric: tabular-nums;
+            margin-top: 2px;
+        }
+
+        .lightbox-btn {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(17, 17, 17, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.35s var(--ease-premium);
+            touch-action: manipulation;
+            z-index: 2;
+        }
+
+        .lightbox-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--text-dark);
+        }
+
+        .lightbox-close {
+            top: calc(20px + var(--safe-top));
+            right: calc(20px + var(--safe-right));
+        }
+
+        .lightbox-prev {
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .lightbox-next {
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .lightbox-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 255, 136, 0.15);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-card);
+            padding: 60px 0 calc(28px + var(--safe-bottom));
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            align-items: center;
+            text-align: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            height: 40px;
+        }
+
+        .footer-logo img {
+            height: 100%;
+            width: auto;
+            max-width: 130px;
+            object-fit: contain;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            max-width: 520px;
+            line-height: 1.7;
+        }
+
+        .footer-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 26px;
+            border-radius: 100px;
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.4s var(--ease-premium);
+            min-height: 48px;
+            touch-action: manipulation;
+        }
+
+        .footer-cta:hover {
+            background: var(--primary-dim);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            margin-top: 36px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed;
+            bottom: calc(24px + var(--safe-bottom));
+            right: calc(24px + var(--safe-right));
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s var(--ease-premium);
+            transform: translateY(20px);
+            touch-action: manipulation;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: var(--primary);
+            color: var(--bg-base);
+            transform: translateY(-4px);
+        }
+
+        /* Tablet */
+        @media (max-width: 1100px) {
+            .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            :root { --section-pad-y: 60px; }
+
+            html { scroll-padding-top: 120px; }
+
+            .gallery-hero {
+                padding-top: calc(115px + var(--safe-top));
+                padding-bottom: 36px;
+            }
+
+            .gallery-hero-badge {
+                font-size: 0.64rem;
+                padding: 6px 14px;
+                letter-spacing: 1.8px;
+                margin-bottom: 18px;
+            }
+
+            .gallery-hero-title { font-size: clamp(1.9rem, 10vw, 3rem); }
+
+            .gallery-hero-desc {
+                font-size: 0.92rem;
+                margin-bottom: 24px;
+                padding: 0 8px;
+            }
+
+            .gallery-hero-stats {
+                gap: 14px;
+                padding: 10px 18px;
+            }
+
+            .gallery-hero-stat {
+                font-size: 0.72rem;
+                gap: 5px;
+            }
+
+            .gallery-hero-stat strong { font-size: 1rem; }
+
+            .gallery-hero-stat-divider { height: 14px; }
+
+            .gallery-filters {
+                top: calc(58px + var(--safe-top));
+                padding: 10px 0;
+                margin-bottom: 22px;
+            }
+
+            .gallery-filters-inner {
+                justify-content: flex-start;
+                padding-left: max(20px, calc(var(--safe-left) + 16px));
+                padding-right: max(20px, calc(var(--safe-right) + 16px));
+                gap: 6px;
+            }
+
+            .filter-btn {
+                padding: 8px 14px;
+                font-size: 0.78rem;
+                min-height: 38px;
+                gap: 6px;
+            }
+
+            .filter-btn .filter-count {
+                min-width: 20px;
+                height: 20px;
+                font-size: 0.65rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .gallery-item {
+                aspect-ratio: 4 / 5;
+                border-radius: 12px;
+            }
+
+            .gallery-item-info {
+                padding: 14px 12px 12px;
+                gap: 2px;
+            }
+
+            .gallery-item-title { font-size: 0.8rem; line-height: 1.2; }
+            .gallery-item-cat { font-size: 0.56rem; letter-spacing: 1px; }
+
+            .gallery-item-badge { display: none; }
+            .gallery-item-zoom { display: none; }
+
+            .lightbox { padding: 12px; }
+
+            .lightbox-image-wrap img { max-height: 58vh; }
+
+            .lightbox-stage { gap: 14px; }
+
+            .lightbox-prev,
+            .lightbox-next {
+                width: 44px;
+                height: 44px;
+                top: auto;
+                transform: none;
+                bottom: calc(20px + var(--safe-bottom));
+            }
+
+            .lightbox-prev { left: calc(50% - 90px); }
+            .lightbox-next { right: calc(50% - 90px); }
+
+            .lightbox-prev:hover,
+            .lightbox-next:hover { transform: none; }
+
+            .lightbox-close {
+                top: calc(16px + var(--safe-top));
+                right: calc(16px + var(--safe-right));
+                width: 44px;
+                height: 44px;
+            }
+
+            .lightbox-info {
+                padding-bottom: 76px;
+            }
+
+            .lightbox-title { font-size: 0.98rem; }
+
+            .back-to-top {
+                width: 46px;
+                height: 46px;
+                bottom: calc(16px + var(--safe-bottom));
+                right: calc(16px + var(--safe-right));
+            }
+
+            .gallery-item:hover {
+                transform: none;
+                box-shadow: none;
+                border-color: var(--border-color);
+            }
+            .gallery-item:hover img { transform: none; }
+            .gallery-item:hover .gallery-item-overlay { opacity: 0.85; }
+            .gallery-item:hover .gallery-item-info { transform: translateY(4px); }
+
+            .back-link span { display: none; }
+            .back-link { padding: 10px 12px; }
+
+            .footer { padding: 48px 0 calc(24px + var(--safe-bottom)); }
+        }
+
+        @media (max-width: 400px) {
+            .gallery-grid { gap: 8px; }
+            .gallery-item-info { padding: 10px; }
+            .gallery-item-title { font-size: 0.74rem; }
+        }
+
+        /* Mobile optimizations */
+        .device-mobile .header.scrolled,
+        .device-mobile .gallery-filters,
+        .device-mobile .lightbox,
+        .device-mobile .lightbox-btn,
+        .device-mobile .back-link,
+        .device-mobile .gallery-hero-stats {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        .device-mobile .header.scrolled { background: rgba(0, 0, 0, 0.94); }
+        .device-mobile .gallery-filters { background: rgba(0, 0, 0, 0.94); }
+        .device-mobile .lightbox { background: rgba(0, 0, 0, 0.98); }
+        .device-mobile .lightbox-btn { background: rgba(17, 17, 17, 0.95); }
+        .device-mobile .back-link { background: rgba(17, 17, 17, 0.9); }
+        .device-mobile .gallery-hero-stats { background: rgba(17, 17, 17, 0.85); }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="Logo Instituto Técnico" width="130" height="42">
+                <span>Ins<span class="text-green">Tecnico</span></span>
+            </a>
+
+            <a href="index.html" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Volver al inicio</span>
+            </a>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Hero -->
+        <section class="gallery-hero">
+            <div class="container">
+                <span class="gallery-hero-badge">Archivos Visuales</span>
+                <h1 class="gallery-hero-title">Galería <span class="accent">Institucional</span></h1>
+                <p class="gallery-hero-desc">
+                    Un recorrido visual por nuestra historia: infraestructura, vida académica, eventos culturales y la memorias de toda nuestra institucion educativa.
+                </p>
+                <div class="gallery-hero-stats">
+                    <div class="gallery-hero-stat">
+                        <strong id="totalPhotos">31</strong>
+                        <span>fotografías</span>
+                    </div>
+                    <div class="gallery-hero-stat-divider"></div>
+                    <div class="gallery-hero-stat">
+                        <strong>5</strong>
+                        <span>categorías</span>
+                    </div>
+                    <div class="gallery-hero-stat-divider"></div>
+                    <div class="gallery-hero-stat">
+                        <strong>113+</strong>
+                        <span>años</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filtros -->
+        <div class="gallery-filters" id="filtersBar">
+            <div class="container">
+                <div class="gallery-filters-inner" role="tablist" aria-label="Filtrar galería por categoría">
+                    <button class="filter-btn is-active" data-filter="todos" role="tab" aria-selected="true">
+                        Todos <span class="filter-count" data-count="todos">31</span>
+                    </button>
+                    <button class="filter-btn" data-filter="infraestructura" role="tab" aria-selected="false">
+                        Infraestructura <span class="filter-count" data-count="infraestructura">8</span>
+                    </button>
+                    <button class="filter-btn" data-filter="academico" role="tab" aria-selected="false">
+                        Académico <span class="filter-count" data-count="academico">4</span>
+                    </button>
+                    <button class="filter-btn" data-filter="eventos" role="tab" aria-selected="false">
+                        Eventos <span class="filter-count" data-count="eventos">4</span>
+                    </button>
+                    <button class="filter-btn" data-filter="memoria" role="tab" aria-selected="false">
+                        Memoria Histórica <span class="filter-count" data-count="memoria">12</span>
+                    </button>
+                    <button class="filter-btn" data-filter="sedes" role="tab" aria-selected="false">
+                        Sedes <span class="filter-count" data-count="sedes">3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid -->
+        <section class="gallery-section">
+            <div class="container">
+                <div class="gallery-grid" id="galleryGrid">
+
+                    <!-- ========== MEMORIA HISTÓRICA (12) ========== -->
+
+                    <figure class="gallery-item" data-category="memoria">
+                        <img src="assets/images/galeria-1.jpg" alt="Recuerdos del exrector Aldemar Díaz Muñoz" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Memoria Histórica</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Memoria Histórica</span>
+                            <span class="gallery-item-title">Recuerdos del exrector Aldemar Díaz Muñoz</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="memoria">
+                        <img src="assets/images/galeria-2.jpg" alt="Archivo fotográfico histórico" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Memoria Histórica</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Memoria Histórica</span>
+                            <span class="gallery-item-title">Archivo fotográfico histórico</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="memoria">
+                        <img src="assets/images/galeria-3.jpg" alt="Grupo de bachillerato" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Memoria Histórica</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Memoria Histórica</span>
+                            <span class="gallery-item-title">Grupo de bachillerato</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="memoria">
+                        <img src="assets/images/galeria-4.jpg" alt="Presentación cultural histórica" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Memoria Histórica</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Memoria Histórica</span>
+                            <span class="gallery-item-title">Presentación cultural histórica</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="memoria">
+                        <img src="assets/images/galeria-5.jpg" alt="Memorias de nuestros principios" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Memoria Histórica</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Memoria Histórica</span>
+                            <span class="gallery-item-title">Memorias de nuestros principios</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="memoria">
+                        <img src="assets/images/galeria-6.jpg" alt="Nuestros docentes en generaciones pasadas" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Memoria Histórica</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Memoria Histórica</span>
+                            <span class="gallery-item-title">Nuestros docentes en generaciones pasadas</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="memoria">
+                        <img src="assets/images/galeria-7.jpg" alt="Comunidad educativa histórica" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Memoria Histórica</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Memoria Histórica</span>
+                            <span class="gallery-item-title">Comunidad educativa histórica</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="memoria">
+                        <img src="assets/images/galeria-8.jpg" alt="Grandes matemáticos de generaciones anteriores" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Memoria Histórica</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Memoria Histórica</span>
+                            <span class="gallery-item-title">Grandes matemáticos de generaciones anteriores</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="memoria">
+                        <img src="assets/images/galeria-9.jpg" alt="Primera promoción de bachilleres" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Memoria Histórica</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Memoria Histórica</span>
+                            <span class="gallery-item-title">Fotografia Histórica de nuestros Docentes</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="memoria">
+                        <img src="assets/images/galeria-10.jpg" alt="Acto cívico de antaño" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Memoria Histórica</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Memoria Histórica</span>
+                            <span class="gallery-item-title">Fotografia Histórica</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="memoria">
+                        <img src="assets/images/galeria-11.jpg" alt="Antiguo edificio institucional" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Memoria Histórica</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Memoria Histórica</span>
+                            <span class="gallery-item-title">Recuerdos de nuestro exrector Aldemar Diaz</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="memoria">
+                        <img src="assets/images/galeria-12.jpg" alt="Egresados destacados de la historia" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Memoria Histórica</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Memoria Histórica</span>
+                            <span class="gallery-item-title">Nuestras Docentes</span>
+                        </figcaption>
+                    </figure>
+
+                    <!-- ========== INFRAESTRUCTURA (8) ========== -->
+
+                    <figure class="gallery-item" data-category="infraestructura">
+                        <img src="assets/images/galeria-13.jpg" alt="Fachada Sede Principal" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Infraestructura</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Infraestructura</span>
+                            <span class="gallery-item-title">Fachada Sede Principal</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="infraestructura">
+                        <img src="assets/images/galeria-14.jpg" alt="Aulas de cómputo" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Infraestructura</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Infraestructura</span>
+                            <span class="gallery-item-title">Aulas de cómputo</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="infraestructura">
+                        <img src="assets/images/galeria-15.jpg" alt="Biblioteca institucional" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Infraestructura</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Infraestructura</span>
+                            <span class="gallery-item-title">Biblioteca institucional</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="infraestructura">
+                        <img src="assets/images/galeria-16.jpg" alt="Canchas polideportivas" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Infraestructura</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Infraestructura</span>
+                            <span class="gallery-item-title">Cancha polideportiva</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="infraestructura">
+                        <img src="assets/images/galeria-17.jpg" alt="Laboratorio de química" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Infraestructura</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Infraestructura</span>
+                            <span class="gallery-item-title">Laboratorio de química</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="infraestructura">
+                        <img src="assets/images/galeria-18.jpg" alt="Laboratorio de física" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Infraestructura</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Infraestructura</span>
+                            <span class="gallery-item-title">Laboratorio de física</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="infraestructura">
+                        <img src="assets/images/galeria-19.jpg" alt="Cafetería institucional" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Infraestructura</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Infraestructura</span>
+                            <span class="gallery-item-title">Cafetería institucional</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="infraestructura">
+                        <img src="assets/images/galeria-20.jpg" alt="Kiosco escolar" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Infraestructura</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Infraestructura</span>
+                            <span class="gallery-item-title">Kiosco escolar</span>
+                        </figcaption>
+                    </figure>
+
+                    <!-- ========== ACADÉMICO (4) ========== -->
+
+                    <figure class="gallery-item" data-category="academico">
+                        <img src="assets/images/galeria-21.jpg" alt="Estudiantes en el aula" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Académico</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Académico</span>
+                            <span class="gallery-item-title">Estudiantes en el aula</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="academico">
+                        <img src="assets/images/galeria-22.jpg" alt="Semillero de investigación" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Académico</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Académico</span>
+                            <span class="gallery-item-title">Semillero de investigación</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="academico">
+                        <img src="assets/images/galeria-23.jpg" alt="Acto de graduación" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Académico</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Académico</span>
+                            <span class="gallery-item-title">Acto de graduación</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="academico">
+                        <img src="assets/images/galeria-24.jpg" alt="Clase de ciencias" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Académico</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Académico</span>
+                            <span class="gallery-item-title">Clase de ciencias</span>
+                        </figcaption>
+                    </figure>
+
+                    <!-- ========== EVENTOS (4) ========== -->
+
+                    <figure class="gallery-item" data-category="eventos">
+                        <img src="assets/images/galeria-25.jpg" alt="Feria Universitaria" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Eventos</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Eventos</span>
+                            <span class="gallery-item-title">Feria de Universidades</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="eventos">
+                        <img src="assets/images/galeria-26.jpg" alt="English Day" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Eventos</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Eventos</span>
+                            <span class="gallery-item-title">English Day</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="eventos">
+                        <img src="assets/images/galeria-27.jpg" alt="Semana Deportiva" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Eventos</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Eventos</span>
+                            <span class="gallery-item-title">Semana Deportiva</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="eventos">
+                        <img src="assets/images/galeria-28.jpg" alt="Izada de bandera" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Eventos</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Eventos</span>
+                            <span class="gallery-item-title">Izada de bandera</span>
+                        </figcaption>
+                    </figure>
+
+                    <!-- ========== SEDES (3) ========== -->
+
+                    <figure class="gallery-item" data-category="sedes">
+                        <img src="assets/images/galeria-29.jpg" alt="Sede Principal" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Sedes</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Sedes</span>
+                            <span class="gallery-item-title">Sede Principal</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="sedes">
+                        <img src="assets/images/galeria-30.jpg" alt="Sede Rafael Tello" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Sedes</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Sedes</span>
+                            <span class="gallery-item-title">Sede Rafael Tello</span>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="gallery-item" data-category="sedes">
+                        <img src="assets/images/galeria-31.jpg" alt="Sede José Edmundo Sandoval" loading="lazy" decoding="async">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-badge">Sedes</div>
+                        <div class="gallery-item-zoom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                        </div>
+                        <figcaption class="gallery-item-info">
+                            <span class="gallery-item-cat">Sedes</span>
+                            <span class="gallery-item-title">Sede José Edmundo Sandoval</span>
+                        </figcaption>
+                    </figure>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <a href="index.html" class="footer-logo">
+                    <img src="assets/images/logo.png" alt="Logo Instituto Técnico" width="130" height="40">
+                    <span>Ins<span class="text-green">Tecnico</span></span>
+                </a>
+                <p class="footer-text">
+                    Archivo visual del Instituto Técnico de Santander de Quilichao, Cauca. Más de un siglo documentando la historia de nuestra comunidad educativa.
+                </p>
+                <a href="index.html" class="footer-cta">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Volver al portal principal
+                </a>
+
+                <div class="footer-bottom">
+                    <p>&copy; <span id="currentYear">2026</span> Instituto Técnico · Todos los derechos reservados.</p>
+                    <p>Diseñado y desarrollado por <span class="text-green">DevKeiner</span> y <span class="text-green">Ali Sinesterra</span></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Visor de imagen ampliada">
+        <button class="lightbox-btn lightbox-close" id="lightboxClose" aria-label="Cerrar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+
+        <button class="lightbox-btn lightbox-prev" id="lightboxPrev" aria-label="Imagen anterior">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>
+        </button>
+
+        <button class="lightbox-btn lightbox-next" id="lightboxNext" aria-label="Imagen siguiente">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+            </svg>
+        </button>
+
+        <div class="lightbox-stage">
+            <div class="lightbox-image-wrap">
+                <div class="lightbox-spinner" id="lightboxSpinner"></div>
+                <img id="lightboxImg" src="" alt="">
+            </div>
+            <div class="lightbox-info">
+                <span class="lightbox-cat" id="lightboxCat"></span>
+                <span class="lightbox-title" id="lightboxTitle"></span>
+                <span class="lightbox-counter" id="lightboxCounter"></span>
+            </div>
+        </div>
+    </div>
+
+    <button class="back-to-top" id="backToTop" aria-label="Volver arriba">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"/>
+        </svg>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const header = document.getElementById('header');
+            const backToTop = document.getElementById('backToTop');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxCat = document.getElementById('lightboxCat');
+            const lightboxTitle = document.getElementById('lightboxTitle');
+            const lightboxCounter = document.getElementById('lightboxCounter');
+            const lightboxClose = document.getElementById('lightboxClose');
+            const lightboxPrev = document.getElementById('lightboxPrev');
+            const lightboxNext = document.getElementById('lightboxNext');
+            const lightboxSpinner = document.getElementById('lightboxSpinner');
+
+            let currentFilter = 'todos';
+            let visibleItems = [];
+            let currentLightboxIndex = 0;
+
+            // Header y back-to-top según scroll
+            let ticking = false;
+
+            function onScroll() {
+                const y = window.scrollY;
+                header.classList.toggle('scrolled', y > 40);
+                backToTop.classList.toggle('visible', y > 400);
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(onScroll);
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            onScroll();
+
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Filtros por categoría
+            function applyFilter(filter) {
+                currentFilter = filter;
+                visibleItems = [];
+                let staggerIndex = 0;
+
+                galleryItems.forEach((item) => {
+                    const matches = filter === 'todos' || item.dataset.category === filter;
+
+                    if (matches) {
+                        item.style.display = '';
+                        item.style.animation = 'none';
+                        void item.offsetWidth;
+                        item.style.animation = `galleryItemIn 0.7s var(--ease-premium) ${staggerIndex * 45}ms both`;
+                        visibleItems.push(item);
+                        staggerIndex++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+
+            function updateFilterCounts() {
+                const counts = { todos: galleryItems.length };
+                galleryItems.forEach((item) => {
+                    const cat = item.dataset.category;
+                    counts[cat] = (counts[cat] || 0) + 1;
+                });
+                document.querySelectorAll('.filter-count').forEach((el) => {
+                    const key = el.dataset.count;
+                    if (counts[key] !== undefined) el.textContent = counts[key];
+                });
+                const totalEl = document.getElementById('totalPhotos');
+                if (totalEl) totalEl.textContent = galleryItems.length;
+            }
+
+            filterButtons.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    if (btn.dataset.filter === currentFilter) return;
+                    filterButtons.forEach((b) => {
+                        b.classList.remove('is-active');
+                        b.setAttribute('aria-selected', 'false');
+                    });
+                    btn.classList.add('is-active');
+                    btn.setAttribute('aria-selected', 'true');
+                    applyFilter(btn.dataset.filter);
+                });
+            });
+
+            updateFilterCounts();
+            applyFilter('todos');
+
+            // Lightbox: lee el texto visible de la tarjeta
+            function openLightbox(item) {
+                const index = visibleItems.indexOf(item);
+                if (index === -1) return;
+                currentLightboxIndex = index;
+                renderLightbox();
+                lightbox.classList.add('active');
+                document.body.classList.add('no-scroll');
+            }
+
+            function renderLightbox() {
+                const item = visibleItems[currentLightboxIndex];
+                if (!item) return;
+
+                const imgEl = item.querySelector('img');
+                const titleEl = item.querySelector('.gallery-item-title');
+                const catEl = item.querySelector('.gallery-item-cat');
+
+                const src = imgEl ? imgEl.getAttribute('src') : '';
+                const title = titleEl ? titleEl.textContent.trim() : '';
+                const cat = catEl ? catEl.textContent.trim() : '';
+
+                lightboxImg.classList.remove('loaded');
+                lightboxSpinner.style.display = 'block';
+                lightboxImg.src = src;
+                lightboxImg.alt = title;
+                lightboxCat.textContent = cat;
+                lightboxTitle.textContent = title;
+                lightboxCounter.textContent = `${currentLightboxIndex + 1} / ${visibleItems.length}`;
+            }
+
+            lightboxImg.addEventListener('load', () => {
+                lightboxImg.classList.add('loaded');
+                lightboxSpinner.style.display = 'none';
+            });
+
+            lightboxImg.addEventListener('error', () => {
+                lightboxSpinner.style.display = 'none';
+            });
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+                lightboxImg.src = '';
+            }
+
+            function nextImage() {
+                if (visibleItems.length === 0) return;
+                currentLightboxIndex = (currentLightboxIndex + 1) % visibleItems.length;
+                renderLightbox();
+            }
+
+            function prevImage() {
+                if (visibleItems.length === 0) return;
+                currentLightboxIndex = (currentLightboxIndex - 1 + visibleItems.length) % visibleItems.length;
+                renderLightbox();
+            }
+
+            galleryItems.forEach((item) => {
+                item.addEventListener('click', () => openLightbox(item));
+            });
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightboxNext.addEventListener('click', nextImage);
+            lightboxPrev.addEventListener('click', prevImage);
+
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) closeLightbox();
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (!lightbox.classList.contains('active')) return;
+                if (e.key === 'Escape') closeLightbox();
+                else if (e.key === 'ArrowRight') nextImage();
+                else if (e.key === 'ArrowLeft') prevImage();
+            });
+
+            // Swipe en móvil
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            lightbox.addEventListener('touchstart', (e) => {
+                if (e.touches.length !== 1) return;
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            lightbox.addEventListener('touchend', (e) => {
+                if (!e.changedTouches.length) return;
+                const dx = e.changedTouches[0].clientX - touchStartX;
+                const dy = e.changedTouches[0].clientY - touchStartY;
+                if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+                if (dx < 0) nextImage();
+                else prevImage();
+            }, { passive: true });
+
+            // Año automático
+            const yearEl = document.getElementById('currentYear');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
