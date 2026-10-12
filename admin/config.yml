@@ -1,5 +1,7 @@
-
-# CONFIGURACIÓN DEL PANEL DE ADMINISTRACIÓN / Holii
+# ============================================================
+# CONFIGURACIÓN DEL PANEL DE ADMINISTRACIÓN
+# Instituto Técnico · Sistema de noticias y eventos
+# ============================================================
 
 backend:
   name: git-gateway
@@ -12,9 +14,6 @@ public_folder: "/assets/images/noticias"
 # Idioma del panel
 locale: 'es'
 
-# Mensajes que aparecen al publicar
-publish_mode: simple
-
 # ============================================================
 # COLECCIONES DE CONTENIDO
 # ============================================================
@@ -25,7 +24,6 @@ collections:
     description: >
       Administra las noticias y eventos que aparecen en la página principal.
       Puedes agregar, editar, reordenar o eliminar noticias desde aquí.
-      Los cambios se publican automáticamente en pocos segundos.
     files:
       - name: "lista"
         label: "📋 Todas las Noticias"
@@ -45,7 +43,6 @@ collections:
             allow_add: true
             allow_delete: true
             fields:
-              # ---------- TÍTULO ----------
               - label: "📌 Título de la noticia"
                 name: "title"
                 widget: "string"
@@ -54,7 +51,6 @@ collections:
                   Ejemplo: "Feria Universitaria para el grado 11°"
                 pattern: ['^.{5,100}$', 'El título debe tener entre 5 y 100 caracteres']
 
-              # ---------- FECHA ----------
               - label: "📅 Fecha"
                 name: "date"
                 widget: "datetime"
@@ -64,7 +60,6 @@ collections:
                 picker_utc: false
                 hint: "Selecciona el día en que se publica o sucede la noticia."
 
-              # ---------- CATEGORÍA ----------
               - label: "🏷️ Categoría"
                 name: "category"
                 widget: "select"
@@ -81,7 +76,6 @@ collections:
                   - { label: "🔬 Ciencia y Tecnología", value: "Ciencia y Tecnología" }
                   - { label: "🏫 Institucional", value: "Institucional" }
 
-              # ---------- IMAGEN ----------
               - label: "🖼️ Imagen de portada"
                 name: "image"
                 widget: "image"
@@ -91,38 +85,21 @@ collections:
                 choose_url: false
                 hint: >
                   Sube una foto horizontal (ideal: 1200x800 px, menos de 500 KB).
-                  Se mostrará como portada en la tarjeta y en el modal.
 
-              # ---------- EXTRACTO ----------
               - label: "✏️ Extracto corto"
                 name: "excerpt"
                 widget: "text"
                 pattern: ['^.{20,220}$', 'El extracto debe tener entre 20 y 220 caracteres']
                 hint: >
                   Resumen breve (1-2 líneas) que aparece en la tarjeta.
-                  Ejemplo: "Conoce el cronograma, requisitos y proceso de inscripción."
 
-              # ---------- CONTENIDO ----------
               - label: "📄 Contenido completo"
                 name: "body"
                 widget: "markdown"
-                buttons:
-                  - bold
-                  - italic
-                  - link
-                  - heading-two
-                  - heading-three
-                  - list
-                  - numbered-list
-                  - quote
-                editor_components:
-                  - image
-                  - code-block
                 hint: >
                   Aquí va la noticia completa. Puedes usar negrita, listas,
-                  subtítulos y enlaces. Se mostrará cuando el visitante haga clic en "Leer más".
+                  subtítulos y enlaces.
 
-              # ---------- AUTOR ----------
               - label: "✍️ Autor"
                 name: "author"
                 widget: "string"
@@ -130,9 +107,7 @@ collections:
                 required: false
                 hint: >
                   ¿Quién escribe la noticia? Puede ser un área, un cargo o una persona.
-                  Ejemplos: "Coordinación Académica", "Rectoría", "Secretaría".
 
-              # ---------- DESTACADA ----------
               - label: "⭐ Marcar como destacada"
                 name: "featured"
                 widget: "boolean"
@@ -140,4 +115,3 @@ collections:
                 required: false
                 hint: >
                   Actívala si quieres que esta noticia llame más la atención.
-                  Aparecerá primero en la lista principal.
