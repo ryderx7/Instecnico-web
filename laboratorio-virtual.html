@@ -1,0 +1,3797 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Laboratorio Virtual del Instituto Técnico de Santander de Quilichao. Seis experimentos interactivos de Física y Química con simulaciones científicamente correctas.">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<title>Laboratorio Virtual | Instituto Técnico</title>
+
+<script>
+(function () {
+  var ua = navigator.userAgent || '';
+  var isMobileUA = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile|webOS/i.test(ua);
+  var isMobile = isMobileUA || window.innerWidth <= 768;
+  var root = document.documentElement;
+  root.classList.add(isMobile ? 'device-mobile' : 'device-pc');
+  window.__isMobileDevice = isMobile;
+})();
+</script>
+
+<link rel="icon" type="image/png" href="assets/images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&display=swap">
+
+<style>
+:root {
+  --bg-base: #000000;
+  --bg-panel: #0a0a0a;
+  --bg-card: #111111;
+  --bg-elevated: #1a1a1a;
+
+  --primary: #00ff88;
+  --primary-hover: #00cc6a;
+  --primary-dim: rgba(0, 255, 136, 0.1);
+  --primary-glow: rgba(0, 255, 136, 0.3);
+
+  --accent-yellow: #ffdd00;
+  --accent-yellow-dim: rgba(255, 221, 0, 0.12);
+
+  --text-main: #ffffff;
+  --text-muted: #999999;
+  --text-dim: #666666;
+  --text-dark: #000000;
+
+  --border-color: #222222;
+  --border-light: rgba(255, 255, 255, 0.05);
+
+  --font-body: 'Inter', sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-elegant: 'Instrument Serif', serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-cinematic: cubic-bezier(0.19, 1, 0.22, 1);
+
+  --section-pad-y: clamp(88px, 12vw, 160px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+  -webkit-text-size-adjust: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0, 255, 136, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 85% 80%, rgba(0, 255, 136, 0.04) 0%, transparent 50%);
+}
+
+body.no-scroll { overflow: hidden; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+a { text-decoration: none; color: inherit; transition: var(--transition); }
+ul { list-style: none; }
+img { max-width: 100%; height: auto; display: block; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding-left: max(24px, calc(var(--safe-left) + 20px));
+  padding-right: max(24px, calc(var(--safe-right) + 20px));
+}
+
+.section-padding {
+  padding-top: var(--section-pad-y);
+  padding-bottom: var(--section-pad-y);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+.text-green { color: var(--primary); }
+.text-muted { color: var(--text-muted); }
+
+.gradient-title {
+  background: linear-gradient(180deg, #FFFFFF 0%, #B8B8B8 55%, #6a6a6a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.accent-word {
+  font-family: var(--font-elegant);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  background: linear-gradient(180deg, var(--primary) 0%, #00b866 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.35));
+  padding: 0 0.05em;
+}
+
+.header {
+  position: fixed;
+  top: 0; left: 0; width: 100%;
+  z-index: 1000;
+  transition: background 0.3s ease, padding 0.3s ease, border-color 0.3s ease;
+  padding: calc(20px + var(--safe-top)) 0 20px;
+  border-bottom: 1px solid transparent;
+}
+
+.header.scrolled {
+  background: rgba(0, 0, 0, 0.94);
+  padding: calc(12px + var(--safe-top)) 0 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.logo img {
+  height: 100%;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.nav-link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  position: relative;
+  padding: 8px 0;
+}
+
+.nav-link:hover, .nav-link.active { color: var(--text-main); }
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 0; width: 0%; height: 1.5px;
+  background-color: var(--primary);
+  transition: width 0.35s var(--ease-premium);
+}
+
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.mobile-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-main);
+  cursor: pointer;
+  padding: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  position: relative;
+  z-index: 1001;
+  touch-action: manipulation;
+}
+.mobile-toggle:hover { background: rgba(255,255,255,0.05); }
+
+.mobile-toggle .icon-close { display: none; }
+.mobile-toggle.is-open .icon-menu { display: none; }
+.mobile-toggle.is-open .icon-close { display: block; }
+
+.hero {
+  position: relative;
+  padding-top: calc(140px + var(--safe-top));
+  padding-bottom: 60px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+  z-index: -1;
+}
+
+.hero-content {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  border-radius: 100px;
+  background: rgba(0, 255, 136, 0.08);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  color: var(--primary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-bottom: 28px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-family: var(--font-heading);
+  animation: fadeUp 1.2s var(--ease-cinematic) 0.2s backwards;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 12px var(--primary);
+  animation: dotPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-title {
+  font-size: clamp(2.4rem, 7vw, 5rem);
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  margin-bottom: 24px;
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  animation: clipReveal 2s var(--ease-cinematic) 0.4s forwards;
+}
+
+@keyframes clipReveal {
+  from { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
+  to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+}
+
+.hero-desc {
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  color: var(--text-muted);
+  max-width: 620px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+  font-weight: 300;
+  animation: fadeUp 1.4s var(--ease-cinematic) 0.9s backwards;
+}
+
+.hero-stats {
+  display: inline-flex;
+  align-items: center;
+  gap: 28px;
+  padding: 12px 26px;
+  border-radius: 100px;
+  background: rgba(17, 17, 17, 0.7);
+  border: 1px solid var(--border-color);
+  animation: fadeUp 1.5s var(--ease-cinematic) 1.3s backwards;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+}
+
+.hero-stat strong {
+  color: var(--primary);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.hero-stat-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border-color);
+}
+
+.filters {
+  position: sticky;
+  top: calc(70px + var(--safe-top));
+  z-index: 50;
+  padding: 14px 0;
+  margin-bottom: 40px;
+  background: rgba(0, 0, 0, 0.94);
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.filters-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 2px 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.filters-inner::-webkit-scrollbar { display: none; }
+
+@media (min-width: 769px) {
+  .filters-inner { justify-content: center; }
+}
+
+.filter-btn {
+  flex-shrink: 0;
+  padding: 10px 18px;
+  border-radius: 100px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.84rem;
+  transition: all 0.3s var(--ease-premium);
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.filter-btn:hover {
+  color: var(--text-main);
+  border-color: rgba(0, 255, 136, 0.4);
+  background: var(--primary-dim);
+}
+
+.filter-btn.is-active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text-dark);
+  box-shadow: 0 6px 24px rgba(0, 255, 136, 0.25);
+}
+
+.filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.filter-btn.is-active .filter-count {
+  background: rgba(0, 0, 0, 0.15);
+  color: var(--text-dark);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+}
+
+.exp-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px 24px;
+  cursor: pointer;
+  transition: all 0.4s var(--ease-premium);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: left;
+  touch-action: manipulation;
+  min-height: 280px;
+}
+
+.exp-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.exp-card:hover {
+  border-color: rgba(0, 255, 136, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 255, 136, 0.06);
+}
+
+.exp-card:hover::before { opacity: 1; }
+
+.exp-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.exp-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--primary-dim);
+  border: 1px solid rgba(0, 255, 136, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  flex-shrink: 0;
+  transition: all 0.4s var(--ease-premium);
+}
+
+.exp-card:hover .exp-icon {
+  background: var(--primary);
+  color: var(--text-dark);
+  box-shadow: 0 0 25px var(--primary-glow);
+}
+
+.exp-chip {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+}
+
+.exp-chip[data-cat="quimica"] { color: var(--primary); background: var(--primary-dim); border-color: rgba(0,255,136,0.25); }
+.exp-chip[data-cat="fisica"] { color: var(--accent-yellow); background: var(--accent-yellow-dim); border-color: rgba(255,221,0,0.25); }
+
+.exp-title {
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+  line-height: 1.25;
+}
+
+.exp-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+.exp-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-color);
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+
+.exp-meta span { display: inline-flex; align-items: center; gap: 5px; }
+
+.exp-difficulty {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.exp-difficulty .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.exp-difficulty[data-level="2"] .dot { background: var(--accent-yellow); }
+.exp-difficulty[data-level="3"] .dot { background: #ff6b6b; }
+
+.exp-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.88rem;
+  margin-top: 4px;
+  transition: all 0.3s var(--ease-premium);
+}
+
+.exp-card:hover .exp-cta { transform: translateX(4px); }
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.94);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal.is-active { opacity: 1; pointer-events: all; }
+
+.modal-shell {
+  width: 100%;
+  max-width: 1320px;
+  max-height: calc(100vh - 32px);
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.92);
+  opacity: 0;
+  transition: transform 0.5s var(--ease-cinematic), opacity 0.35s ease;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+}
+
+.modal.is-active .modal-shell { transform: scale(1); opacity: 1; }
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+}
+
+.modal-head-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.modal-head-cat {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.modal-head-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modal-close {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: all 0.3s var(--ease-premium);
+  flex-shrink: 0;
+  touch-action: manipulation;
+}
+
+.modal-close:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text-dark);
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.modal-canvas-area {
+  position: relative;
+  background: #050505;
+  border-bottom: 1px solid var(--border-color);
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-canvas-area canvas {
+  width: 100%;
+  flex: 1;
+  min-height: 240px;
+  display: block;
+  touch-action: none;
+}
+
+.modal-graph-area {
+  border-top: 1px solid var(--border-color);
+  padding: 12px 14px 14px;
+  background: var(--bg-panel);
+  flex-shrink: 0;
+}
+
+.modal-graph-label {
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.modal-graph-area canvas {
+  width: 100%;
+  height: 180px;
+  display: block;
+  touch-action: none;
+}
+
+.modal-controls {
+  padding: 22px;
+  background: var(--bg-panel);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.control-group { display: flex; flex-direction: column; gap: 10px; }
+
+.control-group-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.control-group-value {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--primary);
+  font-family: var(--font-heading);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--bg-elevated);
+  border-radius: 100px;
+  outline: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: 3px solid var(--bg-base);
+  box-shadow: 0 0 12px var(--primary-glow);
+  transition: transform 0.2s ease;
+}
+
+.slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.slider::-webkit-slider-thumb:active { transform: scale(1.25); }
+
+.slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: 3px solid var(--bg-base);
+  box-shadow: 0 0 12px var(--primary-glow);
+}
+
+.pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  padding: 9px 14px;
+  border-radius: 100px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all 0.3s var(--ease-premium);
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  touch-action: manipulation;
+  letter-spacing: -0.005em;
+}
+
+.pill:hover {
+  border-color: rgba(0, 255, 136, 0.4);
+  color: var(--text-main);
+  background: var(--primary-dim);
+}
+
+.pill.is-active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text-dark);
+}
+
+.pill[data-warm].is-active { background: var(--accent-yellow); border-color: var(--accent-yellow); }
+.pill[data-warm].is-active { color: var(--text-dark); }
+
+.results-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.result-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.result-label {
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.result-value {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.result-value.warm { color: var(--accent-yellow); }
+.result-value.dim { color: var(--text-main); }
+
+.actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s var(--ease-premium);
+  border: 1px solid transparent;
+  min-height: 46px;
+  touch-action: manipulation;
+  letter-spacing: -0.005em;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn--primary {
+  background: var(--primary);
+  color: var(--text-dark);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.15);
+}
+
+.btn--primary:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 8px 26px rgba(0, 255, 136, 0.28);
+  transform: translateY(-1px);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--border-color);
+  color: var(--text-main);
+}
+
+.btn--ghost:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-dim);
+}
+
+.btn--full { width: 100%; }
+
+.btn:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.questions-panel {
+  padding: 20px 22px 24px;
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid var(--border-color);
+}
+
+.questions-title {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.questions-title::before {
+  content: '';
+  width: 14px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+.question {
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: border-color 0.3s ease;
+}
+
+.question:last-child { margin-bottom: 0; }
+.question.is-correct { border-color: rgba(0, 255, 136, 0.4); }
+.question.is-wrong { border-color: rgba(255, 107, 107, 0.4); }
+
+.question-text {
+  font-size: 0.9rem;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  line-height: 1.55;
+}
+
+.question-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.question-option {
+  padding: 8px 14px;
+  border-radius: 100px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s var(--ease-premium);
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  touch-action: manipulation;
+}
+
+.question-option:hover {
+  color: var(--text-main);
+  border-color: rgba(0, 255, 136, 0.4);
+}
+
+.question-option.is-selected {
+  background: var(--primary-dim);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.question-option.is-correct {
+  background: rgba(0, 255, 136, 0.15);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.question-option.is-wrong {
+  background: rgba(255, 107, 107, 0.12);
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  transition:
+    opacity 1s var(--ease-cinematic),
+    transform 1s var(--ease-cinematic);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.footer {
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-card);
+  padding: 90px 0 calc(28px + var(--safe-bottom));
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 64px;
+}
+
+.footer-title {
+  color: var(--text-main);
+  font-size: 1.05rem;
+  margin-bottom: 22px;
+  letter-spacing: -0.01em;
+}
+
+.footer-links { display: flex; flex-direction: column; gap: 14px; }
+
+.footer-links a {
+  color: var(--text-muted);
+  font-size: 0.94rem;
+  transition: var(--transition);
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-links a:hover { color: var(--primary); padding-left: 4px; }
+
+.social-links { display: flex; gap: 12px; }
+
+.social-link {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+  transition: all 0.35s var(--ease-premium);
+  touch-action: manipulation;
+}
+
+.social-link:hover {
+  background: var(--primary);
+  color: var(--bg-base);
+  transform: translateY(-3px);
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--border-color);
+  padding-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 769px) {
+  .modal-body {
+    grid-template-columns: 3fr 2fr;
+    overflow: hidden;
+  }
+
+  .modal-canvas-area {
+    border-bottom: none;
+    border-right: 1px solid var(--border-color);
+    height: 100%;
+  }
+
+  .modal-controls {
+    max-height: 100%;
+  }
+}
+
+@media (max-width: 992px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 44px 32px; }
+}
+
+@media (max-width: 768px) {
+  :root { --section-pad-y: 80px; }
+
+  * { -webkit-tap-highlight-color: transparent; }
+
+  .mobile-toggle { display: flex; }
+
+  .nav-links {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.98);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: calc(90px + var(--safe-top)) max(32px, calc(var(--safe-left) + 24px)) calc(48px + var(--safe-bottom)) max(32px, calc(var(--safe-right) + 24px));
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.55s var(--ease-cinematic), opacity 0.4s ease, visibility 0s linear 0.55s;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .nav-links.mobile-active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    transition: transform 0.55s var(--ease-cinematic), opacity 0.4s ease, visibility 0s linear 0s;
+  }
+
+  .nav-links .nav-link {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--text-main);
+    padding: 20px 0;
+    width: 100%;
+    border-bottom: 1px solid var(--border-color);
+    letter-spacing: -0.02em;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-links .nav-link::after { display: none; }
+
+  .hero { padding-top: calc(110px + var(--safe-top)); padding-bottom: 40px; }
+  .hero-title { font-size: clamp(2.2rem, 12vw, 3.6rem); }
+  .hero-desc { font-size: 0.95rem; padding: 0 8px; }
+  .hero-stats { gap: 12px; padding: 10px 16px; flex-wrap: wrap; }
+  .hero-stat { font-size: 0.72rem; }
+  .hero-stat strong { font-size: 1rem; }
+  .hero-stat-divider { height: 14px; }
+
+  .filters { top: calc(58px + var(--safe-top)); padding: 10px 0; margin-bottom: 20px; }
+  .filter-btn { padding: 9px 14px; font-size: 0.78rem; min-height: 40px; }
+  .filter-count { min-width: 20px; height: 20px; font-size: 0.65rem; }
+
+  .grid { grid-template-columns: 1fr; gap: 14px; }
+  .exp-card { padding: 20px 18px; min-height: auto; gap: 12px; }
+  .exp-title { font-size: 1.05rem; }
+  .exp-desc { font-size: 0.85rem; }
+
+  .modal { padding: 0; }
+  .modal-shell {
+    max-width: 100%;
+    max-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    border: none;
+  }
+
+  .modal-head { padding: 14px 16px; gap: 10px; }
+  .modal-head-cat { font-size: 0.6rem; }
+  .modal-head-title { font-size: 0.95rem; }
+  .modal-close { width: 40px; height: 40px; }
+
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-canvas-area {
+    min-height: auto;
+    flex-shrink: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .modal-canvas-area canvas {
+    width: 100%;
+    height: 260px;
+    min-height: 260px;
+    flex: none;
+  }
+
+  .modal-graph-area { padding: 10px 12px 12px; flex-shrink: 0; }
+  .modal-graph-label { font-size: 0.62rem; margin-bottom: 6px; }
+
+  .modal-graph-area canvas {
+    width: 100%;
+    height: 160px;
+    min-height: 160px;
+  }
+
+  .modal-controls {
+    padding: 16px 14px calc(24px + var(--safe-bottom));
+    gap: 14px;
+    flex: none;
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .control-group { gap: 8px; }
+  .control-group-label { font-size: 0.68rem; }
+  .control-group-value { font-size: 0.78rem; }
+  .slider { height: 8px; }
+  .slider::-webkit-slider-thumb { width: 26px; height: 26px; }
+  .slider::-moz-range-thumb { width: 26px; height: 26px; }
+
+  .pill { padding: 10px 14px; font-size: 0.78rem; min-height: 42px; }
+
+  .results-panel { padding: 14px 14px; gap: 12px; }
+  .result-label { font-size: 0.58rem; }
+  .result-value { font-size: 0.95rem; }
+
+  .actions-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .btn { min-height: 46px; font-size: 0.85rem; padding: 10px 14px; }
+
+  .questions-panel { padding: 16px 14px 20px; }
+  .questions-title { font-size: 0.66rem; }
+  .question { padding: 12px 14px; margin-bottom: 12px; }
+  .question-text { font-size: 0.85rem; }
+  .question-option { padding: 8px 12px; font-size: 0.75rem; min-height: 38px; }
+
+  .footer { padding: 64px 0 calc(24px + var(--safe-bottom)); }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px 24px; margin-bottom: 44px; }
+  .footer-bottom { font-size: 0.78rem; flex-direction: column; text-align: center; gap: 10px; }
+}
+
+@media (max-width: 480px) {
+  .filter-btn { padding: 8px 12px; font-size: 0.74rem; }
+  .hero-stats { gap: 10px; padding: 8px 14px; }
+  .hero-stat strong { font-size: 0.95rem; }
+  .exp-card { padding: 18px 16px; }
+  .actions-row { grid-template-columns: 1fr; }
+  .results-panel { grid-template-columns: 1fr; }
+  .modal-canvas-area canvas { height: 220px; min-height: 220px; }
+  .modal-graph-area canvas { height: 150px; min-height: 150px; }
+  .footer-grid { grid-template-columns: 1fr; text-align: center; }
+  .social-links { justify-content: center; }
+}
+
+.device-mobile .header.scrolled,
+.device-mobile .filters,
+.device-mobile .modal,
+.device-mobile .modal-close {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.device-mobile .header.scrolled { background: rgba(0, 0, 0, 0.94); }
+.device-mobile .filters { background: rgba(0, 0, 0, 0.94); }
+.device-mobile .modal { background: rgba(0, 0, 0, 0.97); }
+</style>
+</head>
+<body>
+
+<header class="header" id="header">
+  <div class="container nav-container">
+    <a href="index.html" class="logo" aria-label="Inicio Instituto Técnico">
+      <img src="assets/images/logo.png" alt="Logo Instituto Técnico" width="140" height="44">
+      <span>Ins<span class="text-green">Tecnico</span></span>
+    </a>
+    <nav aria-label="Navegación principal">
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="nav-link">Inicio</a></li>
+        <li><a href="index.html#nosotros" class="nav-link">Nosotros</a></li>
+        <li><a href="index.html#sedes" class="nav-link">Sedes</a></li>
+        <li><a href="index.html#accesos" class="nav-link">Accesos</a></li>
+        <li><a href="index.html#noticias" class="nav-link">Noticias</a></li>
+        <li><a href="historia.html" class="nav-link">Historia</a></li>
+        <li><a href="laboratorio-virtual.html" class="nav-link active">Laboratorio</a></li>
+        <li><a href="chat-global.html" target="_blank" rel="noopener noreferrer" class="nav-link">Chat Global</a></li>
+      </ul>
+    </nav>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+      <svg class="icon-menu" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="21" y2="7"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="17" x2="15" y2="17"></line></svg>
+      <svg class="icon-close" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" id="inicio">
+    <div class="hero-grid-bg" aria-hidden="true"></div>
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-badge">Experiencias Interactivas · Física y Química</span>
+        <h1 class="hero-title gradient-title">Laboratorio <span class="accent-word">Virtual</span></h1>
+        <p class="hero-desc">
+          Seis experimentos interactivos con simulaciones científicamente correctas. Ajusta las variables, observa los resultados en tiempo real y aprende haciendo.
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat"><strong>6</strong><span>experimentos</span></div>
+          <div class="hero-stat-divider" aria-hidden="true"></div>
+          <div class="hero-stat"><strong>100%</strong><span>interactivo</span></div>
+          <div class="hero-stat-divider" aria-hidden="true"></div>
+          <div class="hero-stat"><strong>0</strong><span>instalación</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="filters" id="filtersBar" role="tablist" aria-label="Filtrar experimentos por categoría">
+    <div class="container">
+      <div class="filters-inner" id="filtersInner">
+        <button class="filter-btn is-active" data-filter="todos" role="tab" aria-selected="true">Todos <span class="filter-count" data-count="todos">6</span></button>
+        <button class="filter-btn" data-filter="fisica" role="tab" aria-selected="false">Física <span class="filter-count" data-count="fisica">4</span></button>
+        <button class="filter-btn" data-filter="quimica" role="tab" aria-selected="false">Química <span class="filter-count" data-count="quimica">2</span></button>
+        <button class="filter-btn" data-filter="termodinamica" role="tab" aria-selected="false">Termodinámica <span class="filter-count" data-count="termodinamica">1</span></button>
+        <button class="filter-btn" data-filter="mecanica" role="tab" aria-selected="false">Mecánica <span class="filter-count" data-count="mecanica">2</span></button>
+        <button class="filter-btn" data-filter="electricidad" role="tab" aria-selected="false">Electricidad <span class="filter-count" data-count="electricidad">1</span></button>
+      </div>
+    </div>
+  </div>
+
+  <section class="section-padding" style="padding-top: 0;">
+    <div class="container">
+      <div class="grid" id="grid" role="tabpanel" aria-label="Experimentos disponibles"></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal-shell">
+    <div class="modal-head">
+      <div class="modal-head-info">
+        <span class="modal-head-cat" id="modalCat">Física</span>
+        <h2 class="modal-head-title" id="modalTitle">Experimento</h2>
+      </div>
+      <button class="modal-close" id="modalClose" aria-label="Cerrar experimento">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="logo" style="margin-bottom: 22px;">
+          <img src="assets/images/logo.png" alt="Logo" width="140" height="44" loading="lazy" decoding="async">
+          <span>Ins<span class="text-green">Tecnico</span></span>
+        </a>
+        <p style="color: var(--text-muted); font-size: 0.94rem; margin-bottom: 26px; line-height: 1.7;">Institución Educativa oficial dedicada a la formación de líderes en Santander de Quilichao, Cauca.</p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/IT.TECNICO2013/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/channel/UCwMarfY8Bpd3uRq8pfGAJbw" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="YouTube">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.16 1 12 1 12s0 3.84.46 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.84 23 12 23 12s0-3.84-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-title">Institución</h4>
+        <div class="footer-links">
+          <a href="index.html#nosotros">Historia</a>
+          <a href="index.html#sedes">Nuestras Sedes</a>
+          <a href="index.html#noticias">Noticias y Eventos</a>
+          <a href="galeria.html">Galería</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-title">Accesos</h4>
+        <div class="footer-links">
+          <a href="https://tecnico.educa20.com" target="_blank" rel="noopener noreferrer">Portal de Notas</a>
+          <a href="https://educa20.com/gegar-soft.com/" target="_blank" rel="noopener noreferrer">Sistema GegarSoft</a>
+          <a href="http://www.institutotecnico-santanderdequilichao-cauca.ie.edu.co/" target="_blank" rel="noopener noreferrer">Sede Electrónica</a>
+          <a href="chat-global.html" target="_blank" rel="noopener noreferrer">Chat Global</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-title">Legal</h4>
+        <div class="footer-links">
+          <a href="index.html#contacto">Contacto</a>
+          <a href="historia.html">Historia</a>
+          <a href="laboratorio-virtual.html">Laboratorio</a>
+          <a href="https://institucion-educativa-instituto-tecnico-1.micolombiadigital.gov.co/" target="_blank" rel="noopener noreferrer">Portal de Transparencia</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="currentYear">2026</span> Instituto Técnico. Todos los derechos reservados.</p>
+      <p>Diseñado y desarrollado por <span class="text-green">DevKeiner</span> y <span class="text-green">Ali Sinesterra</span></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  const NUM = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 2 });
+  const NUM1 = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 1 });
+  const NUM0 = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 });
+
+  function formatNum(v, fmt) {
+    if (!isFinite(v)) return '—';
+    return (fmt || NUM).format(v);
+  }
+
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+  function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
+
+  function setupCanvas(canvas) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = canvas.getBoundingClientRect();
+    const w = Math.max(1, rect.width);
+    const h = Math.max(1, rect.height);
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, w, h, dpr };
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    const radius = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + w - radius, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+    ctx.lineTo(x + w, y + h - radius);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+    ctx.lineTo(x + radius, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+  }
+
+  function lerpColor(a, b, t) {
+    return [
+      Math.round(a[0] + (b[0] - a[0]) * t),
+      Math.round(a[1] + (b[1] - a[1]) * t),
+      Math.round(a[2] + (b[2] - a[2]) * t)
+    ];
+  }
+
+  const COLORS = {
+    primary: '#00ff88',
+    primaryDim: 'rgba(0,255,136,0.15)',
+    yellow: '#ffdd00',
+    red: '#ff6b6b',
+    blue: '#82beff',
+    textMain: '#ffffff',
+    textMuted: '#999999',
+    textDim: '#666666',
+    axis: '#aaaaaa',
+    border: '#222222',
+    bgCard: '#111111',
+    bgElevated: '#1a1a1a'
+  };
+
+  class AudioEngine {
+    constructor() {
+      this.ctx = null;
+      this.unlocked = false;
+    }
+    unlock() {
+      if (!this.ctx) {
+        try {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) { return; }
+      }
+      if (this.ctx.state === 'suspended') {
+        this.ctx.resume().catch(() => {});
+      }
+      this.unlocked = true;
+    }
+    play(tone) {
+      if (!this.ctx) return;
+      if (this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
+      try {
+        const now = this.ctx.currentTime;
+        const tones = {
+          open: [{ f: 523.25, d: 0, dur: 0.18, g: 0.09 }, { f: 783.99, d: 0.07, dur: 0.22, g: 0.07 }],
+          start: [{ f: 440, d: 0, dur: 0.15, g: 0.08 }, { f: 660, d: 0.08, dur: 0.2, g: 0.06 }],
+          complete: [{ f: 523.25, d: 0, dur: 0.16, g: 0.09 }, { f: 659.25, d: 0.08, dur: 0.16, g: 0.08 }, { f: 783.99, d: 0.16, dur: 0.2, g: 0.09 }, { f: 1046.5, d: 0.24, dur: 0.28, g: 0.08 }],
+          reset: [{ f: 660, d: 0, dur: 0.15, g: 0.07 }, { f: 440, d: 0.08, dur: 0.2, g: 0.06 }]
+        };
+        const notes = tones[tone] || tones.open;
+        notes.forEach(n => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = n.f;
+          const t = now + n.d;
+          gain.gain.setValueAtTime(0.0001, t);
+          gain.gain.exponentialRampToValueAtTime(n.g, t + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t + n.dur);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + n.dur + 0.02);
+        });
+      } catch (e) {}
+    }
+  }
+
+  const audio = new AudioEngine();
+
+  class BaseExperiment {
+    constructor(meta) {
+      this.meta = meta;
+      this.root = null;
+      this.canvas = null;
+      this.graphCanvas = null;
+      this.ctx = null;
+      this.graphCtx = null;
+      this.w = 0;
+      this.h = 0;
+      this.graphW = 0;
+      this.graphH = 0;
+      this.running = false;
+      this.raf = null;
+      this.lastTime = 0;
+      this.elapsed = 0;
+      this.resizeObserver = null;
+      this.resultEls = {};
+      this.history = this.loadHistory();
+      this.state = 'ready';
+    }
+
+    loadHistory() {
+      try {
+        const raw = localStorage.getItem('instecnico_lab_' + this.meta.id);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) { return []; }
+    }
+
+    saveHistory(entry) {
+      const list = [entry, ...this.history].slice(0, 5);
+      this.history = list;
+      try {
+        localStorage.setItem('instecnico_lab_' + this.meta.id, JSON.stringify(list));
+      } catch (e) {}
+    }
+
+    buildShell() {
+      const cat = this.meta.categories[0];
+      return `
+        <div class="modal-canvas-area">
+          <canvas id="labCanvas" role="img" aria-label="Simulación interactiva: ${this.meta.title}"></canvas>
+          <div class="modal-graph-area">
+            <div class="modal-graph-label">Gráfico en tiempo real</div>
+            <canvas id="labGraph" role="img" aria-label="Gráfico de resultados en tiempo real" aria-hidden="true"></canvas>
+          </div>
+        </div>
+        <div class="modal-controls" id="labControls" data-category="${cat}">
+          ${this.buildControls()}
+          <div class="results-panel" id="labResults" aria-live="polite" aria-atomic="false">
+            ${this.buildResults()}
+          </div>
+          <div class="actions-row">
+            <button class="btn btn--primary" id="labRun" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+              <span id="labRunText">Iniciar</span>
+            </button>
+            <button class="btn btn--ghost" id="labReset" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reiniciar
+            </button>
+          </div>
+          <div class="actions-row">
+            <button class="btn btn--ghost" id="labCopy" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copiar
+            </button>
+            <button class="btn btn--ghost" id="labExport" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Exportar
+            </button>
+          </div>
+          <div class="questions-panel">
+            <div class="questions-title">Preguntas de análisis</div>
+            ${this.buildQuestions()}
+          </div>
+        </div>
+      `;
+    }
+
+    buildControls() { return ''; }
+    buildResults() { return ''; }
+    buildQuestions() { return ''; }
+    bindControls() {}
+    update() {}
+    draw() {}
+    reset() {}
+
+    mount(container) {
+      this.root = container;
+      this.root.innerHTML = this.buildShell();
+
+      this.canvas = this.root.querySelector('#labCanvas');
+      this.graphCanvas = this.root.querySelector('#labGraph');
+
+      const main = setupCanvas(this.canvas);
+      this.ctx = main.ctx;
+      this.w = main.w;
+      this.h = main.h;
+
+      const graph = setupCanvas(this.graphCanvas);
+      this.graphCtx = graph.ctx;
+      this.graphW = graph.w;
+      this.graphH = graph.h;
+
+      this.cacheResults();
+      this.bindControls();
+      this.bindActions();
+      this.bindQuestions();
+      this.bindResize();
+      this.state = 'ready';
+      this.reset();
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (!this.canvas) return;
+        const main = setupCanvas(this.canvas);
+        this.ctx = main.ctx;
+        this.w = main.w;
+        this.h = main.h;
+        const graph = setupCanvas(this.graphCanvas);
+        this.graphCtx = graph.ctx;
+        this.graphW = graph.w;
+        this.graphH = graph.h;
+        this.draw();
+        this.drawGraph();
+      }));
+    }
+
+    cacheResults() {
+      this.root.querySelectorAll('[data-result]').forEach(el => {
+        this.resultEls[el.getAttribute('data-result')] = el;
+      });
+    }
+
+    bindActions() {
+      const runBtn = this.root.querySelector('#labRun');
+      const runText = this.root.querySelector('#labRunText');
+      const resetBtn = this.root.querySelector('#labReset');
+      const copyBtn = this.root.querySelector('#labCopy');
+      const exportBtn = this.root.querySelector('#labExport');
+
+      runBtn.addEventListener('click', () => {
+        if (this.state === 'running') return;
+        audio.play('start');
+        this.start();
+        runText.textContent = 'Ejecutando';
+        runBtn.disabled = true;
+      });
+
+      resetBtn.addEventListener('click', () => {
+        audio.play('reset');
+        this.stop();
+        this.elapsed = 0;
+        this.reset();
+        this.state = 'ready';
+        runText.textContent = 'Iniciar';
+        runBtn.disabled = false;
+        this.draw();
+        this.drawGraph();
+      });
+
+      copyBtn.addEventListener('click', () => {
+        const text = this.buildExportText();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => {
+            copyBtn.textContent = 'Copiado';
+            setTimeout(() => {
+              copyBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar';
+            }, 1400);
+          }).catch(() => {});
+        }
+      });
+
+      exportBtn.addEventListener('click', () => {
+        const text = this.buildExportText();
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'experimento-' + this.meta.id + '.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    bindQuestions() {
+      const groups = this.root.querySelectorAll('[data-question]');
+      groups.forEach(group => {
+        const correct = group.getAttribute('data-correct');
+        const options = group.querySelectorAll('.question-option');
+        options.forEach(opt => {
+          opt.addEventListener('click', () => {
+            if (group.dataset.answered === '1') return;
+            const val = opt.getAttribute('data-value');
+            if (val === correct) {
+              opt.classList.add('is-correct');
+              group.classList.add('is-correct');
+              group.dataset.answered = '1';
+            } else {
+              opt.classList.add('is-wrong');
+              group.classList.add('is-wrong');
+              setTimeout(() => opt.classList.remove('is-wrong'), 900);
+            }
+          });
+        });
+      });
+    }
+
+    bindResize() {
+      if (typeof ResizeObserver === 'undefined') return;
+      let resizeTimer = null;
+      this.resizeObserver = new ResizeObserver(() => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          if (!this.canvas) return;
+          const main = setupCanvas(this.canvas);
+          this.ctx = main.ctx;
+          this.w = main.w;
+          this.h = main.h;
+          const graph = setupCanvas(this.graphCanvas);
+          this.graphCtx = graph.ctx;
+          this.graphW = graph.w;
+          this.graphH = graph.h;
+          this.draw();
+          this.drawGraph();
+        }, 100);
+      });
+      this.resizeObserver.observe(this.canvas);
+      this.resizeObserver.observe(this.graphCanvas);
+    }
+
+    start() {
+      this.state = 'running';
+      this.elapsed = 0;
+      this.lastTime = performance.now();
+      const loop = (t) => {
+        if (!this.running) return;
+        const dt = Math.min(0.05, (t - this.lastTime) / 1000);
+        this.lastTime = t;
+        this.elapsed += dt;
+        this.update(dt);
+        this.draw();
+        this.drawGraph();
+        if (this.state === 'running') {
+          this.raf = requestAnimationFrame(loop);
+        }
+      };
+      this.running = true;
+      this.raf = requestAnimationFrame(loop);
+    }
+
+    stop() {
+      this.running = false;
+      if (this.raf) cancelAnimationFrame(this.raf);
+      this.raf = null;
+    }
+
+    finish() {
+      this.state = 'completed';
+      this.running = false;
+      audio.play('complete');
+      const runBtn = this.root.querySelector('#labRun');
+      const runText = this.root.querySelector('#labRunText');
+      if (runBtn) {
+        runBtn.disabled = false;
+        runText.textContent = 'Iniciar';
+      }
+      this.saveHistory(this.getSnapshot());
+    }
+
+    getSnapshot() {
+      return { t: Date.now(), config: this.getConfig() };
+    }
+
+    getConfig() { return {}; }
+
+    buildExportText() {
+      const cfg = this.getConfig();
+      let out = `Instituto Técnico — Laboratorio Virtual\n`;
+      out += `Experimento: ${this.meta.title}\n`;
+      out += `Fecha: ${new Date().toLocaleString('es-CO')}\n\n`;
+      out += `Configuración:\n`;
+      Object.keys(cfg).forEach(k => { out += `  ${k}: ${cfg[k]}\n`; });
+      out += `\nResultados:\n`;
+      Object.keys(this.resultEls).forEach(k => {
+        out += `  ${k}: ${this.resultEls[k].textContent}\n`;
+      });
+      return out;
+    }
+
+    setResult(key, value) {
+      const el = this.resultEls[key];
+      if (el) el.textContent = value;
+    }
+
+    drawGraph() {
+      const ctx = this.graphCtx;
+      const w = this.graphW;
+      const h = this.graphH;
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      ctx.lineWidth = 1;
+      const gridStep = 30;
+      for (let x = 0; x < w; x += gridStep) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      for (let y = 0; y < h; y += gridStep) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  class EntalpiaLab extends BaseExperiment {
+    static META = {
+      id: 'entalpia',
+      title: 'Entalpía de disolución',
+      categories: ['quimica', 'termodinamica'],
+      difficulty: 2,
+      duration: '~3 min',
+      short: 'Disuelve sales en agua y observa si la temperatura sube o baja. Distingue procesos endotérmicos y exotérmicos.',
+      icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v7L4 19a1 1 0 0 0 .9 1.5h14.2A1 1 0 0 0 20 19l-5-9V3"/><line x1="8" y1="3" x2="16" y2="3"/><path d="M6.5 15h11"/></svg>'
+    };
+
+    constructor() {
+      super(EntalpiaLab.META);
+      this.substances = {
+        NH4Cl: { name: 'Cloruro de amonio', formula: 'NH₄Cl', dH: 14.8, M: 53.5, type: 'endo', color: '#82beff' },
+        CaCl2: { name: 'Cloruro de calcio', formula: 'CaCl₂', dH: -82.8, M: 111.0, type: 'exo', color: '#ff9a6b' },
+        KClO3: { name: 'Clorato de potasio', formula: 'KClO₃', dH: 41.4, M: 122.55, type: 'endo', color: '#a0d8ff' },
+        KOH: { name: 'Hidróxido de potasio', formula: 'KOH', dH: -57.6, M: 56.1, type: 'exo', color: '#ffb088' },
+        KNO3: { name: 'Nitrato de potasio', formula: 'KNO₃', dH: 34.9, M: 101.1, type: 'endo', color: '#8ecbff' },
+        NaOH: { name: 'Hidróxido de sodio', formula: 'NaOH', dH: -44.5, M: 40.0, type: 'exo', color: '#ffa07a' }
+      };
+      this.current = 'NH4Cl';
+      this.mass = 10;
+      this.waterMass = 100;
+      this.T0 = 20.0;
+      this.Tfinal = 20.0;
+      this.Tcurrent = 20.0;
+      this.dissolvedFraction = 0;
+      this.historyPoints = [];
+    }
+
+    getConfig() {
+      const s = this.substances[this.current];
+      return {
+        'Sustancia': s.formula + ' (' + s.name + ')',
+        'Masa de soluto (g)': this.mass,
+        'Masa de agua (g)': this.waterMass,
+        'Temperatura inicial (°C)': this.T0
+      };
+    }
+
+    computeDT() {
+      const s = this.substances[this.current];
+      const n = this.mass / s.M;
+      const Q = s.dH * n * 1000;
+      const mTotal = this.waterMass + this.mass;
+      const c = 4.18;
+      return -Q / (mTotal * c);
+    }
+
+    buildControls() {
+      const pills = Object.keys(this.substances).map(k =>
+        `<button type="button" class="pill" data-sub="${k}"${k === this.current ? ' aria-pressed="true"' : ' aria-pressed="false"'}>${this.substances[k].formula}</button>`
+      ).join('');
+      return `
+        <div class="control-group">
+          <div class="control-group-label"><span>Sustancia</span></div>
+          <div class="pill-group" id="entSubs">${pills}</div>
+        </div>
+        <div class="control-group">
+          <div class="control-group-label"><span>Masa de soluto</span><span class="control-group-value" id="entMassVal">10 g</span></div>
+          <input class="slider" type="range" id="entMass" min="0" max="30" step="0.5" value="10" aria-label="Masa de soluto en gramos">
+        </div>
+      `;
+    }
+
+    buildResults() {
+      return `
+        <div class="result-item"><span class="result-label">Temp. actual</span><span class="result-value" data-result="T">20.0 °C</span></div>
+        <div class="result-item"><span class="result-label">ΔT final</span><span class="result-value" data-result="DT">0.0 °C</span></div>
+        <div class="result-item"><span class="result-label">Moles</span><span class="result-value dim" data-result="n">0.19 mol</span></div>
+        <div class="result-item"><span class="result-label">Tipo de proceso</span><span class="result-value" data-result="tipo">Endotérmico</span></div>
+      `;
+    }
+
+    buildQuestions() {
+      return `
+        <div class="question" data-question data-correct="a">
+          <div class="question-text">¿Qué ocurre con la temperatura del agua al disolver NH₄Cl?</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Disminuye</button>
+            <button class="question-option" data-value="b" type="button">Aumenta</button>
+            <button class="question-option" data-value="c" type="button">No cambia</button>
+          </div>
+        </div>
+        <div class="question" data-question data-correct="b">
+          <div class="question-text">Si el ΔH es negativo, el proceso se clasifica como:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Endotérmico</button>
+            <button class="question-option" data-value="b" type="button">Exotérmico</button>
+            <button class="question-option" data-value="c" type="button">Adiabático</button>
+          </div>
+        </div>
+        <div class="question" data-question data-correct="c">
+          <div class="question-text">Al aumentar la masa de soluto, el cambio de temperatura:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Se hace cero</button>
+            <button class="question-option" data-value="b" type="button">Disminuye</button>
+            <button class="question-option" data-value="c" type="button">Aumenta</button>
+          </div>
+        </div>
+      `;
+    }
+
+    bindControls() {
+      this.root.querySelectorAll('[data-sub]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          this.current = btn.getAttribute('data-sub');
+          this.root.querySelectorAll('[data-sub]').forEach(b => {
+            const active = b === btn;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-pressed', active ? 'true' : 'false');
+          });
+          this.reset();
+          this.draw();
+          this.drawGraph();
+        });
+      });
+      const massSlider = this.root.querySelector('#entMass');
+      const massVal = this.root.querySelector('#entMassVal');
+      massSlider.addEventListener('input', () => {
+        this.mass = parseFloat(massSlider.value);
+        massVal.textContent = formatNum(this.mass, NUM1) + ' g';
+        this.reset();
+        this.draw();
+        this.drawGraph();
+      });
+      this.root.querySelectorAll('[data-sub]').forEach(b => {
+        if (b.getAttribute('data-sub') === this.current) b.classList.add('is-active');
+      });
+      massVal.textContent = formatNum(this.mass, NUM1) + ' g';
+    }
+
+    reset() {
+      const dt = this.computeDT();
+      this.Tfinal = this.T0 + dt;
+      this.Tcurrent = this.T0;
+      this.dissolvedFraction = 0;
+      this.historyPoints = [{ t: 0, T: this.T0 }];
+      this.state = 'ready';
+      this.updateResults();
+    }
+
+    update(dt) {
+      this.dissolvedFraction = clamp(this.elapsed / 4, 0, 1);
+      const target = this.T0 + (this.Tfinal - this.T0) * this.dissolvedFraction;
+      this.Tcurrent = target;
+      if (this.elapsed >= 5) {
+        this.Tcurrent = this.Tfinal;
+        this.finish();
+      }
+      this.historyPoints.push({ t: this.elapsed, T: this.Tcurrent });
+      if (this.historyPoints.length > 400) this.historyPoints.shift();
+      this.updateResults();
+    }
+
+    updateResults() {
+      const s = this.substances[this.current];
+      const dt = this.Tfinal - this.T0;
+      this.setResult('T', formatNum(this.Tcurrent, NUM1) + ' °C');
+      this.setResult('DT', (dt >= 0 ? '+' : '') + formatNum(dt, NUM1) + ' °C');
+      this.setResult('n', formatNum(this.mass / s.M) + ' mol');
+      this.setResult('tipo', s.type === 'endo' ? 'Endotérmico' : 'Exotérmico');
+    }
+
+    draw() {
+      const ctx = this.ctx;
+      const w = this.w;
+      const h = this.h;
+      ctx.clearRect(0, 0, w, h);
+      const s = this.substances[this.current];
+
+      const cx = w / 2;
+      const beakerW = Math.min(w * 0.5, 220);
+      const beakerH = Math.min(h * 0.72, 280);
+      const beakerX = cx - beakerW / 2;
+      const beakerY = h / 2 - beakerH / 2 + 10;
+
+      const tNorm = clamp((this.Tcurrent - 5) / 60, 0, 1);
+      let liquidTop, liquidBottom;
+      if (s.type === 'exo') {
+        liquidTop = [60, 140, 200];
+        liquidBottom = [255, 100, 80];
+      } else {
+        liquidTop = [80, 160, 220];
+        liquidBottom = [100, 180, 255];
+      }
+      const color = lerpColor(liquidTop, liquidBottom, tNorm);
+      const liquidFill = `rgb(${color[0]},${color[1]},${color[2]})`;
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(beakerX, beakerY);
+      ctx.lineTo(beakerX, beakerY + beakerH);
+      ctx.lineTo(beakerX + beakerW, beakerY + beakerH);
+      ctx.lineTo(beakerX + beakerW, beakerY);
+      ctx.stroke();
+
+      const liquidH = beakerH * 0.65;
+      const liquidY = beakerY + beakerH - liquidH;
+      ctx.fillStyle = liquidFill;
+      ctx.globalAlpha = 0.65;
+      ctx.fillRect(beakerX + 3, liquidY, beakerW - 6, liquidH);
+      ctx.globalAlpha = 1;
+
+      ctx.fillStyle = 'rgba(255,255,255,0.06)';
+      for (let i = 0; i < 20; i++) {
+        const px = beakerX + 6 + (i * 37 % (beakerW - 12));
+        const py = liquidY + 10 + (i * 53 % (liquidH - 20));
+        ctx.beginPath();
+        ctx.arc(px, py, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      if (this.state === 'running' && this.dissolvedFraction < 1) {
+        const dropY = liquidY - 30 + this.dissolvedFraction * 30;
+        const dropX = cx + Math.sin(this.elapsed * 6) * 8;
+        ctx.fillStyle = s.color;
+        ctx.globalAlpha = 0.9;
+        ctx.beginPath();
+        ctx.arc(dropX, dropY, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      const thermoX = beakerX + beakerW + 24;
+      const thermoY = beakerY + 20;
+      const thermoW = 60;
+      const thermoH = 140;
+      if (thermoX + thermoW > w - 10) return;
+
+      roundRect(ctx, thermoX, thermoY, thermoW, thermoH, 8);
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.stroke();
+
+      roundRect(ctx, thermoX + 18, thermoY + 30, 24, thermoH - 46, 12);
+      ctx.fillStyle = '#1a1a1a';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+      ctx.stroke();
+
+      const tMin = 5, tMax = 70;
+      const tFrac = clamp((this.Tcurrent - tMin) / (tMax - tMin), 0, 1);
+      const mercuryH = (thermoH - 56) * tFrac;
+      const mercuryY = thermoY + 30 + (thermoH - 46 - mercuryH);
+      const mercuryColor = tFrac > 0.6 ? '#ff6b6b' : (tFrac < 0.3 ? '#82beff' : COLORS.primary);
+      roundRect(ctx, thermoX + 20, mercuryY, 20, mercuryH, 10);
+      ctx.fillStyle = mercuryColor;
+      ctx.fill();
+
+      ctx.fillStyle = '#fff';
+      ctx.font = '600 13px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(formatNum(this.Tcurrent, NUM1) + '°', thermoX + thermoW / 2, thermoY + 22);
+
+      ctx.fillStyle = COLORS.textDim;
+      ctx.font = '500 9px Inter, sans-serif';
+      ctx.fillText('°C', thermoX + thermoW / 2, thermoY + thermoH + 14);
+
+      ctx.textAlign = 'left';
+      ctx.fillStyle = COLORS.textMuted;
+      ctx.font = '600 11px "Space Grotesk", sans-serif';
+      ctx.fillText(s.formula, beakerX, beakerY - 12);
+
+      ctx.fillStyle = s.type === 'endo' ? '#82beff' : '#ff9a6b';
+      ctx.font = '500 10px Inter, sans-serif';
+      ctx.fillText(s.type === 'endo' ? 'Endotérmico' : 'Exotérmico', beakerX, beakerY - 26);
+    }
+
+    drawGraph() {
+      super.drawGraph();
+      const ctx = this.graphCtx;
+      const w = this.graphW;
+      const h = this.graphH;
+      if (this.historyPoints.length < 2) return;
+
+      const pad = { l: 38, r: 14, t: 14, b: 26 };
+      const plotW = w - pad.l - pad.r;
+      const plotH = h - pad.t - pad.b;
+
+      const tMax = Math.max(5, this.elapsed);
+      const tMinY = Math.min(this.T0, this.Tfinal) - 2;
+      const tMaxY = Math.max(this.T0, this.Tfinal) + 2;
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(pad.l, pad.t);
+      ctx.lineTo(pad.l, pad.t + plotH);
+      ctx.lineTo(pad.l + plotW, pad.t + plotH);
+      ctx.stroke();
+
+      ctx.fillStyle = COLORS.axis;
+      ctx.font = '11px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(formatNum(tMaxY, NUM1), pad.l - 4, pad.t + 12);
+      ctx.fillText(formatNum(tMinY, NUM1), pad.l - 4, pad.t + plotH);
+
+      ctx.strokeStyle = COLORS.primary;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      this.historyPoints.forEach((p, i) => {
+        const x = pad.l + (p.t / tMax) * plotW;
+        const y = pad.t + plotH - ((p.T - tMinY) / (tMaxY - tMinY)) * plotH;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      ctx.fillStyle = COLORS.axis;
+      ctx.textAlign = 'center';
+      ctx.fillText('t (s)', pad.l + plotW / 2, h - 8);
+    }
+  }
+
+  class OhmLab extends BaseExperiment {
+    static META = {
+      id: 'ohm',
+      title: 'Ley de Ohm',
+      categories: ['fisica', 'electricidad'],
+      difficulty: 1,
+      duration: '~2 min',
+      short: 'Ajusta voltaje y resistencia para visualizar cómo fluye la corriente y qué potencia se disipa en el circuito.',
+      icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="2"/><line x1="7" y1="12" x2="17" y2="12"/></svg>'
+    };
+
+    constructor() {
+      super(OhmLab.META);
+      this.V = 6;
+      this.R = 10;
+      this.electronPhase = 0;
+      this.historyPoints = [];
+    }
+
+    getConfig() { return { 'Voltaje (V)': this.V, 'Resistencia (Ω)': this.R }; }
+    getI() { return this.V / this.R; }
+    getP() { return this.V * this.getI(); }
+
+    buildControls() {
+      return `
+        <div class="control-group">
+          <div class="control-group-label"><span>Voltaje de la batería</span><span class="control-group-value" id="ohmVoltVal">6.0 V</span></div>
+          <input class="slider" type="range" id="ohmVolt" min="1" max="12" step="0.5" value="6" aria-label="Voltaje de la batería en voltios">
+        </div>
+        <div class="control-group">
+          <div class="control-group-label"><span>Resistencia</span><span class="control-group-value" id="ohmResVal">10 Ω</span></div>
+          <input class="slider" type="range" id="ohmRes" min="1" max="100" step="1" value="10" aria-label="Resistencia en ohmios">
+        </div>
+      `;
+    }
+
+    buildResults() {
+      return `
+        <div class="result-item"><span class="result-label">Corriente</span><span class="result-value" data-result="I">0.60 A</span></div>
+        <div class="result-item"><span class="result-label">Voltaje</span><span class="result-value dim" data-result="V">6.0 V</span></div>
+        <div class="result-item"><span class="result-label">Resistencia</span><span class="result-value dim" data-result="R">10 Ω</span></div>
+        <div class="result-item"><span class="result-label">Potencia</span><span class="result-value warm" data-result="P">3.60 W</span></div>
+      `;
+    }
+
+    buildQuestions() {
+      return `
+        <div class="question" data-question data-correct="b">
+          <div class="question-text">Si duplicas el voltaje manteniendo la resistencia, la corriente:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Se reduce a la mitad</button>
+            <button class="question-option" data-value="b" type="button">Se duplica</button>
+            <button class="question-option" data-value="c" type="button">No cambia</button>
+          </div>
+        </div>
+        <div class="question" data-question data-correct="a">
+          <div class="question-text">Si la resistencia aumenta, la corriente:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Disminuye</button>
+            <button class="question-option" data-value="b" type="button">Aumenta</button>
+            <button class="question-option" data-value="c" type="button">Se mantiene</button>
+          </div>
+        </div>
+        <div class="question" data-question data-correct="c">
+          <div class="question-text">La potencia disipada se calcula como:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">P = V / R</button>
+            <button class="question-option" data-value="b" type="button">P = R / V</button>
+            <button class="question-option" data-value="c" type="button">P = V · I</button>
+          </div>
+        </div>
+      `;
+    }
+
+    bindControls() {
+      const volt = this.root.querySelector('#ohmVolt');
+      const voltVal = this.root.querySelector('#ohmVoltVal');
+      const res = this.root.querySelector('#ohmRes');
+      const resVal = this.root.querySelector('#ohmResVal');
+      volt.addEventListener('input', () => {
+        this.V = parseFloat(volt.value);
+        voltVal.textContent = formatNum(this.V, NUM1) + ' V';
+        this.updateResults();
+        this.draw();
+        this.drawGraph();
+      });
+      res.addEventListener('input', () => {
+        this.R = parseFloat(res.value);
+        resVal.textContent = formatNum(this.R, NUM0) + ' Ω';
+        this.updateResults();
+        this.draw();
+        this.drawGraph();
+      });
+    }
+
+    reset() {
+      this.electronPhase = 0;
+      this.elapsed = 0;
+      this.historyPoints = [{ V: 0, I: 0 }];
+      this.updateResults();
+    }
+
+    updateResults() {
+      const I = this.getI();
+      this.setResult('I', formatNum(I) + ' A');
+      this.setResult('V', formatNum(this.V, NUM1) + ' V');
+      this.setResult('R', formatNum(this.R, NUM0) + ' Ω');
+      this.setResult('P', formatNum(this.getP()) + ' W');
+    }
+
+    update(dt) {
+      const I = this.getI();
+      this.electronPhase += I * 0.08 * dt * 60;
+      this.historyPoints.push({ V: this.V, I: I });
+      if (this.historyPoints.length > 200) this.historyPoints.shift();
+      if (this.elapsed > 4) this.finish();
+    }
+
+    draw() {
+      const ctx = this.ctx;
+      const w = this.w;
+      const h = this.h;
+      ctx.clearRect(0, 0, w, h);
+
+      const cx = w / 2;
+      const cy = h / 2;
+      const boxW = Math.min(w * 0.72, 460);
+      const boxH = Math.min(h * 0.6, 260);
+      const x0 = cx - boxW / 2;
+      const y0 = cy - boxH / 2;
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x0, y0);
+      ctx.lineTo(x0 + boxW, y0);
+      ctx.lineTo(x0 + boxW, y0 + boxH);
+      ctx.lineTo(x0, y0 + boxH);
+      ctx.closePath();
+      ctx.stroke();
+
+      const batX = x0 - 30;
+      const batY = cy - 40;
+      roundRect(ctx, batX, batY, 60, 80, 6);
+      ctx.fillStyle = '#0f0f0f';
+      ctx.fill();
+      ctx.strokeStyle = COLORS.primary;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      const vNorm = clamp(this.V / 12, 0, 1);
+      ctx.fillStyle = COLORS.primary;
+      ctx.globalAlpha = 0.2 + vNorm * 0.5;
+      roundRect(ctx, batX + 6, batY + 8 + (80 - 16) * (1 - vNorm), 48, (80 - 16) * vNorm, 4);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      ctx.fillStyle = '#fff';
+      ctx.font = '700 12px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(formatNum(this.V, NUM1) + 'V', batX + 30, cy + 5);
+
+      const resX = x0 + boxW - 30;
+      const resY = cy - 30;
+      roundRect(ctx, resX, resY, 60, 60, 6);
+      ctx.fillStyle = '#0f0f0f';
+      ctx.fill();
+      ctx.strokeStyle = COLORS.yellow;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = COLORS.yellow;
+      ctx.font = '700 12px "Space Grotesk", sans-serif';
+      ctx.fillText(formatNum(this.R, NUM0) + 'Ω', resX + 30, cy + 4);
+
+      const I = this.getI();
+      const speed = clamp(I / 3, 0.05, 3);
+      const numElectrons = 24;
+      const totalPath = 4 * (boxW + boxH);
+      ctx.fillStyle = COLORS.primary;
+      for (let i = 0; i < numElectrons; i++) {
+        const t = (i / numElectrons + (this.electronPhase * speed * 0.02) % 1) % 1;
+        const d = t * totalPath;
+        let px, py;
+        if (d < boxW) { px = x0 + d; py = y0; }
+        else if (d < boxW + boxH) { px = x0 + boxW; py = y0 + (d - boxW); }
+        else if (d < 2 * boxW + boxH) { px = x0 + boxW - (d - boxW - boxH); py = y0 + boxH; }
+        else { px = x0; py = y0 + boxH - (d - 2 * boxW - boxH); }
+        ctx.beginPath();
+        ctx.arc(px, py, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 0.3;
+        ctx.beginPath();
+        ctx.arc(px, py, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      ctx.fillStyle = COLORS.textMuted;
+      ctx.font = '500 11px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('I = ' + formatNum(I) + ' A', cx, y0 - 12);
+    }
+
+    drawGraph() {
+      super.drawGraph();
+      const ctx = this.graphCtx;
+      const w = this.graphW;
+      const h = this.graphH;
+      const pad = { l: 38, r: 14, t: 14, b: 26 };
+      const plotW = w - pad.l - pad.r;
+      const plotH = h - pad.t - pad.b;
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.beginPath();
+      ctx.moveTo(pad.l, pad.t);
+      ctx.lineTo(pad.l, pad.t + plotH);
+      ctx.lineTo(pad.l + plotW, pad.t + plotH);
+      ctx.stroke();
+
+      const maxI = 12;
+      ctx.fillStyle = COLORS.axis;
+      ctx.font = '11px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('I (A)', pad.l - 4, pad.t + 12);
+      ctx.fillText(formatNum(maxI, NUM0), pad.l - 4, pad.t + 26);
+      ctx.fillText('0', pad.l - 4, pad.t + plotH);
+
+      const V = this.V;
+      const I = this.getI();
+      const x = pad.l + (V / 12) * plotW;
+      const y = pad.t + plotH - (I / maxI) * plotH;
+
+      ctx.fillStyle = COLORS.primary;
+      ctx.beginPath();
+      ctx.arc(x, y, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = COLORS.primary;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(pad.l, y);
+      ctx.lineTo(x, y);
+      ctx.lineTo(x, pad.t + plotH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = COLORS.axis;
+      ctx.textAlign = 'center';
+      ctx.fillText('V (V)', pad.l + plotW / 2, h - 8);
+    }
+  }
+
+  class HookeLab extends BaseExperiment {
+    static META = {
+      id: 'hooke',
+      title: 'Ley de Hooke',
+      categories: ['fisica', 'mecanica'],
+      difficulty: 1,
+      duration: '~2 min',
+      short: 'Cuelga masas de un resorte, mide su estiramiento y verifica la relación lineal entre fuerza y deformación.',
+      icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3"/><path d="M8 6h8"/><path d="M9 6c0 2 3 3 3 5s-3 3-3 5 3 3 3 5"/><path d="M15 6c0 2-3 3-3 5s3 3 3 5-3 3-3 5"/><circle cx="12" cy="20" r="2"/></svg>'
+    };
+
+    constructor() {
+      super(HookeLab.META);
+      this.k = 50;
+      this.mass = 200;
+      this.g = 9.8;
+      this.stretch = 0;
+      this.displayStretch = 0;
+      this.historyPoints = [];
+    }
+
+    getConfig() { return { 'Constante k (N/m)': this.k, 'Masa (g)': this.mass, 'Gravedad (m/s²)': this.g }; }
+    getForce() { return (this.mass / 1000) * this.g; }
+    getX() { return this.getForce() / this.k; }
+
+    buildControls() {
+      return `
+        <div class="control-group">
+          <div class="control-group-label"><span>Constante del resorte</span><span class="control-group-value" id="hkKVal">50 N/m</span></div>
+          <input class="slider" type="range" id="hkK" min="10" max="200" step="5" value="50" aria-label="Constante del resorte">
+        </div>
+        <div class="control-group">
+          <div class="control-group-label"><span>Masa colgante</span><span class="control-group-value" id="hkMVal">200 g</span></div>
+          <input class="slider" type="range" id="hkM" min="0" max="500" step="10" value="200" aria-label="Masa colgante en gramos">
+        </div>
+      `;
+    }
+
+    buildResults() {
+      return `
+        <div class="result-item"><span class="result-label">Fuerza</span><span class="result-value" data-result="F">1.96 N</span></div>
+        <div class="result-item"><span class="result-label">Deformación</span><span class="result-value" data-result="x">3.92 cm</span></div>
+        <div class="result-item"><span class="result-label">Energía elástica</span><span class="result-value warm" data-result="E">0.038 J</span></div>
+        <div class="result-item"><span class="result-label">Constante k</span><span class="result-value dim" data-result="k">50 N/m</span></div>
+      `;
+    }
+
+    buildQuestions() {
+      return `
+        <div class="question" data-question data-correct="b">
+          <div class="question-text">Si duplicas la masa, el estiramiento del resorte:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Se reduce a la mitad</button>
+            <button class="question-option" data-value="b" type="button">Se duplica</button>
+            <button class="question-option" data-value="c" type="button">No cambia</button>
+          </div>
+        </div>
+        <div class="question" data-question data-correct="a">
+          <div class="question-text">Con mayor constante k (resorte más rígido), el estiramiento:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Disminuye</button>
+            <button class="question-option" data-value="b" type="button">Aumenta</button>
+            <button class="question-option" data-value="c" type="button">No cambia</button>
+          </div>
+        </div>
+        <div class="question" data-question data-correct="c">
+          <div class="question-text">La energía potencial elástica se calcula como:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">E = k·x</button>
+            <button class="question-option" data-value="b" type="button">E = m·g·h</button>
+            <button class="question-option" data-value="c" type="button">E = ½·k·x²</button>
+          </div>
+        </div>
+      `;
+    }
+
+    bindControls() {
+      const k = this.root.querySelector('#hkK');
+      const kVal = this.root.querySelector('#hkKVal');
+      const m = this.root.querySelector('#hkM');
+      const mVal = this.root.querySelector('#hkMVal');
+      k.addEventListener('input', () => {
+        this.k = parseFloat(k.value);
+        kVal.textContent = formatNum(this.k, NUM0) + ' N/m';
+        this.reset();
+        this.draw();
+        this.drawGraph();
+      });
+      m.addEventListener('input', () => {
+        this.mass = parseFloat(m.value);
+        mVal.textContent = formatNum(this.mass, NUM0) + ' g';
+        this.reset();
+        this.draw();
+        this.drawGraph();
+      });
+    }
+
+    reset() {
+      this.stretch = this.getX();
+      this.displayStretch = 0;
+      this.historyPoints = [];
+      this.updateResults();
+    }
+
+    updateResults() {
+      this.setResult('F', formatNum(this.getForce()) + ' N');
+      this.setResult('x', formatNum(this.getX() * 100) + ' cm');
+      this.setResult('E', formatNum(0.5 * this.k * this.getX() * this.getX(), new Intl.NumberFormat('es-CO', { maximumFractionDigits: 4 })) + ' J');
+      this.setResult('k', formatNum(this.k, NUM0) + ' N/m');
+    }
+
+    update(dt) {
+      const target = this.getX();
+      this.displayStretch += (target - this.displayStretch) * Math.min(1, dt * 4);
+      this.historyPoints.push({ x: this.displayStretch * 100, F: this.displayStretch * this.k });
+      if (this.historyPoints.length > 200) this.historyPoints.shift();
+      if (this.elapsed > 3) this.finish();
+    }
+
+    draw() {
+      const ctx = this.ctx;
+      const w = this.w;
+      const h = this.h;
+      ctx.clearRect(0, 0, w, h);
+
+      const cx = w / 2;
+      const topY = h * 0.12;
+      const restLength = Math.min(h * 0.35, 160);
+      const stretchPx = Math.min(restLength * 1.5, this.displayStretch * 200);
+      const bottomY = topY + restLength + stretchPx;
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cx - 60, topY);
+      ctx.lineTo(cx + 60, topY);
+      ctx.stroke();
+
+      ctx.strokeStyle = COLORS.primary;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(cx, topY);
+      const coils = 12;
+      const totalLen = restLength + stretchPx;
+      for (let i = 0; i <= coils; i++) {
+        const t = i / coils;
+        const yy = topY + t * totalLen;
+        const xx = cx + (i === 0 || i === coils ? 0 : Math.sin(i * Math.PI) * 16);
+        if (i === 0) ctx.moveTo(xx, yy);
+        else ctx.lineTo(xx, yy);
+      }
+      ctx.stroke();
+
+      const boxSize = 30 + Math.min(20, this.mass / 25);
+      const boxX = cx - boxSize / 2;
+      const boxY = bottomY;
+      roundRect(ctx, boxX, boxY, boxSize, boxSize, 6);
+      ctx.fillStyle = COLORS.yellow;
+      ctx.globalAlpha = 0.85;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#000';
+      ctx.font = '700 11px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(formatNum(this.mass, NUM0) + 'g', cx, boxY + boxSize / 2 + 4);
+
+      ctx.strokeStyle = 'rgba(0,255,136,0.35)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(cx + boxSize, bottomY - restLength - stretchPx + restLength);
+      ctx.lineTo(cx + boxSize + 40, bottomY - restLength - stretchPx + restLength);
+      ctx.moveTo(cx + boxSize, boxY);
+      ctx.lineTo(cx + boxSize + 40, boxY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = COLORS.primary;
+      ctx.font = '600 10px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('x = ' + formatNum(this.getX() * 100) + ' cm', cx + boxSize + 8, boxY - stretchPx / 2 + 4);
+    }
+
+    drawGraph() {
+      super.drawGraph();
+      const ctx = this.graphCtx;
+      const w = this.graphW;
+      const h = this.graphH;
+      const pad = { l: 38, r: 14, t: 14, b: 26 };
+      const plotW = w - pad.l - pad.r;
+      const plotH = h - pad.t - pad.b;
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.beginPath();
+      ctx.moveTo(pad.l, pad.t);
+      ctx.lineTo(pad.l, pad.t + plotH);
+      ctx.lineTo(pad.l + plotW, pad.t + plotH);
+      ctx.stroke();
+
+      const maxF = 500 / 1000 * 9.8;
+      const maxX = maxF / 10;
+
+      ctx.strokeStyle = COLORS.primary;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(pad.l, pad.t + plotH);
+      const lineX = pad.l + (maxX / maxX) * plotW;
+      ctx.lineTo(lineX, pad.t + plotH - (maxF / maxF) * plotH * (this.k * maxX / maxF));
+      ctx.stroke();
+
+      const F = this.getForce();
+      const x = this.getX();
+      const px = pad.l + (x / maxX) * plotW;
+      const py = pad.t + plotH - (F / maxF) * plotH;
+      if (isFinite(px) && isFinite(py)) {
+        ctx.fillStyle = COLORS.primary;
+        ctx.beginPath();
+        ctx.arc(clamp(px, pad.l, pad.l + plotW), clamp(py, pad.t, pad.t + plotH), 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = COLORS.axis;
+      ctx.font = '11px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('F (N)', pad.l - 4, pad.t + 12);
+      ctx.textAlign = 'center';
+      ctx.fillText('x (m)', pad.l + plotW / 2, h - 8);
+    }
+  }
+
+  class PenduloLab extends BaseExperiment {
+    static META = {
+      id: 'pendulo',
+      title: 'El péndulo simple',
+      categories: ['fisica', 'mecanica'],
+      difficulty: 2,
+      duration: '~3 min',
+      short: 'Ajusta longitud, ángulo y gravedad para estudiar el período de oscilación y compararlo con el modelo teórico.',
+      icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="8"/><line x1="12" y1="8" x2="18" y2="18"/><circle cx="18" cy="18" r="2.5"/></svg>'
+    };
+
+    constructor() {
+      super(PenduloLab.META);
+      this.L = 1.0;
+      this.angle0 = 20;
+      this.g = 9.8;
+      this.theta = this.angle0 * Math.PI / 180;
+      this.omega = 0;
+      this.periodMeasured = 0;
+      this.crossingTimes = [];
+      this.lastSign = 0;
+      this.historyPoints = [];
+      this.graves = {
+        tierra: { name: 'Tierra', g: 9.8 },
+        luna: { name: 'Luna', g: 1.62 },
+        marte: { name: 'Marte', g: 3.71 },
+        jupiter: { name: 'Júpiter', g: 24.79 }
+      };
+      this.planet = 'tierra';
+    }
+
+    getConfig() { return { 'Longitud (m)': this.L, 'Ángulo inicial (°)': this.angle0, 'Gravedad (m/s²)': this.g }; }
+    getTheoreticalPeriod() { return 2 * Math.PI * Math.sqrt(this.L / this.g); }
+
+    buildControls() {
+      const pills = Object.keys(this.graves).map(k =>
+        `<button type="button" class="pill" data-planet="${k}"${k === this.planet ? ' aria-pressed="true"' : ' aria-pressed="false"'}>${this.graves[k].name}</button>`
+      ).join('');
+      return `
+        <div class="control-group">
+          <div class="control-group-label"><span>Longitud</span><span class="control-group-value" id="pdLVal">1.00 m</span></div>
+          <input class="slider" type="range" id="pdL" min="0.1" max="3" step="0.05" value="1" aria-label="Longitud del péndulo">
+        </div>
+        <div class="control-group">
+          <div class="control-group-label"><span>Ángulo inicial</span><span class="control-group-value" id="pdAVal">20°</span></div>
+          <input class="slider" type="range" id="pdA" min="5" max="45" step="1" value="20" aria-label="Ángulo inicial">
+        </div>
+        <div class="control-group">
+          <div class="control-group-label"><span>Gravedad</span></div>
+          <div class="pill-group" id="pdPlanets">${pills}</div>
+        </div>
+      `;
+    }
+
+    buildResults() {
+      return `
+        <div class="result-item"><span class="result-label">Período teórico</span><span class="result-value" data-result="Tt">2.01 s</span></div>
+        <div class="result-item"><span class="result-label">Período medido</span><span class="result-value warm" data-result="Tm">—</span></div>
+        <div class="result-item"><span class="result-label">Frecuencia</span><span class="result-value dim" data-result="f">0.50 Hz</span></div>
+        <div class="result-item"><span class="result-label">Gravedad</span><span class="result-value dim" data-result="g">9.80 m/s²</span></div>
+      `;
+    }
+
+    buildQuestions() {
+      return `
+        <div class="question" data-question data-correct="b">
+          <div class="question-text">Si cuadruplicas la longitud del péndulo, su período:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Se cuadruplica</button>
+            <button class="question-option" data-value="b" type="button">Se duplica</button>
+            <button class="question-option" data-value="c" type="button">No cambia</button>
+          </div>
+        </div>
+        <div class="question" data-question data-correct="a">
+          <div class="question-text">En la Luna (g menor), el período del péndulo:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Aumenta</button>
+            <button class="question-option" data-value="b" type="button">Disminuye</button>
+            <button class="question-option" data-value="c" type="button">No cambia</button>
+          </div>
+        </div>
+        <div class="question" data-question data-correct="c">
+          <div class="question-text">El período de un péndulo simple depende de:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Solo la masa</button>
+            <button class="question-option" data-value="b" type="button">Solo el ángulo</button>
+            <button class="question-option" data-value="c" type="button">Longitud y gravedad</button>
+          </div>
+        </div>
+      `;
+    }
+
+    bindControls() {
+      const L = this.root.querySelector('#pdL');
+      const Lv = this.root.querySelector('#pdLVal');
+      const A = this.root.querySelector('#pdA');
+      const Av = this.root.querySelector('#pdAVal');
+      L.addEventListener('input', () => {
+        this.L = parseFloat(L.value);
+        Lv.textContent = formatNum(this.L) + ' m';
+        this.reset();
+        this.draw();
+        this.drawGraph();
+      });
+      A.addEventListener('input', () => {
+        this.angle0 = parseFloat(A.value);
+        Av.textContent = formatNum(this.angle0, NUM0) + '°';
+        this.reset();
+        this.draw();
+        this.drawGraph();
+      });
+      this.root.querySelectorAll('[data-planet]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          this.planet = btn.getAttribute('data-planet');
+          this.g = this.graves[this.planet].g;
+          this.root.querySelectorAll('[data-planet]').forEach(b => {
+            const active = b === btn;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-pressed', active ? 'true' : 'false');
+          });
+          this.reset();
+          this.draw();
+          this.drawGraph();
+        });
+      });
+      this.root.querySelectorAll('[data-planet]').forEach(b => {
+        if (b.getAttribute('data-planet') === this.planet) b.classList.add('is-active');
+      });
+    }
+
+    reset() {
+      this.theta = this.angle0 * Math.PI / 180;
+      this.omega = 0;
+      this.periodMeasured = 0;
+      this.crossingTimes = [];
+      this.lastSign = Math.sign(this.theta);
+      this.historyPoints = [];
+      this.elapsed = 0;
+      this.updateResults();
+    }
+
+    updateResults() {
+      const Tt = this.getTheoreticalPeriod();
+      this.setResult('Tt', formatNum(Tt) + ' s');
+      this.setResult('Tm', this.periodMeasured > 0 ? formatNum(this.periodMeasured) + ' s' : '—');
+      this.setResult('f', formatNum(1 / Tt) + ' Hz');
+      this.setResult('g', formatNum(this.g) + ' m/s²');
+    }
+
+    update(dt) {
+      const alpha = -(this.g / this.L) * Math.sin(this.theta);
+      this.omega += alpha * dt;
+      this.theta += this.omega * dt;
+
+      const sign = Math.sign(this.theta);
+      if (this.lastSign !== 0 && sign !== 0 && sign !== this.lastSign) {
+        this.crossingTimes.push(this.elapsed);
+        if (this.crossingTimes.length > 4) this.crossingTimes.shift();
+        if (this.crossingTimes.length >= 3) {
+          const T1 = this.crossingTimes[1] - this.crossingTimes[0];
+          const T2 = this.crossingTimes[2] - this.crossingTimes[1];
+          this.periodMeasured = 2 * ((T1 + T2) / 2);
+          this.updateResults();
+        }
+      }
+      this.lastSign = sign;
+
+      this.historyPoints.push({ t: this.elapsed, theta: this.theta });
+      if (this.historyPoints.length > 400) this.historyPoints.shift();
+
+      if (this.elapsed > 10) this.finish();
+    }
+
+    draw() {
+      const ctx = this.ctx;
+      const w = this.w;
+      const h = this.h;
+      ctx.clearRect(0, 0, w, h);
+
+      const cx = w / 2;
+      const pivotY = h * 0.16;
+      const maxPx = Math.min(h * 0.72, 340);
+      const Lpx = (this.L / 3) * maxPx;
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(cx - 40, pivotY);
+      ctx.lineTo(cx + 40, pivotY);
+      ctx.stroke();
+
+      ctx.fillStyle = COLORS.primary;
+      ctx.beginPath();
+      ctx.arc(cx, pivotY, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      const bobX = cx + Math.sin(this.theta) * Lpx;
+      const bobY = pivotY + Math.cos(this.theta) * Lpx;
+
+      ctx.strokeStyle = 'rgba(0,255,136,0.6)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(cx, pivotY);
+      ctx.lineTo(bobX, bobY);
+      ctx.stroke();
+
+      ctx.fillStyle = COLORS.primary;
+      ctx.beginPath();
+      ctx.arc(bobX, bobY, 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.globalAlpha = 0.4;
+      ctx.beginPath();
+      ctx.arc(bobX, bobY, 22, 0, Math.PI * 2);
+      ctx.strokeStyle = COLORS.primary;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      const arcR = Lpx;
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.arc(cx, pivotY, arcR, Math.PI / 2 - 0.7, Math.PI / 2 + 0.7);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = COLORS.textMuted;
+      ctx.font = '600 11px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('θ = ' + formatNum(this.theta * 180 / Math.PI, NUM1) + '°', 20, 24);
+      ctx.fillText('L = ' + formatNum(this.L) + ' m', 20, 40);
+      ctx.fillStyle = COLORS.primary;
+      ctx.fillText('g = ' + formatNum(this.g) + ' m/s²', 20, 56);
+    }
+
+    drawGraph() {
+      super.drawGraph();
+      const ctx = this.graphCtx;
+      const w = this.graphW;
+      const h = this.graphH;
+      if (this.historyPoints.length < 2) return;
+      const pad = { l: 38, r: 14, t: 14, b: 26 };
+      const plotW = w - pad.l - pad.r;
+      const plotH = h - pad.t - pad.b;
+
+      const tMax = Math.max(2, this.elapsed);
+      const yMax = this.angle0 * Math.PI / 180;
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.beginPath();
+      ctx.moveTo(pad.l, pad.t + plotH / 2);
+      ctx.lineTo(pad.l + plotW, pad.t + plotH / 2);
+      ctx.stroke();
+
+      ctx.strokeStyle = COLORS.primary;
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      this.historyPoints.forEach((p, i) => {
+        const x = pad.l + (p.t / tMax) * plotW;
+        const y = pad.t + plotH / 2 - (p.theta / yMax) * (plotH / 2);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      ctx.fillStyle = COLORS.axis;
+      ctx.font = '11px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('θ', pad.l - 4, pad.t + 12);
+      ctx.textAlign = 'center';
+      ctx.fillText('t (s)', pad.l + plotW / 2, h - 8);
+    }
+  }
+
+  class PresionLab extends BaseExperiment {
+    static META = {
+      id: 'presion',
+      title: 'Presión hidrostática',
+      categories: ['fisica'],
+      difficulty: 1,
+      duration: '~2 min',
+      short: 'Explora cómo varía la presión con la profundidad y la densidad del fluido, y calcula la presión total con la presión atmosférica.',
+      icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5 21h14"/><path d="M5 3h14v4H5z"/><circle cx="12" cy="14" r="2"/></svg>'
+    };
+
+    constructor() {
+      super(PresionLab.META);
+      this.depth = 5;
+      this.rho = 1000;
+      this.g = 9.8;
+      this.Patm = 101325;
+      this.fluids = {
+        agua: { name: 'Agua', rho: 1000, color: [50, 120, 200] },
+        aceite: { name: 'Aceite', rho: 900, color: [180, 140, 60] },
+        mercurio: { name: 'Mercurio', rho: 13600, color: [200, 200, 210] },
+        salada: { name: 'Agua salada', rho: 1025, color: [40, 100, 170] }
+      };
+      this.fluid = 'agua';
+      this.historyPoints = [];
+    }
+
+    getConfig() { return { 'Fluido': this.fluids[this.fluid].name, 'Profundidad (m)': this.depth, 'Densidad (kg/m³)': this.rho }; }
+
+    buildControls() {
+      const pills = Object.keys(this.fluids).map(k =>
+        `<button type="button" class="pill" data-fluid="${k}"${k === this.fluid ? ' aria-pressed="true"' : ' aria-pressed="false"'}>${this.fluids[k].name}</button>`
+      ).join('');
+      return `
+        <div class="control-group">
+          <div class="control-group-label"><span>Profundidad</span><span class="control-group-value" id="prDVal">5.0 m</span></div>
+          <input class="slider" type="range" id="prD" min="0" max="10" step="0.1" value="5" aria-label="Profundidad en metros">
+        </div>
+        <div class="control-group">
+          <div class="control-group-label"><span>Fluido</span></div>
+          <div class="pill-group" id="prFluids">${pills}</div>
+        </div>
+      `;
+    }
+
+    buildResults() {
+      return `
+        <div class="result-item"><span class="result-label">P manométrica</span><span class="result-value" data-result="Pm">49.00 kPa</span></div>
+        <div class="result-item"><span class="result-label">P absoluta</span><span class="result-value warm" data-result="Pa">150.3 kPa</span></div>
+        <div class="result-item"><span class="result-label">Densidad</span><span class="result-value dim" data-result="rho">1000 kg/m³</span></div>
+        <div class="result-item"><span class="result-label">Patm</span><span class="result-value dim" data-result="Patm">101.33 kPa</span></div>
+      `;
+    }
+
+    buildQuestions() {
+      return `
+        <div class="question" data-question data-correct="b">
+          <div class="question-text">Si duplicas la profundidad, la presión manométrica:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Se reduce a la mitad</button>
+            <button class="question-option" data-value="b" type="button">Se duplica</button>
+            <button class="question-option" data-value="c" type="button">No cambia</button>
+          </div>
+        </div>
+        <div class="question" data-question data-correct="a">
+          <div class="question-text">Con mercurio (mayor densidad) a la misma profundidad, la presión:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Aumenta</button>
+            <button class="question-option" data-value="b" type="button">Disminuye</button>
+            <button class="question-option" data-value="c" type="button">No cambia</button>
+          </div>
+        </div>
+        <div class="question" data-question data-correct="c">
+          <div class="question-text">La presión absoluta incluye:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Solo la presión del fluido</button>
+            <button class="question-option" data-value="b" type="button">Solo la presión atmosférica</button>
+            <button class="question-option" data-value="c" type="button">Ambas</button>
+          </div>
+        </div>
+      `;
+    }
+
+    bindControls() {
+      const d = this.root.querySelector('#prD');
+      const dv = this.root.querySelector('#prDVal');
+      d.addEventListener('input', () => {
+        this.depth = parseFloat(d.value);
+        dv.textContent = formatNum(this.depth, NUM1) + ' m';
+        this.updateResults();
+        this.draw();
+        this.drawGraph();
+      });
+      this.root.querySelectorAll('[data-fluid]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          this.fluid = btn.getAttribute('data-fluid');
+          this.rho = this.fluids[this.fluid].rho;
+          this.root.querySelectorAll('[data-fluid]').forEach(b => {
+            const active = b === btn;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-pressed', active ? 'true' : 'false');
+          });
+          this.updateResults();
+          this.draw();
+          this.drawGraph();
+        });
+      });
+      this.root.querySelectorAll('[data-fluid]').forEach(b => {
+        if (b.getAttribute('data-fluid') === this.fluid) b.classList.add('is-active');
+      });
+    }
+
+    reset() {
+      this.historyPoints = [];
+      this.updateResults();
+    }
+
+    updateResults() {
+      const Pm = this.rho * this.g * this.depth;
+      const Pa = Pm + this.Patm;
+      this.setResult('Pm', formatNum(Pm / 1000) + ' kPa');
+      this.setResult('Pa', formatNum(Pa / 1000) + ' kPa');
+      this.setResult('rho', formatNum(this.rho, NUM0) + ' kg/m³');
+      this.setResult('Patm', formatNum(this.Patm / 1000) + ' kPa');
+    }
+
+    update(dt) {
+      this.historyPoints.push({ h: this.depth, P: this.rho * this.g * this.depth / 1000 });
+      if (this.historyPoints.length > 100) this.historyPoints.shift();
+    }
+
+    draw() {
+      const ctx = this.ctx;
+      const w = this.w;
+      const h = this.h;
+      ctx.clearRect(0, 0, w, h);
+
+      const tankW = Math.min(w * 0.55, 300);
+      const tankH = Math.min(h * 0.78, 360);
+      const x0 = w / 2 - tankW / 2;
+      const y0 = h / 2 - tankH / 2 + 10;
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x0, y0);
+      ctx.lineTo(x0, y0 + tankH);
+      ctx.lineTo(x0 + tankW, y0 + tankH);
+      ctx.lineTo(x0 + tankW, y0);
+      ctx.stroke();
+
+      const f = this.fluids[this.fluid];
+      const c = f.color;
+      const grad = ctx.createLinearGradient(0, y0, 0, y0 + tankH);
+      grad.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},0.5)`);
+      grad.addColorStop(1, `rgba(${c[0]},${c[1]},${c[2]},0.85)`);
+      ctx.fillStyle = grad;
+      ctx.fillRect(x0 + 2, y0 + 2, tankW - 4, tankH - 4);
+
+      ctx.fillStyle = 'rgba(255,255,255,0.06)';
+      for (let i = 0; i < 12; i++) {
+        const px = x0 + 8 + (i * 41) % (tankW - 16);
+        const py = y0 + 12 + (i * 71) % (tankH - 24);
+        ctx.beginPath();
+        ctx.arc(px, py, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      const depthFrac = this.depth / 10;
+      const markerY = y0 + 20 + depthFrac * (tankH - 40);
+      ctx.strokeStyle = COLORS.primary;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      ctx.moveTo(x0 - 8, markerY);
+      ctx.lineTo(x0 + tankW + 8, markerY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = COLORS.primary;
+      ctx.beginPath();
+      ctx.arc(x0 + tankW / 2, markerY, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = COLORS.textMuted;
+      ctx.font = '600 11px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Profundidad: ' + formatNum(this.depth, NUM1) + ' m', x0 + tankW + 20, markerY - 6);
+      ctx.fillStyle = COLORS.primary;
+      ctx.fillText('P = ' + formatNum(this.rho * this.g * this.depth / 1000) + ' kPa', x0 + tankW + 20, markerY + 12);
+
+      ctx.fillStyle = f.name;
+      ctx.font = '600 11px "Space Grotesk", sans-serif';
+      ctx.fillText(f.name + ' · ρ=' + formatNum(this.rho, NUM0) + ' kg/m³', x0, y0 - 10);
+
+      ctx.fillStyle = 'rgba(255,255,255,0.4)';
+      ctx.font = '500 10px Inter, sans-serif';
+      ctx.fillText('Patm = ' + formatNum(this.Patm / 1000) + ' kPa', x0, y0 + tankH + 18);
+    }
+
+    drawGraph() {
+      super.drawGraph();
+      const ctx = this.graphCtx;
+      const w = this.graphW;
+      const h = this.graphH;
+      const pad = { l: 44, r: 14, t: 14, b: 26 };
+      const plotW = w - pad.l - pad.r;
+      const plotH = h - pad.t - pad.b;
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.beginPath();
+      ctx.moveTo(pad.l, pad.t);
+      ctx.lineTo(pad.l, pad.t + plotH);
+      ctx.lineTo(pad.l + plotW, pad.t + plotH);
+      ctx.stroke();
+
+      const maxP = 13600 * 9.8 * 10 / 1000;
+      ctx.strokeStyle = COLORS.primary;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(pad.l, pad.t + plotH);
+      ctx.lineTo(pad.l + plotW, pad.t);
+      ctx.stroke();
+
+      const P = this.rho * this.g * this.depth / 1000;
+      const px = pad.l + (this.depth / 10) * plotW;
+      const py = pad.t + plotH - (P / maxP) * plotH;
+      ctx.fillStyle = COLORS.primary;
+      ctx.beginPath();
+      ctx.arc(px, py, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = COLORS.axis;
+      ctx.font = '11px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('P(kPa)', pad.l - 4, pad.t + 12);
+      ctx.textAlign = 'center';
+      ctx.fillText('h (m)', pad.l + plotW / 2, h - 8);
+    }
+  }
+
+  class ValoracionLab extends BaseExperiment {
+    static META = {
+      id: 'valoracion',
+      title: 'Curvas de valoración ácido-base',
+      categories: ['quimica'],
+      difficulty: 3,
+      duration: '~4 min',
+      short: 'Valora HCl con NaOH, observa el cambio de color del indicador y construye la curva de pH vs volumen añadido.',
+      icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v6L4 20a2 2 0 0 0 1.9 2.7h12.2A2 2 0 0 0 20 20l-5-11V3"/><line x1="8" y1="3" x2="16" y2="3"/><line x1="6" y1="15" x2="18" y2="15"/></svg>'
+    };
+
+    constructor() {
+      super(ValoracionLab.META);
+      this.Ca = 0.1;
+      this.Cb = 0.1;
+      this.Va = 25;
+      this.indicador = 'fenolftaleina';
+      this.indicators = {
+        fenolftaleina: { name: 'Fenolftaleína', range: [8.2, 10], acidColor: [230, 235, 240], baseColor: [230, 100, 180] },
+        tornasol: { name: 'Tornasol', range: [5.5, 7.5], acidColor: [220, 100, 100], baseColor: [80, 130, 220] },
+        naranja: { name: 'Naranja de metilo', range: [3.1, 4.4], acidColor: [230, 80, 60], baseColor: [250, 200, 60] }
+      };
+      this.Vb = 0;
+      this.pH = 1;
+      this.curve = [];
+      this.eqVol = 0;
+    }
+
+    getConfig() { return { 'Concentración ácido (M)': this.Ca, 'Concentración base (M)': this.Cb, 'Volumen ácido (mL)': this.Va, 'Indicador': this.indicators[this.indicador].name }; }
+
+    computePH(Vb) {
+      const molH = this.Ca * this.Va / 1000;
+      const molOH = this.Cb * Vb / 1000;
+      const Vtotal = (this.Va + Vb) / 1000;
+      if (Vtotal <= 0) return 7;
+      if (molH > molOH) {
+        const H = (molH - molOH) / Vtotal;
+        return clamp(-Math.log10(H), 0, 14);
+      } else if (molOH > molH) {
+        const OH = (molOH - molH) / Vtotal;
+        const pOH = -Math.log10(OH);
+        return clamp(14 - pOH, 0, 14);
+      }
+      return 7;
+    }
+
+    buildControls() {
+      const pills = Object.keys(this.indicators).map(k =>
+        `<button type="button" class="pill" data-ind="${k}"${k === this.indicador ? ' aria-pressed="true"' : ' aria-pressed="false"'}>${this.indicators[k].name}</button>`
+      ).join('');
+      return `
+        <div class="control-group">
+          <div class="control-group-label"><span>Concentración del ácido</span><span class="control-group-value" id="vlCaVal">0.10 M</span></div>
+          <input class="slider" type="range" id="vlCa" min="0.01" max="1" step="0.01" value="0.1" aria-label="Concentración del ácido">
+        </div>
+        <div class="control-group">
+          <div class="control-group-label"><span>Concentración de la base</span><span class="control-group-value" id="vlCbVal">0.10 M</span></div>
+          <input class="slider" type="range" id="vlCb" min="0.01" max="1" step="0.01" value="0.1" aria-label="Concentración de la base">
+        </div>
+        <div class="control-group">
+          <div class="control-group-label"><span>Volumen de ácido</span><span class="control-group-value" id="vlVaVal">25 mL</span></div>
+          <input class="slider" type="range" id="vlVa" min="10" max="50" step="1" value="25" aria-label="Volumen de ácido">
+        </div>
+        <div class="control-group">
+          <div class="control-group-label"><span>Indicador</span></div>
+          <div class="pill-group" id="vlInds">${pills}</div>
+        </div>
+      `;
+    }
+
+    buildResults() {
+      return `
+        <div class="result-item"><span class="result-label">pH actual</span><span class="result-value" data-result="pH">1.00</span></div>
+        <div class="result-item"><span class="result-label">Volumen base</span><span class="result-value dim" data-result="Vb">0.0 mL</span></div>
+        <div class="result-item"><span class="result-label">V equivalencia</span><span class="result-value warm" data-result="Veq">25.0 mL</span></div>
+        <div class="result-item"><span class="result-label">Estado</span><span class="result-value" data-result="estado">Ácido</span></div>
+      `;
+    }
+
+    buildQuestions() {
+      return `
+        <div class="question" data-question data-correct="b">
+          <div class="question-text">En el punto de equivalencia de un ácido fuerte con base fuerte, el pH es aproximadamente:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">1</button>
+            <button class="question-option" data-value="b" type="button">7</button>
+            <button class="question-option" data-value="c" type="button">14</button>
+          </div>
+        </div>
+        <div class="question" data-question data-correct="a">
+          <div class="question-text">La fenolftaleína cambia de color en el rango de pH:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">8.2 – 10</button>
+            <button class="question-option" data-value="b" type="button">3 – 5</button>
+            <button class="question-option" data-value="c" type="button">6 – 7</button>
+          </div>
+        </div>
+        <div class="question" data-question data-correct="c">
+          <div class="question-text">Si aumenta la concentración de la base, el volumen de equivalencia:</div>
+          <div class="question-options">
+            <button class="question-option" data-value="a" type="button">Aumenta</button>
+            <button class="question-option" data-value="b" type="button">No cambia</button>
+            <button class="question-option" data-value="c" type="button">Disminuye</button>
+          </div>
+        </div>
+      `;
+    }
+
+    bindControls() {
+      const ca = this.root.querySelector('#vlCa');
+      const cav = this.root.querySelector('#vlCaVal');
+      const cb = this.root.querySelector('#vlCb');
+      const cbv = this.root.querySelector('#vlCbVal');
+      const va = this.root.querySelector('#vlVa');
+      const vav = this.root.querySelector('#vlVaVal');
+      ca.addEventListener('input', () => {
+        this.Ca = parseFloat(ca.value);
+        cav.textContent = formatNum(this.Ca) + ' M';
+        this.reset();
+        this.draw();
+        this.drawGraph();
+      });
+      cb.addEventListener('input', () => {
+        this.Cb = parseFloat(cb.value);
+        cbv.textContent = formatNum(this.Cb) + ' M';
+        this.reset();
+        this.draw();
+        this.drawGraph();
+      });
+      va.addEventListener('input', () => {
+        this.Va = parseFloat(va.value);
+        vav.textContent = formatNum(this.Va, NUM0) + ' mL';
+        this.reset();
+        this.draw();
+        this.drawGraph();
+      });
+      this.root.querySelectorAll('[data-ind]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          this.indicador = btn.getAttribute('data-ind');
+          this.root.querySelectorAll('[data-ind]').forEach(b => {
+            const active = b === btn;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-pressed', active ? 'true' : 'false');
+          });
+          this.draw();
+        });
+      });
+      this.root.querySelectorAll('[data-ind]').forEach(b => {
+        if (b.getAttribute('data-ind') === this.indicador) b.classList.add('is-active');
+      });
+    }
+
+    reset() {
+      this.Vb = 0;
+      this.pH = this.computePH(0);
+      this.curve = [{ Vb: 0, pH: this.pH }];
+      this.eqVol = this.Ca * this.Va / this.Cb;
+      this.elapsed = 0;
+      this.updateResults();
+    }
+
+    updateResults() {
+      this.setResult('pH', formatNum(this.pH));
+      this.setResult('Vb', formatNum(this.Vb, NUM1) + ' mL');
+      this.setResult('Veq', formatNum(this.eqVol, NUM1) + ' mL');
+      let estado = 'Ácido';
+      if (Math.abs(this.Vb - this.eqVol) < 0.6) estado = 'Equivalencia';
+      else if (this.Vb > this.eqVol) estado = 'Básico';
+      this.setResult('estado', estado);
+    }
+
+    update(dt) {
+      this.Vb += 1.5 * dt;
+      if (this.Vb >= this.eqVol * 2) {
+        this.Vb = this.eqVol * 2;
+        this.finish();
+      }
+      this.pH = this.computePH(this.Vb);
+      this.curve.push({ Vb: this.Vb, pH: this.pH });
+      if (this.curve.length > 500) this.curve.shift();
+      this.updateResults();
+    }
+
+    draw() {
+      const ctx = this.ctx;
+      const w = this.w;
+      const h = this.h;
+      ctx.clearRect(0, 0, w, h);
+
+      const beakerW = Math.min(w * 0.45, 200);
+      const beakerH = Math.min(h * 0.55, 220);
+      const bx = w / 2 - beakerW / 2;
+      const by = h / 2 - beakerH / 2 + 30;
+
+      const ind = this.indicators[this.indicador];
+      const [r1, r2] = ind.range;
+      let color;
+      if (this.pH < r1) color = ind.acidColor;
+      else if (this.pH > r2) color = ind.baseColor;
+      else {
+        const t = (this.pH - r1) / (r2 - r1);
+        color = lerpColor(ind.acidColor, ind.baseColor, t);
+      }
+      const fill = `rgba(${color[0]},${color[1]},${color[2]},0.75)`;
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(bx, by);
+      ctx.lineTo(bx, by + beakerH);
+      ctx.lineTo(bx + beakerW, by + beakerH);
+      ctx.lineTo(bx + beakerW, by);
+      ctx.stroke();
+
+      const liquidH = beakerH * 0.72;
+      const liquidY = by + beakerH - liquidH;
+      ctx.fillStyle = fill;
+      ctx.fillRect(bx + 3, liquidY, beakerW - 6, liquidH);
+
+      const buretW = 20;
+      const buretH = Math.min(h * 0.4, 180);
+      const burX = w / 2 - buretW / 2;
+      const burY = Math.max(30, by - buretH - 30);
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(burX, burY);
+      ctx.lineTo(burX, burY + buretH);
+      ctx.moveTo(burX + buretW, burY);
+      ctx.lineTo(burX + buretW, burY + buretH);
+      ctx.stroke();
+
+      const baseFrac = clamp(this.Vb / (this.eqVol * 2), 0, 1);
+      const baseH = buretH * (1 - baseFrac);
+      ctx.fillStyle = 'rgba(130,190,255,0.5)';
+      ctx.fillRect(burX + 2, burY + buretH - baseH, buretW - 4, baseH);
+
+      if (this.state === 'running' && this.Vb < this.eqVol * 2) {
+        ctx.fillStyle = 'rgba(130,190,255,0.85)';
+        ctx.beginPath();
+        ctx.arc(w / 2, buretH + burY + 12, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = COLORS.textMuted;
+      ctx.font = '600 11px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('NaOH', burX + buretW + 12, burY + 14);
+      ctx.fillStyle = 'rgba(130,190,255,0.9)';
+      ctx.font = '500 10px Inter, sans-serif';
+      ctx.fillText(formatNum(this.Cb) + ' M', burX + buretW + 12, burY + 28);
+
+      ctx.fillStyle = '#fff';
+      ctx.font = '600 11px "Space Grotesk", sans-serif';
+      ctx.fillText('HCl + indicador', bx, by - 8);
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.font = '500 10px Inter, sans-serif';
+      ctx.fillText(formatNum(this.Ca) + ' M · ' + formatNum(this.Va, NUM0) + ' mL', bx, by + beakerH + 16);
+
+      ctx.fillStyle = COLORS.primary;
+      ctx.font = '700 12px "Space Grotesk", sans-serif';
+      ctx.fillText('pH = ' + formatNum(this.pH), bx + beakerW + 24, by + 24);
+      ctx.fillStyle = COLORS.textMuted;
+      ctx.font = '500 10px Inter, sans-serif';
+      ctx.fillText('V = ' + formatNum(this.Vb, NUM1) + ' mL', bx + beakerW + 24, by + 42);
+    }
+
+    drawGraph() {
+      super.drawGraph();
+      const ctx = this.graphCtx;
+      const w = this.graphW;
+      const h = this.graphH;
+      const pad = { l: 44, r: 14, t: 14, b: 26 };
+      const plotW = w - pad.l - pad.r;
+      const plotH = h - pad.t - pad.b;
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.beginPath();
+      ctx.moveTo(pad.l, pad.t);
+      ctx.lineTo(pad.l, pad.t + plotH);
+      ctx.lineTo(pad.l + plotW, pad.t + plotH);
+      ctx.stroke();
+
+      const Vmax = this.eqVol * 2;
+
+      ctx.strokeStyle = 'rgba(255,221,0,0.5)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      const xEq = pad.l + (this.eqVol / Vmax) * plotW;
+      ctx.moveTo(xEq, pad.t);
+      ctx.lineTo(xEq, pad.t + plotH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.strokeStyle = COLORS.primary;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      let started = false;
+      this.curve.forEach(p => {
+        const x = pad.l + (p.Vb / Vmax) * plotW;
+        const y = pad.t + plotH - (p.pH / 14) * plotH;
+        if (!started) { ctx.moveTo(x, y); started = true; }
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      if (this.curve.length > 0) {
+        const last = this.curve[this.curve.length - 1];
+        const x = pad.l + (last.Vb / Vmax) * plotW;
+        const y = pad.t + plotH - (last.pH / 14) * plotH;
+        ctx.fillStyle = COLORS.primary;
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = COLORS.axis;
+      ctx.font = '11px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('14', pad.l - 4, pad.t + 12);
+      ctx.fillText('7', pad.l - 4, pad.t + plotH / 2 + 4);
+      ctx.fillText('0', pad.l - 4, pad.t + plotH);
+      ctx.textAlign = 'center';
+      ctx.fillText('V NaOH (mL)', pad.l + plotW / 2, h - 8);
+    }
+  }
+
+  const EXPERIMENTS_MAP = {
+    entalpia: EntalpiaLab,
+    ohm: OhmLab,
+    hooke: HookeLab,
+    pendulo: PenduloLab,
+    presion: PresionLab,
+    valoracion: ValoracionLab
+  };
+
+  const EXPERIMENT_ORDER = ['entalpia', 'ohm', 'hooke', 'pendulo', 'presion', 'valoracion'];
+
+  let currentInstance = null;
+  let lastFocusedElement = null;
+
+  function renderCards() {
+    const grid = document.getElementById('grid');
+    grid.innerHTML = EXPERIMENT_ORDER.map((id, idx) => {
+      const Cls = EXPERIMENTS_MAP[id];
+      const m = Cls.META;
+      const diff = m.difficulty;
+      const diffLabel = diff === 1 ? 'Básico' : diff === 2 ? 'Intermedio' : 'Avanzado';
+      const primaryCat = m.categories[0];
+      const catLabel = primaryCat === 'fisica' ? 'Física' : primaryCat === 'quimica' ? 'Química' : primaryCat;
+      return `
+        <article class="exp-card reveal" data-id="${m.id}" data-categories="${m.categories.join(' ')}" data-index="${idx}" role="button" tabindex="0" aria-label="Abrir laboratorio: ${m.title}" style="--d:${idx};">
+          <div class="exp-card-top">
+            <div class="exp-icon">${m.icon}</div>
+            <span class="exp-chip" data-cat="${primaryCat}">${catLabel}</span>
+          </div>
+          <h3 class="exp-title">${m.title}</h3>
+          <p class="exp-desc">${m.short}</p>
+          <div class="exp-meta">
+            <span class="exp-difficulty" data-level="${diff}"><span class="dot"></span>${diffLabel}</span>
+            <span>${m.duration}</span>
+          </div>
+          <span class="exp-cta">
+            Abrir laboratorio
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </article>
+      `;
+    }).join('');
+
+    grid.querySelectorAll('.exp-card').forEach(card => {
+      card.addEventListener('click', () => openExperiment(card.dataset.id));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openExperiment(card.dataset.id);
+        }
+      });
+    });
+  }
+
+  function openExperiment(id) {
+    const ExpClass = EXPERIMENTS_MAP[id];
+    if (!ExpClass) return;
+
+    const modal = document.getElementById('modal');
+    const body = document.getElementById('modalBody');
+    const catEl = document.getElementById('modalCat');
+    const titleEl = document.getElementById('modalTitle');
+    const shell = modal.querySelector('.modal-shell');
+
+    const m = ExpClass.META;
+    const primaryCat = m.categories[0];
+    catEl.textContent = primaryCat === 'fisica' ? 'Física' : primaryCat === 'quimica' ? 'Química' : primaryCat;
+    titleEl.textContent = m.title;
+
+    lastFocusedElement = document.activeElement;
+
+    const instance = new ExpClass();
+
+    const doMount = () => {
+      instance.mount(body);
+      currentInstance = instance;
+      setTimeout(() => {
+        const closeBtn = document.getElementById('modalClose');
+        if (closeBtn) closeBtn.focus();
+      }, 80);
+    };
+
+    if (modal.classList.contains('is-active')) {
+      doMount();
+    } else {
+      let mounted = false;
+      const onEnd = () => {
+        if (mounted) return;
+        mounted = true;
+        shell.removeEventListener('transitionend', onEnd);
+        doMount();
+      };
+      shell.addEventListener('transitionend', onEnd, { once: true });
+      setTimeout(onEnd, 600);
+
+      modal.classList.add('is-active');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('no-scroll');
+      audio.play('open');
+    }
+  }
+
+  function closeExperiment() {
+    const modal = document.getElementById('modal');
+    if (!modal.classList.contains('is-active')) return;
+    if (currentInstance) {
+      currentInstance.stop();
+      if (currentInstance.resizeObserver) currentInstance.resizeObserver.disconnect();
+      currentInstance = null;
+    }
+    modal.classList.remove('is-active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('no-scroll');
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+      lastFocusedElement.focus();
+    }
+  }
+
+  function trapFocus(e) {
+    const modal = document.getElementById('modal');
+    if (!modal.classList.contains('is-active')) return;
+    if (e.key !== 'Tab') return;
+    const focusables = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  function bindFilters() {
+    const buttons = document.querySelectorAll('.filter-btn');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter');
+        buttons.forEach(b => {
+          const active = b === btn;
+          b.classList.toggle('is-active', active);
+          b.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        const cards = document.querySelectorAll('.exp-card');
+        let visibleCount = 0;
+        cards.forEach(card => {
+          const cats = card.getAttribute('data-categories').split(' ');
+          const show = filter === 'todos' || cats.indexOf(filter) !== -1;
+          if (show) {
+            card.style.display = '';
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s var(--ease-premium)';
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, visibleCount * 50);
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  }
+
+  function bindReveal() {
+    const elements = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    elements.forEach(el => observer.observe(el));
+  }
+
+  function bindHeader() {
+    const header = document.getElementById('header');
+    let ticking = false;
+    function onScroll() {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+      ticking = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(onScroll);
+        ticking = true;
+      }
+    }, { passive: true });
+    onScroll();
+
+    const navLinks = document.getElementById('navLinks');
+    const toggle = document.getElementById('mobileToggle');
+    let open = false;
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      open = !open;
+      navLinks.classList.toggle('mobile-active', open);
+      toggle.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.classList.toggle('no-scroll', open);
+    });
+    navLinks.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (open) {
+          open = false;
+          navLinks.classList.remove('mobile-active');
+          toggle.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('no-scroll');
+        }
+      });
+    });
+  }
+
+  function init() {
+    renderCards();
+    bindFilters();
+    bindReveal();
+    bindHeader();
+
+    const modal = document.getElementById('modal');
+    const closeBtn = document.getElementById('modalClose');
+    closeBtn.addEventListener('click', closeExperiment);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeExperiment();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeExperiment();
+      trapFocus(e);
+    });
+
+    ['click', 'touchstart', 'keydown', 'pointerdown'].forEach(ev => {
+      document.addEventListener(ev, () => audio.unlock(), { capture: true, passive: true });
+    });
+
+    const yearEl = document.getElementById('currentYear');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>

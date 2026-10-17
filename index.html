@@ -15,8 +15,20 @@
         })();
     </script>
 
-    <!-- Netlify Identity Widget -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+        (function () {
+            var hash = window.location.hash || '';
+            var hasToken = hash.indexOf('invite_token') !== -1 ||
+                           hash.indexOf('recovery_token') !== -1 ||
+                           hash.indexOf('confirmation_token') !== -1 ||
+                           hash.indexOf('email_change_token') !== -1;
+            if (hasToken) {
+                var script = document.createElement('script');
+                script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
+                document.head.appendChild(script);
+            }
+        })();
+    </script>
 
     <title>Instituto Técnico | Oficial</title>
     <meta name="description" content="Sitio web oficial de la Institución Educativa Instituto Técnico de Santander de Quilichao, Cauca. Educación Preescolar, Básica y Media.">
@@ -32,7 +44,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
 
     <style>
         :root {
@@ -67,6 +80,7 @@
             --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
             --ease-cinematic: cubic-bezier(0.19, 1, 0.22, 1);
+            --ease-float: cubic-bezier(0.45, 0, 0.55, 1);
 
             --section-pad-y: clamp(88px, 12vw, 160px);
             --safe-left: env(safe-area-inset-left, 0px);
@@ -89,7 +103,12 @@
             -webkit-text-size-adjust: 100%;
         }
 
-        /* Accesibilidad: reducir movimiento */
+        :focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 3px;
+            border-radius: 6px;
+        }
+
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.001ms !important;
@@ -97,17 +116,20 @@
                 transition-duration: 0.001ms !important;
             }
             html { scroll-behavior: auto; }
-            .reveal { opacity: 1 !important; transform: none !important; }
+            .reveal { opacity: 1 !important; transform: none !important; filter: none !important; }
             .about-image-wrap { animation: none !important; }
             .hero-title, .hero-eyebrow, .hero-desc, .hero-actions, .scroll-indicator {
                 animation: none !important;
                 opacity: 1 !important;
                 clip-path: none !important;
                 transform: none !important;
+                filter: none !important;
             }
             .gallery-marquee-track { animation: none !important; }
             .reconocimiento-card { animation: none !important; }
             .reconocimiento-card::before { animation: none !important; }
+            .stat-ripple { display: none; }
+            .stat-item.is-counting .stat-num.counter { animation: none; }
         }
 
         body {
@@ -121,6 +143,12 @@
             background-image:
                 radial-gradient(circle at 15% 50%, rgba(0, 255, 136, 0.04) 0%, transparent 50%),
                 radial-gradient(circle at 85% 30%, rgba(0, 255, 136, 0.04) 0%, transparent 50%);
+            background-size: 100% 100%;
+            transition: background-color 0.5s var(--ease-premium), color 0.5s var(--ease-premium);
+        }
+
+        @supports not (-webkit-touch-callout: none) {
+            body { background-attachment: fixed; }
         }
 
         body.no-scroll { overflow: hidden; }
@@ -148,7 +176,7 @@
             padding-top: var(--section-pad-y);
             padding-bottom: var(--section-pad-y);
             content-visibility: auto;
-            contain-intrinsic-size: 1px 900px;
+            contain-intrinsic-size: auto 800px;
         }
 
         .section-title {
@@ -171,7 +199,6 @@
         .text-green { color: var(--primary); }
         .text-muted { color: var(--text-muted); }
 
-        /* Botones */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -232,7 +259,7 @@
             border: 1px solid var(--border-light);
             border-radius: var(--radius-lg);
             padding: 24px;
-            transition: border-color 0.4s var(--ease-premium), box-shadow 0.4s var(--ease-premium), transform 0.5s var(--ease-premium);
+            transition: border-color 0.4s var(--ease-premium), box-shadow 0.4s var(--ease-premium), transform 0.5s var(--ease-premium), background-color 0.4s var(--ease-premium);
             position: relative;
             overflow: hidden;
         }
@@ -253,7 +280,6 @@
         }
         .glass-card:hover::before { opacity: 1; }
 
-        /* Header */
         .header {
             position: fixed;
             top: 0; left: 0; width: 100%;
@@ -264,13 +290,10 @@
         }
 
         .header.scrolled {
-            background: rgba(0, 0, 0, 0.78);
-            backdrop-filter: blur(20px) saturate(160%);
-            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            background: rgba(0, 0, 0, 0.94);
             padding: calc(12px + var(--safe-top)) 0 12px;
             border-bottom: 1px solid var(--border-color);
         }
-
         .nav-container {
             display: flex;
             justify-content: space-between;
@@ -347,7 +370,6 @@
         .mobile-toggle.is-open .icon-menu { display: none; }
         .mobile-toggle.is-open .icon-close { display: block; }
 
-        /* Hero */
         .hero {
             position: relative;
             min-height: 100svh;
@@ -375,7 +397,6 @@
             display: block;
             opacity: 0.45;
             animation: heroBgZoom 3.5s var(--ease-cinematic) forwards;
-            will-change: transform, opacity;
         }
 
         @keyframes heroBgZoom {
@@ -383,22 +404,10 @@
             to { transform: scale(1); opacity: 0.45; }
         }
 
-        /* Animación de entrada solo para móvil */
         @keyframes heroImageMobile {
-            from {
-                opacity: 0;
-                transform: scale(1.22);
-                filter: blur(12px) brightness(0.5);
-            }
-            60% {
-                opacity: 0.35;
-                filter: blur(3px) brightness(0.85);
-            }
-            to {
-                opacity: 0.42;
-                transform: scale(1);
-                filter: blur(0) brightness(1);
-            }
+            from { opacity: 0; transform: scale(1.22); filter: blur(12px) brightness(0.5); }
+            60% { opacity: 0.35; filter: blur(3px) brightness(0.85); }
+            to { opacity: 0.42; transform: scale(1); filter: blur(0) brightness(1); }
         }
 
         .hero-overlay {
@@ -478,7 +487,6 @@
             -webkit-text-fill-color: transparent;
             clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
             animation: heroTitleReveal 3.4s var(--ease-cinematic) 0.5s forwards;
-            will-change: clip-path;
             text-rendering: optimizeLegibility;
         }
 
@@ -557,7 +565,6 @@
 
         .scroll-indicator svg { opacity: 0.7; }
 
-        /* Nosotros */
         .nosotros-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -573,41 +580,65 @@
         }
 
         .stat-item {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
             padding: 26px 20px;
             border-radius: var(--radius-md);
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             text-align: center;
             cursor: pointer;
-            transition: all 0.4s var(--ease-premium);
             user-select: none;
             min-height: 48px;
             touch-action: manipulation;
+            transition:
+                transform 0.35s var(--ease-premium),
+                border-color 0.4s var(--ease-premium),
+                box-shadow 0.4s var(--ease-premium),
+                background-color 0.4s var(--ease-premium);
         }
 
-        /* Hover verde en las tarjetas de porcentajes */
-        .stat-item:hover,
-        .stat-item:focus-visible {
-            border-color: rgba(0, 255, 136, 0.5);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 20px var(--primary-dim);
-            transform: translateY(-3px);
-            outline: none;
+        .stat-item > * { position: relative; z-index: 2; }
+
+        .stat-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%),
+                rgba(0, 255, 136, 0.14) 0%,
+                transparent 65%);
+            opacity: 0;
+            transition: opacity 0.45s ease;
+            pointer-events: none;
+            z-index: 1;
         }
+
+        @media (hover: hover) {
+            .stat-item.is-glowing::after { opacity: 1; }
+            .stat-item:hover,
+            .stat-item:focus-visible {
+                border-color: rgba(0, 255, 136, 0.5);
+                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 20px var(--primary-dim);
+                transform: translateY(-3px);
+                outline: none;
+            }
+            .stat-item:hover .stat-label,
+            .stat-item:focus-visible .stat-label { color: var(--primary); }
+        }
+
+        .stat-item.is-pressing {
+            transform: scale(0.95);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-dim), 0 14px 42px rgba(0, 0, 0, 0.5);
+        }
+        .stat-item.is-pressing::after { opacity: 1; }
+        .stat-item.is-pressing .stat-label { color: var(--primary); }
 
         .stat-label {
             font-size: 0.88rem;
             color: var(--text-muted);
             transition: var(--transition);
-        }
-
-        .stat-item:hover .stat-label,
-        .stat-item:focus-visible .stat-label { color: var(--primary); }
-
-        .stat-item.stat-clicked { animation: statClickPulse 0.4s ease; }
-        @keyframes statClickPulse {
-            0% { transform: scale(1); }
-            35% { transform: scale(0.95); }
-            100% { transform: scale(1); }
         }
 
         .stat-num {
@@ -620,22 +651,54 @@
             line-height: 1;
         }
 
-        /* Imagen Nosotros */
+        .stat-num.counter {
+            display: inline-block;
+            font-variant-numeric: tabular-nums;
+            transition: transform 0.3s var(--ease-premium);
+        }
+
+        .stat-item.is-counting .stat-num.counter {
+            animation: counterPulse 0.9s var(--ease-premium);
+        }
+
+        @keyframes counterPulse {
+            0%   { transform: scale(1); }
+            30%  { transform: scale(1.09); color: #fff; text-shadow: 0 0 22px var(--primary-glow); }
+            100% { transform: scale(1); }
+        }
+
+        .stat-ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                rgba(0, 255, 136, 0.55) 0%,
+                rgba(0, 255, 136, 0.22) 40%,
+                transparent 70%);
+            transform: scale(0);
+            pointer-events: none;
+            z-index: 1;
+            animation: statRipple 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes statRipple {
+            to { transform: scale(2.6); opacity: 0; }
+        }
+
         .about-image-wrap {
             position: relative;
             border-radius: var(--radius-lg);
             overflow: hidden;
             aspect-ratio: 4 / 5;
             max-height: 620px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
-            animation: floatImage 7s ease-in-out infinite;
-            transition: box-shadow 0.6s var(--ease-premium);
-            will-change: transform;
+            animation: floatImage 9s var(--ease-float) infinite;
+            transition: transform 0.6s var(--ease-premium);
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         @keyframes floatImage {
             0%, 100% { transform: translate3d(0, 0, 0); }
-            50% { transform: translate3d(0, -12px, 0); }
+            50% { transform: translate3d(0, -14px, 0); }
         }
 
         .about-image-wrap img {
@@ -648,11 +711,7 @@
             transition: transform 1.4s var(--ease-premium);
         }
 
-        .about-image-wrap:hover {
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65);
-        }
-
-        .about-image-wrap:hover img { transform: scale(1.05); }
+        .about-image-wrap:hover img { transform: scale(1.04); }
 
         .about-image-overlay {
             position: absolute;
@@ -669,23 +728,14 @@
             z-index: 1;
         }
 
-        .about-image-wrap:hover .about-image-overlay {
-            background: linear-gradient(
-                180deg,
-                rgba(0, 0, 0, 0.1) 0%,
-                rgba(0, 0, 0, 0.25) 40%,
-                rgba(0, 0, 0, 0.82) 85%,
-                rgba(0, 0, 0, 0.98) 100%
-            );
-        }
-
         .about-image-caption {
             position: absolute;
             left: 0; right: 0; bottom: 0;
-            padding: 40px 36px 36px;
+            padding: 40px 32px 40px;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
+            text-align: center;
             gap: 6px;
             z-index: 2;
             opacity: 0;
@@ -698,20 +748,6 @@
 
         @keyframes captionSlideUp {
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        .about-image-caption-emoji {
-            font-size: 1.9rem;
-            line-height: 1;
-            margin-bottom: 6px;
-            filter: drop-shadow(0 0 16px rgba(0, 255, 136, 0.5));
-            display: inline-block;
-            animation: emojiPulse 3.4s ease-in-out infinite;
-        }
-
-        @keyframes emojiPulse {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.08) rotate(-2deg); }
         }
 
         .about-image-caption-title {
@@ -762,7 +798,6 @@
             min-height: 48px;
             transition: all 0.4s var(--ease-premium);
             touch-action: manipulation;
-            will-change: transform;
         }
 
         .about-image-cta:hover {
@@ -773,7 +808,6 @@
             transform: translateY(-3px);
         }
 
-        /* Sedes */
         .sedes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -788,7 +822,7 @@
             border-radius: var(--radius-lg);
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            transition: border-color 0.4s var(--ease-premium), transform 0.5s var(--ease-premium), box-shadow 0.4s var(--ease-premium);
+            transition: border-color 0.4s var(--ease-premium), transform 0.5s var(--ease-premium), box-shadow 0.4s var(--ease-premium), background-color 0.4s var(--ease-premium);
         }
 
         .sede-card:hover {
@@ -882,17 +916,6 @@
 
         .sede-body .sede-address svg { flex-shrink: 0; }
 
-        .sede-body .sede-link-hint {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 12px;
-            font-size: 0.82rem;
-            color: var(--primary);
-            font-weight: 600;
-            font-family: var(--font-heading);
-        }
-
         .sedes-collapse { display: contents; }
         .sedes-collapse-inner { display: contents; }
 
@@ -926,7 +949,6 @@
         .ver-mas-sedes svg { transition: transform 0.5s var(--ease-premium); }
         .ver-mas-sedes[aria-expanded="true"] svg { transform: rotate(180deg); }
 
-        /* Accesos */
         .accesos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -995,7 +1017,6 @@
             .acceso-card h4 { font-size: 0.95rem; }
         }
 
-        /* Noticias */
         .news-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1059,7 +1080,42 @@
         .news-link svg { transition: transform 0.35s var(--ease-premium); }
         .news-link:hover svg { transform: translateX(5px); }
 
-        /* Modal */
+        .news-skeleton {
+            pointer-events: none;
+        }
+
+        .news-skeleton .skeleton-block {
+            background: linear-gradient(90deg, #141414 0%, #1f1f1f 50%, #141414 100%);
+            background-size: 200% 100%;
+            animation: skeletonShimmer 1.6s ease-in-out infinite;
+            border-radius: 6px;
+        }
+
+        .news-skeleton .skeleton-img { height: 210px; border-radius: 0; }
+        .news-skeleton .skeleton-line { height: 14px; margin-bottom: 12px; }
+        .news-skeleton .skeleton-line.short { width: 40%; }
+        .news-skeleton .skeleton-line.medium { width: 75%; }
+        .news-skeleton .skeleton-line.long { width: 100%; }
+        .news-skeleton .skeleton-line.title { height: 22px; margin-bottom: 16px; }
+
+        @keyframes skeletonShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .news-empty {
+            text-align: center;
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+            padding: 40px 20px;
+        }
+
+        .news-empty svg {
+            margin: 0 auto 14px;
+            color: var(--border-color);
+            opacity: 0.6;
+        }
+
         .modal {
             position: fixed;
             inset: 0;
@@ -1091,6 +1147,7 @@
             opacity: 0;
             transition: transform 0.55s var(--ease-cinematic), opacity 0.4s ease;
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+            overscroll-behavior: contain;
         }
 
         .modal.active .modal-content {
@@ -1271,14 +1328,33 @@
             transform: rotate(90deg);
         }
 
-        /* Galería */
         .gallery-marquee {
             position: relative;
             width: 100%;
             overflow: hidden;
             padding: 20px 0 28px;
-            -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
-            mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+            contain: layout paint;
+        }
+
+        .gallery-marquee::before,
+        .gallery-marquee::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .gallery-marquee::before {
+            left: 0;
+            background: linear-gradient(90deg, var(--bg-base) 0%, transparent 100%);
+        }
+
+        .gallery-marquee::after {
+            right: 0;
+            background: linear-gradient(270deg, var(--bg-base) 0%, transparent 100%);
         }
 
         .gallery-marquee-track {
@@ -1370,7 +1446,6 @@
             transform: translateY(-2px);
         }
 
-        /* Lightbox */
         .lightbox {
             position: fixed; inset: 0;
             background: rgba(0,0,0,0.96);
@@ -1410,7 +1485,6 @@
             touch-action: manipulation;
         }
 
-        /* Reconocimiento */
         .reconocimiento-card {
             position: relative;
             display: flex;
@@ -1422,7 +1496,7 @@
             background: var(--bg-card);
             border: 1px solid transparent;
             animation: floatReco 7s ease-in-out infinite;
-            transition: box-shadow 0.5s var(--ease-premium);
+            transition: box-shadow 0.5s var(--ease-premium), background-color 0.4s var(--ease-premium);
         }
 
         @keyframes floatReco {
@@ -1512,7 +1586,6 @@
             box-shadow: 0 0 32px rgba(255, 221, 0, 0.35);
         }
 
-        /* Contacto */
         .contacto-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1551,6 +1624,18 @@
 
         textarea.form-control { resize: vertical; min-height: 130px; }
 
+        .form-status {
+            margin-top: 14px;
+            font-size: 0.88rem;
+            min-height: 1.4em;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        .form-status[data-state="success"] { color: var(--primary); }
+        .form-status[data-state="error"] { color: #ff6b6b; }
+        .form-status[data-state="loading"] { color: var(--text-muted); }
+
         .contact-info { display: flex; flex-direction: column; gap: 26px; }
         .info-item { display: flex; gap: 18px; align-items: flex-start; }
         .info-icon { color: var(--primary); margin-top: 4px; flex-shrink: 0; }
@@ -1563,13 +1648,13 @@
             margin-top: 24px;
         }
 
-        /* Footer */
         .footer {
             border-top: 1px solid var(--border-color);
             background: var(--bg-card);
             padding: 90px 0 calc(28px + var(--safe-bottom));
             content-visibility: auto;
-            contain-intrinsic-size: 1px 500px;
+            contain-intrinsic-size: auto 500px;
+            transition: background-color 0.4s var(--ease-premium), border-color 0.4s var(--ease-premium);
         }
 
         .footer-grid {
@@ -1634,7 +1719,6 @@
             flex-wrap: wrap;
         }
 
-        /* Back to top */
         .back-to-top {
             position: fixed;
             bottom: calc(24px + var(--safe-bottom));
@@ -1664,7 +1748,6 @@
             transform: translateY(-4px);
         }
 
-        /* Cookie banner */
         .cookie-banner {
             position: fixed;
             bottom: calc(24px + var(--safe-bottom));
@@ -1843,19 +1926,25 @@
             .cookie-btn-more { flex: 0 0 auto; padding: 12px 18px; }
         }
 
-        /* Reveals */
         .reveal {
             opacity: 0;
-            transform: translateY(45px);
+            transform: translateY(36px) scale(0.96);
+            filter: blur(4px);
             transition:
-                opacity 1.3s var(--ease-premium),
-                transform 1.3s var(--ease-premium);
-            transition-delay: calc(var(--d, 0) * 120ms);
+                opacity 1.1s var(--ease-cinematic),
+                transform 1.1s var(--ease-cinematic),
+                filter 0.9s var(--ease-cinematic);
+            transition-delay: calc(var(--d, 0) * 110ms);
+        }
+
+        .reveal.is-revealing {
+            will-change: opacity, transform, filter;
         }
 
         .reveal.active {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
+            filter: blur(0);
         }
 
         .delay-1 { --d: 1; }
@@ -1868,7 +1957,6 @@
             touch-action: manipulation;
         }
 
-        /* Tablet */
         @media (max-width: 992px) {
             .nosotros-grid { grid-template-columns: 1fr; gap: 56px; }
             .contacto-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -1876,14 +1964,14 @@
             .reconocimiento-card { flex-direction: column; text-align: center; padding: 36px 28px; }
             .hero-title { font-size: clamp(3rem, 10vw, 6rem); }
             .about-image-wrap { aspect-ratio: 5 / 4; max-height: 520px; }
-            .about-image-caption { align-items: center; text-align: center; }
         }
 
-        /* Móvil */
         @media (max-width: 768px) {
             :root { --section-pad-y: 80px; }
 
-            /* Menú full-screen */
+            * { -webkit-tap-highlight-color: transparent; }
+            body { overscroll-behavior-y: none; }
+
             .mobile-toggle { display: flex; }
 
             .nav-links {
@@ -1900,19 +1988,20 @@
                 transform: translateY(-100%);
                 opacity: 0;
                 visibility: hidden;
-                transition: transform 0.7s var(--ease-cinematic), opacity 0.5s ease, visibility 0s linear 0.7s;
+                transition: transform 0.55s var(--ease-cinematic), opacity 0.4s ease, visibility 0s linear 0.55s;
                 z-index: 999;
                 gap: 0;
                 width: 100%;
                 height: 100%;
                 overflow-y: auto;
+                will-change: transform, opacity;
             }
 
             .nav-links.mobile-active {
                 transform: translateY(0);
                 opacity: 1;
                 visibility: visible;
-                transition: transform 0.7s var(--ease-cinematic), opacity 0.5s ease, visibility 0s linear 0s;
+                transition: transform 0.55s var(--ease-cinematic), opacity 0.4s ease, visibility 0s linear 0s;
             }
 
             .nav-links .nav-link {
@@ -1933,25 +2022,23 @@
             }
 
             .nav-links.mobile-active .nav-link { opacity: 1; transform: translateX(0); }
-            .nav-links.mobile-active .nav-link:nth-child(1) { transition-delay: 0.12s; }
-            .nav-links.mobile-active .nav-link:nth-child(2) { transition-delay: 0.18s; }
-            .nav-links.mobile-active .nav-link:nth-child(3) { transition-delay: 0.24s; }
-            .nav-links.mobile-active .nav-link:nth-child(4) { transition-delay: 0.30s; }
-            .nav-links.mobile-active .nav-link:nth-child(5) { transition-delay: 0.36s; }
-            .nav-links.mobile-active .nav-link:nth-child(6) { transition-delay: 0.42s; }
-            .nav-links.mobile-active .nav-link:nth-child(7) { transition-delay: 0.48s; }
+            .nav-links.mobile-active .nav-link:nth-child(1) { transition-delay: 0.10s; }
+            .nav-links.mobile-active .nav-link:nth-child(2) { transition-delay: 0.15s; }
+            .nav-links.mobile-active .nav-link:nth-child(3) { transition-delay: 0.20s; }
+            .nav-links.mobile-active .nav-link:nth-child(4) { transition-delay: 0.25s; }
+            .nav-links.mobile-active .nav-link:nth-child(5) { transition-delay: 0.30s; }
+            .nav-links.mobile-active .nav-link:nth-child(6) { transition-delay: 0.35s; }
+            .nav-links.mobile-active .nav-link:nth-child(7) { transition-delay: 0.40s; }
 
             .nav-links .nav-link::after { display: none; }
             .nav-links .nav-link:active { color: var(--primary); }
 
-            /* Hero */
             .hero {
                 min-height: 100svh;
                 padding-top: calc(110px + var(--safe-top));
                 padding-bottom: calc(70px + var(--safe-bottom));
             }
 
-            /* Imagen un poco menos clara en móvil + entrada cinematográfica */
             .hero-bg img {
                 opacity: 0.42;
                 object-position: center 35%;
@@ -1967,21 +2054,30 @@
             .hero-grid { background-size: 32px 32px; opacity: 0.55; }
 
             .hero-title {
-                font-size: clamp(3.2rem, 17vw, 6rem);
-                margin-bottom: 24px;
-                line-height: 0.92;
+                font-size: clamp(3rem, 15.5vw, 5.6rem);
+                margin-bottom: 22px;
+                line-height: 0.94;
+                letter-spacing: -0.045em;
+                clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+                animation: heroTitleMobile 1.9s var(--ease-cinematic) 0.4s forwards;
+                filter: blur(10px);
+            }
+
+            @keyframes heroTitleMobile {
+                from { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); filter: blur(10px); }
+                to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); filter: blur(0); }
             }
 
             .hero-eyebrow {
                 font-size: 0.66rem;
                 padding: 7px 14px;
                 letter-spacing: 2px;
-                margin-bottom: 24px;
+                margin-bottom: 22px;
             }
 
             .hero-desc {
                 font-size: 1rem;
-                margin-bottom: 36px;
+                margin-bottom: 34px;
                 padding: 0 4px;
                 line-height: 1.6;
             }
@@ -2002,7 +2098,6 @@
                 padding: 0 4px;
             }
 
-            /* Nosotros */
             .stats-container { gap: 14px; margin-top: 32px; }
             .stat-item { padding: 20px 14px; }
             .stat-num { font-size: 1.9rem; }
@@ -2015,26 +2110,24 @@
             }
 
             .about-image-caption {
-                padding: 28px 24px 26px;
-                align-items: flex-start;
-                text-align: left;
+                padding: 28px 22px 30px;
             }
 
             .about-image-caption-title { font-size: 1.55rem; }
-            .about-image-caption-emoji { font-size: 1.6rem; }
             .about-image-caption-sub { font-size: 0.62rem; letter-spacing: 2.5px; }
             .about-image-cta { padding: 13px 22px; font-size: 0.88rem; margin-top: 18px; }
 
-            /* Sedes acordeón */
             .sedes-grid { display: block; }
             .sedes-grid > .sede-card { margin-bottom: 20px; }
 
             .sedes-collapse {
                 display: grid;
                 grid-template-rows: 0fr;
-                transition: grid-template-rows 0.85s var(--ease-cinematic);
+                transition: grid-template-rows 0.7s var(--ease-cinematic);
                 overflow: hidden;
             }
+
+            .sedes-collapse.is-transitioning { will-change: grid-template-rows; }
 
             .sedes-grid.expanded .sedes-collapse { grid-template-rows: 1fr; }
 
@@ -2056,23 +2149,23 @@
                 max-width: 340px;
             }
 
-            /* Accesos */
             .accesos-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
             .acceso-card { padding: 26px 16px; min-height: 160px; gap: 12px; }
             .acceso-icon { width: 56px; height: 56px; }
             .acceso-card h4 { font-size: 0.95rem; }
             .acceso-card span { font-size: 0.75rem !important; }
 
-            /* Noticias */
             .news-grid { grid-template-columns: 1fr; gap: 22px; }
             .news-img { height: 200px; }
             .news-content { padding: 22px; }
 
-            /* Galería */
             .gallery-marquee {
                 padding: 16px 0 24px;
-                -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
-                mask-image: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+            }
+
+            .gallery-marquee::before,
+            .gallery-marquee::after {
+                width: 48px;
             }
 
             .gallery-marquee-track { gap: 14px; animation-duration: 46s; }
@@ -2086,14 +2179,12 @@
             .galeria-btn-wrap { margin-top: 30px; padding: 0 20px; }
             .galeria-btn { width: 100%; max-width: 340px; }
 
-            /* Modal */
             .modal { padding: 16px; }
             .modal-body { padding: 26px 22px; }
             .modal-hero { height: 220px; }
             .modal-meta { font-size: 0.82rem; gap: 12px; }
             .modal-close { top: 14px; right: 14px; }
 
-            /* Reconocimiento */
             .reconocimiento-card {
                 padding: 32px 22px;
                 gap: 22px;
@@ -2103,12 +2194,10 @@
             .reco-img { width: 120px; height: 120px; }
             .reconocimiento-card h3 { font-size: 1.55rem !important; }
 
-            /* Contacto */
             .contacto-grid { gap: 32px; }
             .form-group { margin-bottom: 18px; }
             .map-container { height: 220px; }
 
-            /* Footer */
             .footer { padding: 64px 0 calc(24px + var(--safe-bottom)); }
             .footer-grid {
                 grid-template-columns: 1fr 1fr;
@@ -2128,25 +2217,37 @@
                 right: calc(20px + var(--safe-right));
             }
 
-            .reveal { transform: translateY(32px); transition-duration: 1.05s; }
+            .btn:active,
+            .acceso-card:active,
+            .glass-card:active,
+            .news-link:active,
+            .galeria-btn:active,
+            .ver-mas-sedes:active,
+            .about-image-cta:active,
+            .gallery-marquee-item:active {
+                transform: scale(0.97);
+                transition: transform 0.12s var(--ease-premium);
+            }
 
-            /* Sin hover en móvil */
             .glass-card:hover,
             .sede-card:hover,
-            .reconocimiento-card:hover,
-            .gallery-marquee-item:hover {
+            .acceso-card:hover,
+            .news-card:hover {
                 transform: none;
+                box-shadow: none;
             }
+
             .glass-card:hover { border-color: var(--border-light); }
-            .sede-card:hover { border-color: var(--border-color); box-shadow: none; }
+            .sede-card:hover { border-color: var(--border-color); }
             .gallery-marquee-item:hover img { transform: none; }
+            .gallery-marquee-item:hover { transform: none; box-shadow: none; }
         }
 
         @media (max-width: 480px) {
             :root { --section-pad-y: 72px; }
 
             .hero-bg img { opacity: 0.45; object-position: center 32%; }
-            .hero-title { font-size: clamp(2.8rem, 18vw, 5rem); }
+            .hero-title { font-size: clamp(2.7rem, 16.5vw, 4.6rem); }
             .hero-desc { font-size: 0.96rem; }
 
             .stats-container { grid-template-columns: 1fr 1fr; }
@@ -2164,7 +2265,6 @@
             .ver-mas-sedes { max-width: 100%; }
         }
 
-        /* Optimizaciones móvil */
         .device-mobile .header.scrolled,
         .device-mobile .modal,
         .device-mobile .lightbox,
@@ -2195,6 +2295,12 @@
         .device-mobile .reconocimiento-card {
             will-change: auto;
         }
+
+        .device-mobile .reconocimiento-card::before {
+            animation-duration: 14s;
+        }
+
+        .device-mobile .btn::after { display: none; }
     </style>
 </head>
 <body>
@@ -2227,7 +2333,6 @@
 
     <main>
 
-        <!-- Hero -->
         <section class="hero" id="inicio">
             <div class="hero-bg">
                 <img src="assets/images/hero-image.jpg" alt="Instituto Técnico" fetchpriority="high" decoding="async">
@@ -2239,7 +2344,8 @@
                 <span class="hero-eyebrow">Institución Educativa Oficial</span>
                 <h1 class="hero-title">Instituto <span class="hero-title">Técnico</span></h1>
                 <p class="hero-desc">
-Educación que inspira, conocimientos que transforman y valores que construyen el futuro.                </p>
+                    Educación que inspira, conocimientos que transforman y valores que construyen el futuro.
+                </p>
 
                 <div class="hero-actions">
                     <a href="#nosotros" class="btn btn--primary">Conoce más</a>
@@ -2253,7 +2359,6 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
             </div>
         </section>
 
-        <!-- Nosotros -->
         <section class="section-padding" id="nosotros">
             <div class="container">
                 <div class="nosotros-grid">
@@ -2290,10 +2395,9 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
                         <img src="assets/images/nosotros.jpg" alt="Estudiantes del Instituto Técnico" loading="lazy" decoding="async">
                         <div class="about-image-overlay"></div>
                         <div class="about-image-caption">
-                            <span class="about-image-caption-emoji">🎓</span>
                             <h3 class="about-image-caption-title">Un siglo <span class="highlight">formando</span> futuro</h3>
                             <span class="about-image-caption-sub">Instituto Técnico · Desde 1913</span>
-                            <a href="historia.html" class="about-image-cta">
+                            <a href="historia.html" class="about-image-cta" id="historyCta">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
                                 Ver Historia Completa
                             </a>
@@ -2303,7 +2407,6 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
             </div>
         </section>
 
-        <!-- Sedes -->
         <section class="section-padding" style="background-color: var(--bg-panel);" id="sedes">
             <div class="container">
                 <h2 class="section-title reveal">Nuestras <span class="text-green">Sedes</span></h2>
@@ -2386,13 +2489,26 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
             </div>
         </section>
 
-        <!-- Accesos -->
         <section class="section-padding" id="accesos">
             <div class="container">
                 <h2 class="section-title reveal">Accesos <span class="text-green">Rápidos</span></h2>
                 <p class="section-subtitle reveal">Plataformas y herramientas digitales para la comunidad educativa.</p>
 
                 <div class="accesos-grid">
+                    <a href="laboratorio-virtual.html" class="glass-card acceso-card reveal" aria-label="Abrir Laboratorio Virtual">
+                        <div class="acceso-icon">
+                            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 3v6L4 20a2 2 0 0 0 1.9 2.7h12.2A2 2 0 0 0 20 20l-5-11V3"/>
+                                <line x1="8" y1="3" x2="16" y2="3"/>
+                                <line x1="6.5" y1="15" x2="17.5" y2="15"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 4px;">Laboratorio Virtual</h4>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">6 experimentos interactivos</span>
+                        </div>
+                    </a>
+
                     <a href="http://www.institutotecnico-santanderdequilichao-cauca.ie.edu.co/" target="_blank" rel="noopener noreferrer" class="glass-card acceso-card reveal" aria-label="Ir al Sitio Web Oficial">
                         <div class="acceso-icon">
                             <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
@@ -2466,15 +2582,13 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
             </div>
         </section>
 
-        <!-- Noticias -->
         <section class="section-padding" style="background-color: var(--bg-panel);" id="noticias">
             <div class="container">
                 <h2 class="section-title reveal">Noticias y <span class="text-green">Eventos</span></h2>
-                <div class="news-grid" id="newsGrid"></div>
+                <div class="news-grid" id="newsGrid" aria-live="polite" aria-busy="true"></div>
             </div>
         </section>
 
-        <!-- Galería -->
         <section class="section-padding" id="galeria">
             <div class="container">
                 <h2 class="section-title reveal">Galería <span class="text-green">Institucional</span></h2>
@@ -2548,7 +2662,6 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
             </div>
         </section>
 
-        <!-- Reconocimiento -->
         <section class="section-padding" style="background-color: var(--bg-panel);">
             <div class="container">
                 <div class="reconocimiento-card reveal" onclick="openModal('reconocimiento-gersain')" role="button" tabindex="0" aria-label="Ver reconocimiento al Magister Gersaín León Franco">
@@ -2565,7 +2678,6 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
             </div>
         </section>
 
-        <!-- Contacto -->
         <section class="section-padding" id="contacto">
             <div class="container">
                 <h2 class="section-title reveal">Ponte en <span class="text-green">Contacto</span></h2>
@@ -2573,14 +2685,14 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
 
                 <div class="contacto-grid">
                     <div class="glass-card reveal">
-                        <form id="contactForm" onsubmit="handleFormSubmit(event)">
+                        <form id="contactForm" onsubmit="handleFormSubmit(event)" novalidate>
                             <div class="form-group">
                                 <label class="form-label" for="nombre">Nombre Completo</label>
-                                <input type="text" id="nombre" name="nombre" class="form-control" required placeholder="Ej. Juan Pérez">
+                                <input type="text" id="nombre" name="nombre" class="form-control" required placeholder="Ej. Juan Pérez" autocomplete="name">
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="email">Correo Electrónico</label>
-                                <input type="email" id="email" name="email" class="form-control" required placeholder="tu@correo.com">
+                                <input type="email" id="email" name="email" class="form-control" required placeholder="tu@correo.com" autocomplete="email">
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="asunto">Asunto</label>
@@ -2591,6 +2703,7 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
                                 <textarea id="mensaje" name="mensaje" class="form-control" required placeholder="Escribe tu mensaje aquí..."></textarea>
                             </div>
                             <button type="submit" class="btn btn--primary" style="width: 100%;">Enviar Mensaje</button>
+                            <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
                         </form>
                     </div>
 
@@ -2637,7 +2750,6 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
 
     </main>
 
-    <!-- Modal -->
     <div class="modal" id="genericModal" role="dialog" aria-modal="true" aria-labelledby="genericModalTitle">
         <div class="modal-content" id="genericModalContent">
             <button class="modal-close" id="genericModalClose" aria-label="Cerrar">&times;</button>
@@ -2654,13 +2766,11 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
         </div>
     </div>
 
-    <!-- Lightbox -->
     <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
         <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar imagen">&times;</button>
         <img src="" id="lightboxImg" alt="Imagen en grande">
     </div>
 
-    <!-- Cookie banner -->
     <div class="cookie-banner" id="cookieBanner" role="dialog" aria-modal="false" aria-live="polite" aria-label="Aviso de cookies">
         <div class="cookie-content">
             <div class="cookie-icon">
@@ -2682,13 +2792,12 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div>
                     <a href="#inicio" class="logo" style="margin-bottom: 22px;">
-                        <img src="assets/images/logo.png" alt="Logo" width="140" height="44">
+                        <img src="assets/images/logo.png" alt="Logo" width="140" height="44" loading="lazy" decoding="async">
                         <span>Ins<span class="text-green">Tecnico</span></span>
                     </a>
                     <p style="color: var(--text-muted); font-size: 0.94rem; margin-bottom: 26px; line-height: 1.7;">Institución Educativa oficial dedicada a la formación de líderes en Santander de Quilichao, Cauca.</p>
@@ -2715,6 +2824,7 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
                 <div>
                     <h4 class="footer-title">Accesos</h4>
                     <div class="footer-links">
+                        <a href="laboratorio-virtual.html">Laboratorio Virtual</a>
                         <a href="https://tecnico.educa20.com" target="_blank" rel="noopener noreferrer">Portal de Notas</a>
                         <a href="https://educa20.com/gegar-soft.com/" target="_blank" rel="noopener noreferrer">Sistema GegarSoft</a>
                         <a href="http://www.institutotecnico-santanderdequilichao-cauca.ie.edu.co/" target="_blank" rel="noopener noreferrer">Sede Electronica</a>
@@ -2735,7 +2845,7 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
 
             <div class="footer-bottom">
                 <p>&copy; <span id="currentYear">2026</span> Instituto Técnico. Todos los derechos reservados.</p>
-                <p>Diseñado y desarrollado por <span class="text-green">DevKeiner</span> y <span class="text-green">Ali Sinesterra</span></p>
+                <p>Desarrollado y dirigido por <span class="text-green">DevKeiner</span> y <span class="text-green">Ali Sinesterra</span></p>
             </div>
         </div>
     </footer>
@@ -2745,9 +2855,7 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
     </button>
 
     <script>
-        // Audio: feedback sonoro
         let sharedAudioCtx = null;
-        let audioReady = false;
 
         function getAudioCtx() {
             if (!sharedAudioCtx) {
@@ -2758,76 +2866,123 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
             return sharedAudioCtx;
         }
 
-        function tryUnlockAudio() {
+        function withAudio(callback) {
             const ctx = getAudioCtx();
             if (!ctx) return;
-            if (ctx.state === 'running') { audioReady = true; return; }
             if (ctx.state === 'suspended') {
-                ctx.resume().then(() => { audioReady = (ctx.state === 'running'); }).catch(() => {});
+                ctx.resume().then(() => callback(ctx)).catch(() => {});
+            } else {
+                callback(ctx);
             }
         }
 
-        ['click', 'touchstart', 'keydown', 'pointerdown'].forEach(ev => {
-            document.addEventListener(ev, tryUnlockAudio, { capture: true, passive: true });
+        document.querySelectorAll('.acceso-card, .stat-item, .ver-mas-sedes').forEach(el => {
+            el.addEventListener('pointerdown', () => {
+                const ctx = getAudioCtx();
+                if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
+            }, { passive: true, once: true });
         });
 
         function playQuickAccessSound() {
-            const ctx = getAudioCtx();
-            if (!ctx || !audioReady) return;
-            try {
-                if (ctx.state === 'suspended') ctx.resume();
-                const now = ctx.currentTime;
-                const osc1 = ctx.createOscillator();
-                const gain1 = ctx.createGain();
-                osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(420, now);
-                osc1.frequency.exponentialRampToValueAtTime(880, now + 0.08);
-                osc1.frequency.exponentialRampToValueAtTime(660, now + 0.22);
-                gain1.gain.setValueAtTime(0.0001, now);
-                gain1.gain.exponentialRampToValueAtTime(0.2, now + 0.015);
-                gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
-                osc1.connect(gain1); gain1.connect(ctx.destination);
-                osc1.start(now); osc1.stop(now + 0.3);
+            withAudio(ctx => {
+                try {
+                    const now = ctx.currentTime;
+                    const osc1 = ctx.createOscillator();
+                    const gain1 = ctx.createGain();
+                    osc1.type = 'sine';
+                    osc1.frequency.setValueAtTime(420, now);
+                    osc1.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+                    osc1.frequency.exponentialRampToValueAtTime(660, now + 0.22);
+                    gain1.gain.setValueAtTime(0.0001, now);
+                    gain1.gain.exponentialRampToValueAtTime(0.2, now + 0.015);
+                    gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+                    osc1.connect(gain1); gain1.connect(ctx.destination);
+                    osc1.start(now); osc1.stop(now + 0.3);
 
-                const osc2 = ctx.createOscillator();
-                const gain2 = ctx.createGain();
-                osc2.type = 'triangle';
-                osc2.frequency.setValueAtTime(1600, now);
-                osc2.frequency.exponentialRampToValueAtTime(2400, now + 0.06);
-                gain2.gain.setValueAtTime(0.05, now);
-                gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
-                osc2.connect(gain2); gain2.connect(ctx.destination);
-                osc2.start(now); osc2.stop(now + 0.16);
-            } catch (e) {}
+                    const osc2 = ctx.createOscillator();
+                    const gain2 = ctx.createGain();
+                    osc2.type = 'triangle';
+                    osc2.frequency.setValueAtTime(1600, now);
+                    osc2.frequency.exponentialRampToValueAtTime(2400, now + 0.06);
+                    gain2.gain.setValueAtTime(0.05, now);
+                    gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
+                    osc2.connect(gain2); gain2.connect(ctx.destination);
+                    osc2.start(now); osc2.stop(now + 0.16);
+                } catch (e) {}
+            });
+        }
+
+        function playAccordionSound(open) {
+            withAudio(ctx => {
+                try {
+                    const now = ctx.currentTime;
+                    const notes = open
+                        ? [{ f: 440, d: 0 }, { f: 660, d: 0.08 }]
+                        : [{ f: 660, d: 0 }, { f: 440, d: 0.08 }];
+                    notes.forEach(n => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.value = n.f;
+                        const t = now + n.d;
+                        gain.gain.setValueAtTime(0.0001, t);
+                        gain.gain.exponentialRampToValueAtTime(0.14, t + 0.02);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.32);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(t);
+                        osc.stop(t + 0.36);
+                    });
+                } catch (e) {}
+            });
         }
 
         function playCounterSound() {
-            const ctx = getAudioCtx();
-            if (!ctx || !audioReady) return;
-            try {
-                if (ctx.state === 'suspended') ctx.resume();
-                const now = ctx.currentTime;
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(880, now);
-                osc.frequency.exponentialRampToValueAtTime(440, now + 0.07);
-                gain.gain.setValueAtTime(0.0001, now);
-                gain.gain.exponentialRampToValueAtTime(0.15, now + 0.008);
-                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
-                osc.connect(gain); gain.connect(ctx.destination);
-                osc.start(now); osc.stop(now + 0.11);
-            } catch (e) {}
+            withAudio(ctx => {
+                try {
+                    const now = ctx.currentTime;
+                    const notes = [523.25, 659.25, 783.99, 1046.5];
+                    notes.forEach((f, i) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.value = f;
+                        const t = now + i * 0.055;
+                        gain.gain.setValueAtTime(0.0001, t);
+                        gain.gain.exponentialRampToValueAtTime(0.11, t + 0.008);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(t);
+                        osc.stop(t + 0.22);
+                    });
+                } catch (e) {}
+            });
         }
 
-        // Datos de modales
+        function createStatRipple(event, element) {
+            const rect = element.getBoundingClientRect();
+            const x = (event && event.clientX ? event.clientX : rect.left + rect.width / 2) - rect.left;
+            const y = (event && event.clientY ? event.clientY : rect.top + rect.height / 2) - rect.top;
+            const size = Math.max(rect.width, rect.height) * 1.8;
+
+            const ripple = document.createElement('span');
+            ripple.className = 'stat-ripple';
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (x - size / 2) + 'px';
+            ripple.style.top = (y - size / 2) + 'px';
+
+            element.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 820);
+        }
+
         const modalData = {
             'docentes': {
                 titulo: 'Nuestros Docentes',
                 fecha: 'Próximamente',
                 autor: 'Por: Instituto Técnico',
                 categoria: 'En Desarrollo',
-                imagen: 'assets/images/docentes-placeholder.jpg',
+                imagen: null,
                 contenido: `
                     <p>Estamos trabajando en una sección especial para que toda la comunidad educativa pueda conocer a nuestros docentes: sus nombres, áreas, formación y trayectoria.</p>
                     <p>Esta sección estará disponible próximamente y será un espacio para reconocer la labor de quienes día a día construyen el futuro de nuestros estudiantes.</p>
@@ -2952,10 +3107,31 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
             return html;
         }
 
-        // Carga de noticias
+        function renderNewsSkeleton(count) {
+            let html = '';
+            for (let i = 0; i < count; i++) {
+                html += `
+                    <article class="glass-card news-card news-skeleton" aria-hidden="true">
+                        <div class="skeleton-block skeleton-img"></div>
+                        <div class="news-content">
+                            <div class="skeleton-block skeleton-line short"></div>
+                            <div class="skeleton-block skeleton-line title"></div>
+                            <div class="skeleton-block skeleton-line long"></div>
+                            <div class="skeleton-block skeleton-line medium"></div>
+                            <div class="skeleton-block skeleton-line short"></div>
+                        </div>
+                    </article>
+                `;
+            }
+            return html;
+        }
+
         async function cargarNoticias() {
             const grid = document.getElementById('newsGrid');
             if (!grid) return;
+
+            grid.innerHTML = renderNewsSkeleton(3);
+
             try {
                 const response = await fetch('content/noticias.json');
                 if (!response.ok) throw new Error('No se pudo cargar el archivo de noticias');
@@ -2963,7 +3139,15 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
                 const noticias = data.items || [];
 
                 if (noticias.length === 0) {
-                    grid.innerHTML = '<p style="text-align: center; color: var(--text-muted); grid-column: 1 / -1;">No hay noticias publicadas todavía.</p>';
+                    grid.innerHTML = `
+                        <div class="news-empty">
+                            <svg width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path d="M4 4h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4z"/>
+                                <path d="M8 8h7M8 12h7M8 16h4"/>
+                            </svg>
+                            <p>No hay noticias publicadas todavía.</p>
+                        </div>`;
+                    grid.setAttribute('aria-busy', 'false');
                     return;
                 }
 
@@ -2994,13 +3178,24 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
                     </article>
                 `).join('');
 
+                grid.setAttribute('aria-busy', 'false');
+
                 const reveals = grid.querySelectorAll('.reveal');
-                reveals.forEach(el => {
-                    setTimeout(() => el.classList.add('active'), 80);
+                reveals.forEach((el, i) => {
+                    setTimeout(() => el.classList.add('active'), 80 + i * 90);
                 });
             } catch (error) {
                 console.error('Error cargando noticias:', error);
-                grid.innerHTML = '<p style="text-align: center; color: var(--text-muted); grid-column: 1 / -1;">No se pudieron cargar las noticias.</p>';
+                grid.innerHTML = `
+                    <div class="news-empty">
+                        <svg width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        <p>No se pudieron cargar las noticias. Intenta de nuevo más tarde.</p>
+                    </div>`;
+                grid.setAttribute('aria-busy', 'false');
             }
         }
 
@@ -3018,7 +3213,6 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
                 card.addEventListener('click', playQuickAccessSound);
             });
 
-            // Scroll: header + back-to-top + nav activo
             let scrollTicking = false;
             function onScrollFrame() {
                 const scrollY = window.scrollY;
@@ -3041,7 +3235,6 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
             }, { passive: true });
             onScrollFrame();
 
-            // Menú móvil
             let menuOpen = false;
 
             function setMenuState(open) {
@@ -3064,10 +3257,6 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
                 });
             });
 
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && menuOpen) setMenuState(false);
-            });
-
             let resizeTimer;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer);
@@ -3081,21 +3270,59 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
                 }, 150);
             }, { passive: true });
 
-            // Reveals
             const revealElements = document.querySelectorAll('.reveal');
             const revealOnScroll = new IntersectionObserver((entries, observer) => {
                 for (let i = 0; i < entries.length; i++) {
                     const entry = entries[i];
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        observer.unobserve(entry.target);
+                        const el = entry.target;
+                        el.classList.add('is-revealing');
+                        el.classList.add('active');
+
+                        const cleanup = () => {
+                            el.classList.remove('is-revealing');
+                        };
+
+                        el.addEventListener('transitionend', cleanup, { once: true });
+                        setTimeout(cleanup, 2200);
+                        observer.unobserve(el);
                     }
                 }
             }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
 
             revealElements.forEach(el => revealOnScroll.observe(el));
 
-            // Contadores animados
+            const marquee = document.querySelector('.gallery-marquee');
+            let marqueeVisible = false;
+            if (marquee) {
+                const marqueeTrack = marquee.querySelector('.gallery-marquee-track');
+                const marqueeObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        marqueeVisible = entry.isIntersecting;
+                        if (marqueeTrack) {
+                            marqueeTrack.style.animationPlayState = (marqueeVisible && !document.hidden) ? 'running' : 'paused';
+                        }
+                    });
+                }, { rootMargin: '150px' });
+                marqueeObserver.observe(marquee);
+
+                document.addEventListener('visibilitychange', () => {
+                    if (marqueeTrack) {
+                        marqueeTrack.style.animationPlayState = (marqueeVisible && !document.hidden) ? 'running' : 'paused';
+                    }
+                });
+            }
+
+            const recoCard = document.querySelector('.reconocimiento-card');
+            if (recoCard) {
+                const recoObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        entry.target.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
+                    });
+                }, { rootMargin: '100px' });
+                recoObserver.observe(recoCard);
+            }
+
             function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
 
             function animateCounterEl(el, duration) {
@@ -3133,24 +3360,63 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
                 const counterEl = item.querySelector('.counter');
                 if (!counterEl) return;
 
-                function resetAndReplay() {
+                let cachedRect = null;
+                let pendingX = 0;
+                let pendingY = 0;
+                let rafPending = false;
+
+                item.addEventListener('pointerenter', (e) => {
+                    if (e.pointerType === 'touch') return;
+                    cachedRect = item.getBoundingClientRect();
+                    item.classList.add('is-glowing');
+                });
+
+                item.addEventListener('pointermove', (e) => {
+                    if (e.pointerType === 'touch' || !cachedRect) return;
+                    pendingX = e.clientX;
+                    pendingY = e.clientY;
+                    if (rafPending) return;
+                    rafPending = true;
+                    requestAnimationFrame(() => {
+                        rafPending = false;
+                        if (!cachedRect) return;
+                        item.style.setProperty('--mx', ((pendingX - cachedRect.left) / cachedRect.width * 100) + '%');
+                        item.style.setProperty('--my', ((pendingY - cachedRect.top) / cachedRect.height * 100) + '%');
+                    });
+                }, { passive: true });
+
+                item.addEventListener('pointerleave', () => {
+                    cachedRect = null;
+                    item.classList.remove('is-glowing');
+                    item.classList.remove('is-pressing');
+                });
+
+                item.addEventListener('pointerdown', () => item.classList.add('is-pressing'));
+
+                function triggerCounter(event) {
+                    if (event && event.pointerType !== 'touch') createStatRipple(event, item);
+
+                    item.classList.add('is-pressing');
+                    item.classList.add('is-counting');
+
                     playCounterSound();
-                    animateCounterEl(counterEl, 900);
-                    item.classList.remove('stat-clicked');
-                    void item.offsetWidth;
-                    item.classList.add('stat-clicked');
+                    animateCounterEl(counterEl, 950);
+
+                    setTimeout(() => {
+                        item.classList.remove('is-pressing');
+                        item.classList.remove('is-counting');
+                    }, 950);
                 }
 
-                item.addEventListener('click', resetAndReplay);
+                item.addEventListener('click', triggerCounter);
                 item.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        resetAndReplay();
+                        triggerCounter(null);
                     }
                 });
             });
 
-            // Acordeón de Sedes
             const verMasSedes = document.getElementById('verMasSedes');
             const sedesGrid = document.getElementById('sedesGrid');
             const sedesCollapse = document.getElementById('sedesCollapse');
@@ -3158,6 +3424,11 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
             if (verMasSedes && sedesGrid && sedesCollapse) {
                 verMasSedes.addEventListener('click', () => {
                     const isExpanding = !sedesGrid.classList.contains('expanded');
+
+                    playAccordionSound(isExpanding);
+
+                    sedesCollapse.classList.add('is-transitioning');
+
                     sedesGrid.classList.toggle('expanded', isExpanding);
                     verMasSedes.setAttribute('aria-expanded', isExpanding);
                     sedesCollapse.setAttribute('aria-hidden', !isExpanding);
@@ -3170,9 +3441,13 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
                     if (isExpanding) {
                         const extras = sedesCollapse.querySelectorAll('.sede-card.reveal');
                         extras.forEach((card, i) => {
-                            setTimeout(() => card.classList.add('active'), 200 + i * 140);
+                            setTimeout(() => card.classList.add('active'), 180 + i * 110);
                         });
                     }
+
+                    setTimeout(() => {
+                        sedesCollapse.classList.remove('is-transitioning');
+                    }, 750);
                 });
             }
 
@@ -3183,7 +3458,6 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
             const yearEl = document.getElementById('currentYear');
             if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-            // Lightbox
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightboxImg');
             const lightboxClose = document.getElementById('lightboxClose');
@@ -3207,28 +3481,48 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
                 if (e.target === lightbox) closeLightbox();
             });
 
-            // Formulario
             window.handleFormSubmit = function(e) {
                 e.preventDefault();
-                const btn = e.target.querySelector('button[type="submit"]');
+                const form = e.target;
+                const btn = form.querySelector('button[type="submit"]');
+                const status = document.getElementById('formStatus');
                 const originalText = btn.innerHTML;
+
+                if (!form.checkValidity()) {
+                    status.textContent = 'Por favor completa todos los campos correctamente.';
+                    status.setAttribute('data-state', 'error');
+                    form.reportValidity();
+                    return;
+                }
+
+                btn.disabled = true;
                 btn.innerHTML = 'Enviando...';
                 btn.style.opacity = '0.7';
+                status.textContent = 'Enviando tu mensaje...';
+                status.setAttribute('data-state', 'loading');
+
                 setTimeout(() => {
                     btn.innerHTML = '¡Mensaje Enviado!';
                     btn.style.backgroundColor = 'var(--primary-hover)';
                     btn.style.color = 'var(--text-dark)';
-                    e.target.reset();
+                    status.textContent = 'Gracias por escribirnos. Te responderemos pronto.';
+                    status.setAttribute('data-state', 'success');
+                    form.reset();
+
                     setTimeout(() => {
                         btn.innerHTML = originalText;
                         btn.style.backgroundColor = '';
                         btn.style.color = '';
                         btn.style.opacity = '1';
+                        btn.disabled = false;
+                        setTimeout(() => {
+                            status.textContent = '';
+                            status.removeAttribute('data-state');
+                        }, 1200);
                     }, 3000);
                 }, 1500);
             };
 
-            // Modal genérico
             const genericModal = document.getElementById('genericModal');
             const genericModalClose = document.getElementById('genericModalClose');
             let lastFocusedElement = null;
@@ -3276,7 +3570,6 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
                 if (e.target === genericModal) closeModal();
             });
 
-            // ESC cierra todo
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     closeModal();
@@ -3285,7 +3578,6 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
                 }
             });
 
-            // Cookie banner: solo aparece una vez
             const cookieBanner = document.getElementById('cookieBanner');
             const cookieAccept = document.getElementById('cookieAccept');
             const COOKIE_KEY = 'instecnico_cookies_accepted_v1';
@@ -3311,7 +3603,6 @@ Educación que inspira, conocimientos que transforman y valores que construyen e
             }
         });
 
-        // Redirigir a /admin/ después del login desde el widget de Identity
         if (window.netlifyIdentity) {
             window.netlifyIdentity.on('init', user => {
                 if (!user) {

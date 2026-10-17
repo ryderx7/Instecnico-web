@@ -144,551 +144,884 @@
 
   <!-- Tema personalizado del CMS -->
   <style id="decap-custom-theme">
-    /* === Variables === */
-    :root {
-      --a-bg: #000000;
-      --a-bg-1: #0a0a0a;
-      --a-bg-2: #111111;
-      --a-bg-3: #161616;
-      --a-bg-4: #1a1a1a;
-      --a-border: #222222;
-      --a-border-strong: #2f2f2f;
-      --a-primary: #00ff88;
-      --a-primary-hover: #00cc6a;
-      --a-primary-dim: rgba(0, 255, 136, 0.1);
-      --a-text: #ffffff;
-      --a-text-2: #cccccc;
-      --a-text-muted: #999999;
-      --a-text-dim: #666666;
-      --a-danger: #ff5252;
-      --a-danger-dim: rgba(255, 82, 82, 0.1);
-      --a-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --a-font-heading: 'Space Grotesk', sans-serif;
-      --a-radius: 12px;
-      --a-radius-sm: 8px;
-      --a-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-      --a-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.6);
-    }
-
-    /* === Base === */
-    html, body, #nc-root {
-      background: var(--a-bg) !important;
-      color: var(--a-text) !important;
-      font-family: var(--a-font) !important;
-      -webkit-font-smoothing: antialiased !important;
-      -moz-osx-font-smoothing: grayscale !important;
-      min-height: 100vh !important;
-    }
-
-    #nc-root *, #nc-root *::before, #nc-root *::after {
-      font-family: var(--a-font);
-      box-sizing: border-box;
-    }
-
-    #nc-root h1, #nc-root h2, #nc-root h3, #nc-root h4, #nc-root h5 {
-      font-family: var(--a-font-heading) !important;
-      letter-spacing: -0.02em !important;
-      color: var(--a-text) !important;
-    }
-
-    /* Forzar color claro en todo, salvo excepciones */
-    #nc-root *:not(svg):not(path) {
-      color: var(--a-text-2);
-    }
-
-    #nc-root h1, #nc-root h2, #nc-root h3, #nc-root h4, #nc-root h5,
-    #nc-root strong, #nc-root b {
-      color: var(--a-text) !important;
-    }
-
-    /* Scrollbar */
-    #nc-root ::-webkit-scrollbar,
-    body::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
-
-    #nc-root ::-webkit-scrollbar-track,
-    body::-webkit-scrollbar-track {
-      background: var(--a-bg-1);
-    }
-
-    #nc-root ::-webkit-scrollbar-thumb,
-    body::-webkit-scrollbar-thumb {
-      background: var(--a-border-strong);
-      border-radius: 5px;
-      border: 2px solid var(--a-bg-1);
-    }
-
-    #nc-root ::-webkit-scrollbar-thumb:hover,
-    body::-webkit-scrollbar-thumb:hover {
-      background: var(--a-primary);
-    }
-
-    /* === Login === */
-    [class*="LoginPage"] {
-      background:
-        radial-gradient(circle at 50% 30%, rgba(0, 255, 136, 0.06) 0%, transparent 60%),
-        var(--a-bg) !important;
-    }
-
-    /* === Header === */
-    #nc-root header,
-    #nc-root [class*="AppHeader"],
-    #nc-root [class*="TopBar"] {
-      background: rgba(10, 10, 10, 0.98) !important;
-      border-bottom: 1px solid var(--a-border) !important;
-    }
-
-    #nc-root header * {
-      color: var(--a-text) !important;
-    }
-
-    /* === Sidebar === */
-    #nc-root aside,
-    #nc-root [class*="Sidebar"] {
-      background: var(--a-bg-1) !important;
-      border-right: 1px solid var(--a-border) !important;
-    }
-
-    #nc-root a[href*="#/collections/"] {
-      color: var(--a-text-2) !important;
-      padding: 12px 16px !important;
-      border-radius: var(--a-radius-sm) !important;
-      margin: 3px 8px !important;
-      transition: all 0.2s ease !important;
-      font-weight: 500 !important;
-      border-left: 3px solid transparent !important;
-      display: block !important;
-      text-decoration: none !important;
-    }
-
-    #nc-root a[href*="#/collections/"]:hover {
-      background: var(--a-bg-3) !important;
-      color: var(--a-text) !important;
-    }
-
-    #nc-root a[href*="#/collections/"][class*="active"],
-    #nc-root a[href*="#/collections/"][aria-current="page"] {
-      background: var(--a-primary-dim) !important;
-      color: var(--a-primary) !important;
-      border-left-color: var(--a-primary) !important;
-    }
-
-    /* === Área principal === */
-    #nc-root main {
-      background: var(--a-bg) !important;
-    }
-
-    /* === Título grande de la colección === */
-    #nc-root h1[class*="Collection"],
-    #nc-root h1[class*="collection"] {
-      color: var(--a-text) !important;
-      font-size: 1.6rem !important;
-      font-weight: 700 !important;
-      margin-bottom: 12px !important;
-    }
-
-    /* === Descripción de la colección === */
-    #nc-root [class*="Description"],
-    #nc-root [class*="description"],
-    #nc-root p[class*="hint"],
-    #nc-root div[class*="hint"] {
-      background: var(--a-bg-2) !important;
-      color: var(--a-text-muted) !important;
-      padding: 16px 20px !important;
-      border-radius: var(--a-radius) !important;
-      border: 1px solid var(--a-border) !important;
-      font-size: 0.92rem !important;
-      line-height: 1.6 !important;
-      margin-bottom: 20px !important;
-    }
-
-    #nc-root [class*="Description"] * {
-      color: var(--a-text-muted) !important;
-    }
-
-    /* === Tarjetas de noticias === */
-    #nc-root [class*="ListItem"],
-    #nc-root [class*="list-item"] {
-      background: var(--a-bg-2) !important;
-      border: 1px solid var(--a-border) !important;
-      border-radius: var(--a-radius) !important;
-      margin-bottom: 12px !important;
-      padding: 16px 20px !important;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-      overflow: hidden !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 14px !important;
-    }
-
-    #nc-root [class*="ListItem"]:hover {
-      border-color: rgba(0, 255, 136, 0.3) !important;
-      background: var(--a-bg-3) !important;
-      transform: translateY(-2px) !important;
-      box-shadow: var(--a-shadow) !important;
-    }
-
-    /* Título dentro de cada noticia */
-    #nc-root [class*="ListItem"] h1,
-    #nc-root [class*="ListItem"] h2,
-    #nc-root [class*="ListItem"] h3 {
-      color: var(--a-text) !important;
-      font-weight: 600 !important;
-      font-size: 1rem !important;
-      margin: 0 !important;
-      line-height: 1.3 !important;
-    }
-
-    /* Texto secundario (fecha) */
-    #nc-root [class*="ListItem"] small,
-    #nc-root [class*="ListItem"] [class*="subtext"] {
-      color: var(--a-text-muted) !important;
-      font-size: 0.8rem !important;
-    }
-
-    /* Iconos de cada card (a la izquierda) */
-    #nc-root [class*="ListItem"] svg {
-      color: var(--a-primary) !important;
-      fill: var(--a-primary) !important;
-      flex-shrink: 0 !important;
-    }
-
-    /* === Botón "+ Añadir" === */
-    #nc-root a[href*="new"],
-    #nc-root a[class*="new"],
-    #nc-root button[class*="add"] {
-      display: inline-flex !important;
-      align-items: center !important;
-      gap: 8px !important;
-      background: var(--a-primary) !important;
-      color: #000 !important;
-      font-family: var(--a-font-heading) !important;
-      font-weight: 700 !important;
-      padding: 12px 24px !important;
-      border-radius: 100px !important;
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2) !important;
-      border: none !important;
-      text-decoration: none !important;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-      min-height: 44px !important;
-    }
-
-    #nc-root a[href*="new"]:hover,
-    #nc-root button[class*="add"]:hover {
-      background: var(--a-primary-hover) !important;
-      transform: translateY(-1px) !important;
-      box-shadow: 0 8px 30px rgba(0, 255, 136, 0.3) !important;
-    }
-
-    #nc-root a[href*="new"] *,
-    #nc-root button[class*="add"] * {
-      color: #000 !important;
-      fill: #000 !important;
-    }
-
-    /* === Toolbar (Ordenar por, filtros, vista) === */
-    #nc-root [class*="Toolbar"] {
-      background: transparent !important;
-      border: none !important;
-      padding: 14px 0 !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 12px !important;
-    }
-
-    #nc-root [class*="Toolbar"] button {
-      color: var(--a-text-2) !important;
-      background: var(--a-bg-3) !important;
-      border: 1px solid var(--a-border) !important;
-      padding: 8px 14px !important;
-      border-radius: var(--a-radius-sm) !important;
-      font-size: 0.85rem !important;
-      cursor: pointer !important;
-    }
-
-    #nc-root [class*="Toolbar"] button:hover {
-      background: var(--a-primary-dim) !important;
-      color: var(--a-primary) !important;
-      border-color: var(--a-primary) !important;
-    }
-
-    /* Toggle de vista (lista/grid) */
-    #nc-root [class*="ViewToggle"],
-    #nc-root [class*="view-toggle"] {
-      background: var(--a-bg-3) !important;
-      border: 1px solid var(--a-border) !important;
-      border-radius: var(--a-radius-sm) !important;
-      padding: 4px !important;
-      display: inline-flex !important;
-    }
-
-    /* === Inputs === */
-    #nc-root input[type="text"],
-    #nc-root input[type="email"],
-    #nc-root input[type="number"],
-    #nc-root input[type="url"],
-    #nc-root input[type="datetime-local"],
-    #nc-root input[type="date"],
-    #nc-root input[type="time"],
-    #nc-root input[type="password"],
-    #nc-root textarea,
-    #nc-root select {
-      background: var(--a-bg-3) !important;
-      color: var(--a-text) !important;
-      border: 1px solid var(--a-border) !important;
-      border-radius: var(--a-radius-sm) !important;
-      padding: 12px 14px !important;
-      font-family: var(--a-font) !important;
-      font-size: 0.95rem !important;
-      transition: all 0.25s ease !important;
-      line-height: 1.5 !important;
-      width: 100% !important;
-    }
-
-    #nc-root input:hover,
-    #nc-root textarea:hover,
-    #nc-root select:hover {
-      border-color: var(--a-border-strong) !important;
-    }
-
-    #nc-root input:focus,
-    #nc-root textarea:focus,
-    #nc-root select:focus {
-      outline: none !important;
-      border-color: var(--a-primary) !important;
-      box-shadow: 0 0 0 3px var(--a-primary-dim) !important;
-      background: var(--a-bg-4) !important;
-    }
-
-    #nc-root input::placeholder,
-    #nc-root textarea::placeholder {
-      color: var(--a-text-dim) !important;
-    }
-
-    /* Labels */
-    #nc-root label {
-      color: var(--a-text) !important;
-      font-family: var(--a-font-heading) !important;
-      font-weight: 500 !important;
-      font-size: 0.9rem !important;
-      letter-spacing: -0.005em !important;
-      margin-bottom: 8px !important;
-      display: block !important;
-    }
-
-    /* Hints debajo de cada campo */
-    #nc-root small,
-    #nc-root [class*="hint"] {
-      color: var(--a-text-dim) !important;
-      font-size: 0.78rem !important;
-      line-height: 1.5 !important;
-      margin-top: 4px !important;
-      display: block !important;
-    }
-
-    /* === Botones primarios === */
-    #nc-root button[class*="primary"],
-    #nc-root button[type="submit"] {
-      background: var(--a-primary) !important;
-      color: #000 !important;
-      border: none !important;
-      padding: 12px 24px !important;
-      font-weight: 700 !important;
-      font-family: var(--a-font-heading) !important;
-      border-radius: 100px !important;
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2) !important;
-      min-height: 44px !important;
-      cursor: pointer !important;
-    }
-
-    #nc-root button[class*="primary"] *,
-    #nc-root button[type="submit"] * {
-      color: #000 !important;
-    }
-
-    #nc-root button[class*="primary"]:hover,
-    #nc-root button[type="submit"]:hover {
-      background: var(--a-primary-hover) !important;
-      box-shadow: 0 8px 30px rgba(0, 255, 136, 0.3) !important;
-      transform: translateY(-1px) !important;
-    }
-
-    /* === Botones de eliminar === */
-    #nc-root button[class*="danger"],
-    #nc-root button[class*="delete"] {
-      background: transparent !important;
-      color: var(--a-danger) !important;
-      border: 1px solid var(--a-danger) !important;
-      border-radius: var(--a-radius-sm) !important;
-      padding: 8px 16px !important;
-      font-weight: 600 !important;
-    }
-
-    #nc-root button[class*="danger"]:hover {
-      background: var(--a-danger-dim) !important;
-    }
-
-    /* === Editor de contenido (markdown) === */
-    #nc-root [contenteditable="true"] {
-      background: var(--a-bg-3) !important;
-      color: var(--a-text) !important;
-      border: 1px solid var(--a-border) !important;
-      border-radius: var(--a-radius-sm) !important;
-      min-height: 220px !important;
-      padding: 18px !important;
-      line-height: 1.75 !important;
-      font-size: 1rem !important;
-      transition: all 0.25s ease !important;
-    }
-
-    #nc-root [contenteditable="true"]:focus {
-      border-color: var(--a-primary) !important;
-      box-shadow: 0 0 0 3px var(--a-primary-dim) !important;
-      outline: none !important;
-    }
-
-    /* === Widget de imagen === */
-    #nc-root [class*="ImageWidget"] {
-      background: var(--a-bg-2) !important;
-      border: 1px dashed var(--a-border-strong) !important;
-      border-radius: var(--a-radius) !important;
-      padding: 16px !important;
-      transition: all 0.3s ease !important;
-    }
-
-    #nc-root [class*="ImageWidget"]:hover {
-      border-color: var(--a-primary) !important;
-      background: var(--a-bg-3) !important;
-    }
-
-    /* === Modales === */
-    #nc-root [class*="Modal"] {
-      background: var(--a-bg-2) !important;
-      border: 1px solid var(--a-border) !important;
-      border-radius: var(--a-radius) !important;
-      box-shadow: var(--a-shadow-lg) !important;
-    }
-
-    /* === Toasts === */
-    #nc-root [class*="Toast"] {
-      background: var(--a-bg-3) !important;
-      border: 1px solid var(--a-border-strong) !important;
-      color: var(--a-text) !important;
-      border-radius: var(--a-radius) !important;
-      box-shadow: var(--a-shadow-lg) !important;
-      padding: 14px 20px !important;
-    }
-
-    #nc-root [class*="Toast"] * {
-      color: var(--a-text) !important;
-    }
-
-    /* === Dropdown / menús === */
-    #nc-root [role="listbox"],
-    #nc-root [role="menu"] {
-      background: var(--a-bg-3) !important;
-      border: 1px solid var(--a-border-strong) !important;
-      border-radius: var(--a-radius-sm) !important;
-      box-shadow: var(--a-shadow-lg) !important;
-      padding: 6px !important;
-    }
-
-    #nc-root [role="option"] {
-      padding: 10px 14px !important;
-      border-radius: 6px !important;
-      color: var(--a-text-2) !important;
-      transition: all 0.2s ease !important;
-      cursor: pointer !important;
-      font-size: 0.92rem !important;
-    }
-
-    #nc-root [role="option"]:hover {
-      background: var(--a-primary-dim) !important;
-      color: var(--a-primary) !important;
-    }
-
-    /* === Checkbox === */
-    #nc-root input[type="checkbox"] {
-      accent-color: var(--a-primary) !important;
-      width: 18px !important;
-      height: 18px !important;
-      cursor: pointer !important;
-    }
-
-    /* === Focus visible === */
-    #nc-root *:focus-visible {
-      outline: 2px solid var(--a-primary) !important;
-      outline-offset: 2px !important;
-    }
-
-    /* === Móvil === */
-    @media (max-width: 768px) {
-      #nc-root header {
-        padding: 12px 16px !important;
-        background: rgba(10, 10, 10, 0.98) !important;
-      }
-
-      #nc-root button {
-        min-height: 44px !important;
-        font-size: 0.95rem !important;
-        padding: 12px 20px !important;
-      }
-
-      #nc-root input[type="text"],
-      #nc-root input[type="email"],
-      #nc-root input[type="number"],
-      #nc-root input[type="url"],
-      #nc-root input[type="datetime-local"],
-      #nc-root input[type="date"],
-      #nc-root input[type="time"],
-      #nc-root input[type="password"],
-      #nc-root textarea,
-      #nc-root select {
-        font-size: 16px !important;
-        padding: 14px 16px !important;
-        min-height: 48px !important;
-      }
-
-      #nc-root label {
-        font-size: 0.95rem !important;
-        margin-bottom: 10px !important;
-      }
-
-      #nc-root [class*="ListItem"] {
-        padding: 14px 16px !important;
-        gap: 12px !important;
-      }
-
-      #nc-root [class*="Description"] {
-        padding: 14px 16px !important;
-        font-size: 0.88rem !important;
-      }
-
-      #nc-root [contenteditable="true"] {
-        min-height: 260px !important;
-        padding: 16px !important;
-        font-size: 16px !important;
-      }
-
-      #nc-root a[href*="new"],
-      #nc-root button[class*="add"] {
-        width: 100% !important;
-        justify-content: center !important;
-      }
-    }
-
-    /* === Reducir movimiento === */
-    @media (prefers-reduced-motion: reduce) {
-      #nc-root *,
-      #nc-root *::before,
-      #nc-root *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
+    /* ============================================================
+   DECAP CMS · TEMA PREMIUM INSTITUTO TÉCNICO
+   Paleta: Grises suaves + Verde neón
+   Optimizado Desktop + Móvil · v2.0
+   ============================================================ */
+
+:root {
+  --a-bg: #0d0d0d;
+  --a-bg-1: #121212;
+  --a-bg-2: #181818;
+  --a-bg-3: #1e1e1e;
+  --a-bg-4: #242424;
+  --a-bg-5: #2a2a2a;
+
+  /* Bordes */
+  --a-border: #2c2c2c;
+  --a-border-strong: #3a3a3a;
+  --a-border-focus: #00ff88;
+
+  /* Verde neón */
+  --a-primary: #00ff88;
+  --a-primary-hover: #00d977;
+  --a-primary-dim: rgba(0, 255, 136, 0.08);
+  --a-primary-glow: rgba(0, 255, 136, 0.25);
+
+  /* Textos */
+  --a-text: #f0f0f0;
+  --a-text-2: #d4d4d4;
+  --a-text-muted: #a3a3a3;
+  --a-text-dim: #707070;
+  --a-text-inverse: #0d0d0d;
+
+  /* Peligro */
+  --a-danger: #ff5252;
+  --a-danger-dim: rgba(255, 82, 82, 0.1);
+
+  /* Aviso */
+  --a-warning: #ffb547;
+
+  /* Tipografía */
+  --a-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --a-font-heading: 'Space Grotesk', sans-serif;
+  --a-font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Radios */
+  --a-radius-sm: 6px;
+  --a-radius: 10px;
+  --a-radius-lg: 14px;
+  --a-radius-xl: 20px;
+
+  /* Sombras */
+  --a-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --a-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --a-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --a-shadow-glow: 0 0 0 3px var(--a-primary-dim);
+}
+
+/* === Base: forzar grises suaves en TODO === */
+html, body, #nc-root {
+  background-color: var(--a-bg) !important;
+  background-image: none !important;
+  color: var(--a-text) !important;
+  font-family: var(--a-font) !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  min-height: 100vh !important;
+  overflow-x: hidden !important;
+}
+
+#nc-root *, #nc-root *::before, #nc-root *::after {
+  font-family: var(--a-font);
+  box-sizing: border-box;
+}
+
+/* Headings */
+#nc-root h1, #nc-root h2, #nc-root h3,
+#nc-root h4, #nc-root h5, #nc-root h6 {
+  font-family: var(--a-font-heading) !important;
+  letter-spacing: -0.02em !important;
+  color: var(--a-text) !important;
+  font-weight: 700 !important;
+}
+
+/* FIX: fondos blancos por defecto */
+#nc-root,
+#nc-root *:not(svg):not(path):not(img):not(input):not(textarea):not(select):not(hr):not(br) {
+  background-image: none !important;
+}
+
+/* FIX AGRESIVO: eliminar fondos blancos inline */
+#nc-root > div,
+#nc-root > div > div,
+#nc-root main,
+#nc-root main > div,
+#nc-root section,
+#nc-root article,
+#nc-root form,
+#nc-root form > div,
+#nc-root [class*="Pane"],
+#nc-root [class*="Container"],
+#nc-root [class*="Page"],
+#nc-root [class*="Collection"],
+#nc-root [class*="Entry"],
+#nc-root [class*="Editor"],
+#nc-root [class*="Split"],
+#nc-root [class*="ControlPane"],
+#nc-root [class*="PreviewPane"] {
+  background-color: var(--a-bg) !important;
+  background: var(--a-bg) !important;
+}
+
+/* Los divs internos decorativos: transparentes */
+#nc-root div[style*="background"],
+#nc-root div[style*="bg"],
+#nc-root div[style*="white"] {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* Texto general */
+#nc-root *:not(svg):not(path):not(svg *) {
+  color: var(--a-text-2);
+}
+
+#nc-root strong, #nc-root b {
+  color: var(--a-text) !important;
+}
+
+/* Links */
+#nc-root a {
+  color: var(--a-primary) !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+#nc-root a:hover {
+  color: var(--a-primary-hover) !important;
+}
+
+/* === Scrollbar === */
+#nc-root ::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+#nc-root ::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: var(--a-bg-1);
+}
+
+#nc-root ::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: var(--a-border-strong);
+  border-radius: 5px;
+  transition: background 0.2s ease;
+}
+
+#nc-root ::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  background: var(--a-primary);
+}
+
+
+[class*="LoginPage"],
+[class*="login"] {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(0, 255, 136, 0.06) 0%, transparent 60%),
+    var(--a-bg) !important;
+  min-height: 100vh !important;
+}
+
+
+#nc-root header,
+#nc-root [class*="AppHeader"],
+#nc-root [class*="TopBar"] {
+  background: var(--a-bg-1) !important;
+  border-bottom: 1px solid var(--a-border) !important;
+  padding: 14px 20px !important;
+}
+
+#nc-root header * {
+  color: var(--a-text) !important;
+}
+
+#nc-root aside,
+#nc-root [class*="Sidebar"] {
+  background: var(--a-bg-1) !important;
+  border-right: 1px solid var(--a-border) !important;
+}
+
+#nc-root a[href*="#/collections/"] {
+  color: var(--a-text-2) !important;
+  padding: 12px 18px !important;
+  border-radius: var(--a-radius) !important;
+  margin: 4px 10px !important;
+  font-weight: 500 !important;
+  border-left: 3px solid transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  transition: all 0.2s ease !important;
+  text-decoration: none !important;
+  font-family: var(--a-font-heading) !important;
+}
+
+#nc-root a[href*="#/collections/"]:hover {
+  background: var(--a-bg-3) !important;
+  color: var(--a-text) !important;
+  transform: translateX(2px) !important;
+}
+
+#nc-root a[href*="#/collections/"][class*="active"],
+#nc-root a[href*="#/collections/"][aria-current="page"] {
+  background: var(--a-primary-dim) !important;
+  color: var(--a-primary) !important;
+  border-left-color: var(--a-primary) !important;
+}
+
+
+#nc-root h1[class*="Collection"],
+#nc-root h1[class*="collection"] {
+  color: var(--a-text) !important;
+  font-size: 1.6rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 8px !important;
+  letter-spacing: -0.025em !important;
+}
+
+#nc-root [class*="Description"],
+#nc-root [class*="description"] {
+  background: var(--a-bg-2) !important;
+  color: var(--a-text-muted) !important;
+  padding: 18px 22px !important;
+  border-radius: var(--a-radius-lg) !important;
+  border: 1px solid var(--a-border) !important;
+  font-size: 0.93rem !important;
+  line-height: 1.65 !important;
+  margin-bottom: 24px !important;
+  border-left: 3px solid var(--a-primary) !important;
+}
+
+#nc-root [class*="Description"] *,
+#nc-root [class*="description"] * {
+  color: var(--a-text-muted) !important;
+}
+
+
+#nc-root [class*="ListItem"],
+#nc-root [class*="list-item"] {
+  background: var(--a-bg-2) !important;
+  border: 1px solid var(--a-border) !important;
+  border-radius: var(--a-radius-lg) !important;
+  margin-bottom: 12px !important;
+  padding: 18px 22px !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+#nc-root [class*="ListItem"]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 0.25s ease;
+}
+
+#nc-root [class*="ListItem"]:hover {
+  border-color: var(--a-border-strong) !important;
+  background: var(--a-bg-3) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: var(--a-shadow) !important;
+}
+
+#nc-root [class*="ListItem"]:hover::before {
+  background: var(--a-primary);
+}
+
+#nc-root [class*="ListItem"] h1,
+#nc-root [class*="ListItem"] h2,
+#nc-root [class*="ListItem"] h3 {
+  color: var(--a-text) !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  margin: 0 !important;
+  line-height: 1.4 !important;
+  letter-spacing: -0.01em !important;
+}
+
+#nc-root [class*="ListItem"] small,
+#nc-root [class*="ListItem"] [class*="subtext"] {
+  color: var(--a-text-muted) !important;
+  font-size: 0.82rem !important;
+  margin-top: 2px !important;
+  display: block !important;
+}
+
+#nc-root [class*="ListItem"] svg {
+  color: var(--a-primary) !important;
+  fill: var(--a-primary) !important;
+  flex-shrink: 0 !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+
+#nc-root a[href*="new"],
+#nc-root a[class*="new"],
+#nc-root button[class*="add"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  background: var(--a-primary) !important;
+  color: var(--a-text-inverse) !important;
+  font-family: var(--a-font-heading) !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  padding: 12px 26px !important;
+  border-radius: 100px !important;
+  box-shadow: 0 0 20px var(--a-primary-dim) !important;
+  border: none !important;
+  text-decoration: none !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  min-height: 46px !important;
+  letter-spacing: -0.005em !important;
+}
+
+#nc-root a[href*="new"]:hover,
+#nc-root button[class*="add"]:hover {
+  background: var(--a-primary-hover) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 30px var(--a-primary-glow) !important;
+}
+
+#nc-root a[href*="new"] *,
+#nc-root button[class*="add"] * {
+  color: var(--a-text-inverse) !important;
+  fill: var(--a-text-inverse) !important;
+}
+
+
+#nc-root [class*="Toolbar"] {
+  background: var(--a-bg-2) !important;
+  border: 1px solid var(--a-border) !important;
+  border-radius: var(--a-radius-lg) !important;
+  padding: 12px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+  margin-bottom: 18px !important;
+}
+
+#nc-root [class*="Toolbar"] button {
+  color: var(--a-text-2) !important;
+  background: var(--a-bg-3) !important;
+  border: 1px solid var(--a-border) !important;
+  padding: 8px 14px !important;
+  border-radius: var(--a-radius-sm) !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  min-height: 38px !important;
+}
+
+#nc-root [class*="Toolbar"] button:hover {
+  background: var(--a-primary-dim) !important;
+  color: var(--a-primary) !important;
+  border-color: var(--a-primary) !important;
+}
+
+/* Toggle vista (lista/grid) */
+#nc-root [class*="ViewToggle"],
+#nc-root [class*="view-toggle"] {
+  background: var(--a-bg-3) !important;
+  border: 1px solid var(--a-border) !important;
+  border-radius: var(--a-radius-sm) !important;
+  padding: 4px !important;
+  display: inline-flex !important;
+  gap: 2px !important;
+}
+
+#nc-root input[type="text"],
+#nc-root input[type="email"],
+#nc-root input[type="number"],
+#nc-root input[type="url"],
+#nc-root input[type="search"],
+#nc-root input[type="datetime-local"],
+#nc-root input[type="date"],
+#nc-root input[type="time"],
+#nc-root input[type="password"],
+#nc-root textarea,
+#nc-root select {
+  background: var(--a-bg-3) !important;
+  color: var(--a-text) !important;
+  border: 1px solid var(--a-border) !important;
+  border-radius: var(--a-radius) !important;
+  padding: 13px 16px !important;
+  font-family: var(--a-font) !important;
+  font-size: 0.95rem !important;
+  transition: all 0.2s ease !important;
+  line-height: 1.5 !important;
+  width: 100% !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+#nc-root input:hover,
+#nc-root textarea:hover,
+#nc-root select:hover {
+  border-color: var(--a-border-strong) !important;
+  background: var(--a-bg-4) !important;
+}
+
+#nc-root input:focus,
+#nc-root textarea:focus,
+#nc-root select:focus {
+  outline: none !important;
+  border-color: var(--a-primary) !important;
+  box-shadow: var(--a-shadow-glow), inset 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  background: var(--a-bg-4) !important;
+}
+
+#nc-root input::placeholder,
+#nc-root textarea::placeholder {
+  color: var(--a-text-dim) !important;
+  font-style: italic !important;
+}
+
+/* Autofill */
+#nc-root input:-webkit-autofill,
+#nc-root input:-webkit-autofill:hover,
+#nc-root input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--a-text) !important;
+  -webkit-box-shadow: 0 0 0 30px var(--a-bg-4) inset !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+#nc-root label {
+  color: var(--a-text) !important;
+  font-family: var(--a-font-heading) !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  letter-spacing: -0.005em !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+  transition: color 0.2s ease !important;
+}
+
+#nc-root label:hover {
+  color: var(--a-primary) !important;
+}
+
+#nc-root small,
+#nc-root [class*="hint"] {
+  color: var(--a-text-dim) !important;
+  font-size: 0.78rem !important;
+  line-height: 1.55 !important;
+  margin-top: 6px !important;
+  display: block !important;
+  font-style: normal !important;
+}
+
+/* Asterisco de campo obligatorio */
+#nc-root label[class*="required"]::after,
+#nc-root label [class*="required"] {
+  color: var(--a-danger) !important;
+  margin-left: 3px !important;
+}
+
+#nc-root button[class*="primary"],
+#nc-root button[type="submit"] {
+  background: var(--a-primary) !important;
+  color: var(--a-text-inverse) !important;
+  border: none !important;
+  padding: 12px 26px !important;
+  font-weight: 700 !important;
+  font-family: var(--a-font-heading) !important;
+  border-radius: 100px !important;
+  box-shadow: 0 0 20px var(--a-primary-dim) !important;
+  min-height: 46px !important;
+  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  font-size: 0.95rem !important;
+  letter-spacing: -0.005em !important;
+}
+
+#nc-root button[class*="primary"] *,
+#nc-root button[type="submit"] * {
+  color: var(--a-text-inverse) !important;
+}
+
+#nc-root button[class*="primary"]:hover,
+#nc-root button[type="submit"]:hover {
+  background: var(--a-primary-hover) !important;
+  box-shadow: 0 10px 30px var(--a-primary-glow) !important;
+  transform: translateY(-2px) !important;
+}
+
+
+#nc-root button[class*="secondary"],
+#nc-root button[class*="default"] {
+  background: var(--a-bg-4) !important;
+  color: var(--a-text) !important;
+  border: 1px solid var(--a-border) !important;
+  padding: 10px 20px !important;
+  border-radius: var(--a-radius) !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+  min-height: 42px !important;
+  cursor: pointer !important;
+}
+
+#nc-root button[class*="secondary"]:hover {
+  background: var(--a-bg-5) !important;
+  border-color: var(--a-border-strong) !important;
+}
+
+
+#nc-root button[class*="danger"],
+#nc-root button[class*="delete"] {
+  background: transparent !important;
+  color: var(--a-danger) !important;
+  border: 1px solid var(--a-danger) !important;
+  border-radius: var(--a-radius) !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+#nc-root button[class*="danger"]:hover {
+  background: var(--a-danger-dim) !important;
+  transform: translateY(-1px) !important;
+}
+
+#nc-root button[class*="danger"] * {
+  color: var(--a-danger) !important;
+}
+
+
+#nc-root [contenteditable="true"] {
+  background: var(--a-bg-3) !important;
+  color: var(--a-text) !important;
+  border: 1px solid var(--a-border) !important;
+  border-radius: var(--a-radius) !important;
+  min-height: 280px !important;
+  padding: 22px !important;
+  line-height: 1.8 !important;
+  font-size: 1rem !important;
+  font-family: var(--a-font) !important;
+  transition: all 0.25s ease !important;
+}
+
+#nc-root [contenteditable="true"]:focus {
+  border-color: var(--a-primary) !important;
+  box-shadow: var(--a-shadow-glow) !important;
+  outline: none !important;
+}
+
+#nc-root [contenteditable="true"]:empty::before {
+  content: 'Escribe aquí la noticia completa...' !important;
+  color: var(--a-text-dim) !important;
+  font-style: italic !important;
+}
+
+#nc-root [class*="ImageWidget"],
+#nc-root [class*="ImageControl"] {
+  background: var(--a-bg-2) !important;
+  border: 1px dashed var(--a-border-strong) !important;
+  border-radius: var(--a-radius-lg) !important;
+  padding: 20px !important;
+  transition: all 0.25s ease !important;
+}
+
+#nc-root [class*="ImageWidget"]:hover {
+  border-color: var(--a-primary) !important;
+  background: var(--a-bg-3) !important;
+  border-style: solid !important;
+}
+
+
+#nc-root [class*="Modal"] {
+  background: var(--a-bg-2) !important;
+  border: 1px solid var(--a-border) !important;
+  border-radius: var(--a-radius-lg) !important;
+  box-shadow: var(--a-shadow-lg) !important;
+}
+
+
+#nc-root [class*="Toast"] {
+  background: var(--a-bg-3) !important;
+  border: 1px solid var(--a-border-strong) !important;
+  color: var(--a-text) !important;
+  border-radius: var(--a-radius-lg) !important;
+  box-shadow: var(--a-shadow-lg) !important;
+  padding: 14px 20px !important;
+  font-weight: 500 !important;
+}
+
+#nc-root [class*="Toast"] * {
+  color: var(--a-text) !important;
+}
+
+
+#nc-root [role="listbox"],
+#nc-root [role="menu"] {
+  background: var(--a-bg-3) !important;
+  border: 1px solid var(--a-border-strong) !important;
+  border-radius: var(--a-radius) !important;
+  box-shadow: var(--a-shadow-lg) !important;
+  padding: 8px !important;
+}
+
+#nc-root [role="option"] {
+  padding: 11px 14px !important;
+  border-radius: var(--a-radius-sm) !important;
+  color: var(--a-text-2) !important;
+  transition: all 0.15s ease !important;
+  cursor: pointer !important;
+  font-size: 0.92rem !important;
+}
+
+#nc-root [role="option"]:hover {
+  background: var(--a-primary-dim) !important;
+  color: var(--a-primary) !important;
+}
+
+#nc-root [role="option"][aria-selected="true"] {
+  background: var(--a-primary) !important;
+  color: var(--a-text-inverse) !important;
+}
+
+#nc-root input[type="checkbox"],
+#nc-root input[type="radio"] {
+  accent-color: var(--a-primary) !important;
+  width: 20px !important;
+  height: 20px !important;
+  cursor: pointer !important;
+  margin-right: 8px !important;
+}
+
+#nc-root *:focus-visible {
+  outline: 2px solid var(--a-primary) !important;
+  outline-offset: 2px !important;
+  border-radius: var(--a-radius-sm) !important;
+}
+
+/* Panel de edición: más aire */
+#nc-root [class*="ControlPane"] {
+  padding: 28px !important;
+  background: var(--a-bg) !important;
+}
+
+/* Separación entre campos */
+#nc-root [class*="ControlPane"] > div,
+#nc-root [class*="Field"] {
+  margin-bottom: 24px !important;
+}
+
+/* Panel de vista previa: fondo gris suave */
+#nc-root [class*="PreviewPane"] {
+  background: var(--a-bg-1) !important;
+  border-left: 1px solid var(--a-border) !important;
+  padding: 24px !important;
+}
+
+/* Barra de acciones inferior (Publicar/Guardar) */
+#nc-root [class*="ToolbarContainer"],
+#nc-root [class*="Actions"] {
+  background: var(--a-bg-1) !important;
+  border-top: 1px solid var(--a-border) !important;
+  padding: 16px 24px !important;
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 10 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+}
+
+/* Botones de la barra de acciones */
+#nc-root [class*="ToolbarContainer"] button,
+#nc-root [class*="Actions"] button {
+  margin-left: 8px !important;
+}
+
+/* MÓVIL */
+@media (max-width: 768px) {
+
+  html, body, #nc-root {
+    overflow-x: hidden !important;
+  }
+
+  /* Header compacto */
+  #nc-root header {
+    padding: 12px 16px !important;
+  }
+
+  /* Sidebar a ancho completo */
+  #nc-root aside,
+  #nc-root [class*="Sidebar"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--a-border) !important;
+  }
+
+  /* Layout en una columna */
+  #nc-root [class*="Editor"],
+  #nc-root [class*="EntryEditor"],
+  #nc-root [class*="Split"] {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  /* Vista previa abajo en móvil */
+  #nc-root [class*="PreviewPane"],
+  #nc-root [class*="ControlPane"] + div {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-left: none !important;
+    border-top: 1px solid var(--a-border) !important;
+    padding: 20px !important;
+  }
+
+  /* Panel de edición: menos padding */
+  #nc-root [class*="ControlPane"] {
+    padding: 18px !important;
+  }
+
+  #nc-root [class*="ControlPane"] > div,
+  #nc-root [class*="Field"] {
+    margin-bottom: 20px !important;
+  }
+
+  /* Tarjetas de noticias */
+  #nc-root [class*="ListItem"] {
+    padding: 16px 18px !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Botón añadir full width */
+  #nc-root a[href*="new"],
+  #nc-root button[class*="add"] {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Inputs grandes para touch */
+  #nc-root input[type="text"],
+  #nc-root input[type="email"],
+  #nc-root input[type="number"],
+  #nc-root input[type="url"],
+  #nc-root input[type="search"],
+  #nc-root input[type="datetime-local"],
+  #nc-root input[type="date"],
+  #nc-root input[type="time"],
+  #nc-root input[type="password"],
+  #nc-root textarea,
+  #nc-root select {
+    font-size: 16px !important;
+    padding: 14px 16px !important;
+    min-height: 50px !important;
+  }
+
+  /* Labels */
+  #nc-root label {
+    font-size: 0.95rem !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Editor */
+  #nc-root [contenteditable="true"] {
+    min-height: 260px !important;
+    padding: 18px !important;
+    font-size: 16px !important;
+  }
+
+  /* Toolbar apilada */
+  #nc-root [class*="Toolbar"] {
+    padding: 10px 12px !important;
+    gap: 8px !important;
+  }
+
+  #nc-root [class*="Toolbar"] button {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    padding: 10px 12px !important;
+    font-size: 0.85rem !important;
+    min-height: 42px !important;
+  }
+
+  /* Descripción */
+  #nc-root [class*="Description"] {
+    padding: 14px 18px !important;
+    font-size: 0.88rem !important;
+  }
+
+  /* Botones generales */
+  #nc-root button {
+    min-height: 44px !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Barra de acciones en móvil */
+  #nc-root [class*="ToolbarContainer"],
+  #nc-root [class*="Actions"] {
+    padding: 12px 16px !important;
+    flex-direction: column-reverse !important;
+    gap: 8px !important;
+  }
+
+  #nc-root [class*="ToolbarContainer"] button,
+  #nc-root [class*="Actions"] button {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Modales */
+  #nc-root [class*="Modal"] {
+    margin: 12px !important;
+    border-radius: var(--a-radius-lg) !important;
+    max-height: calc(100vh - 24px) !important;
+    overflow-y: auto !important;
+  }
+
+  /* Evitar scroll horizontal */
+  #nc-root div, #nc-root section, #nc-root article {
+    max-width: 100% !important;
+  }
+}
+
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  #nc-root [class*="ControlPane"] {
+    padding: 22px !important;
+  }
+
+  #nc-root [class*="PreviewPane"] {
+    padding: 20px !important;
+  }
+}
+
+/* ============================================================
+   FORZAR DARK MODE SI EL SISTEMA USA LIGHT
+   ============================================================ */
+@media (prefers-color-scheme: light) {
+  html, body, #nc-root {
+    background: var(--a-bg) !important;
+    background-color: var(--a-bg) !important;
+    color: var(--a-text) !important;
+  }
+}
+
+/* ============================================================
+   REDUCIR MOVIMIENTO
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  #nc-root *,
+  #nc-root *::before,
+  #nc-root *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
   </style>
 </head>
 <body>
