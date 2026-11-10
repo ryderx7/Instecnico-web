@@ -1,36 +1,42 @@
-# ============================================================
-# CONFIGURACIÓN DEL PANEL DE ADMINISTRACIÓN
-# Instituto Técnico · Sistema de noticias y eventos
-# ============================================================
-
 backend:
   name: git-gateway
   branch: main
+  commit_messages:
+    create: 'Crear {{collection}} "{{slug}}"'
+    update: 'Actualizar {{collection}} "{{slug}}"'
+    delete: 'Eliminar {{collection}} "{{slug}}"'
+    uploadMedia: 'Subir imagen "{{path}}"'
+    deleteMedia: 'Eliminar imagen "{{path}}"'
 
-# Carpeta donde se suben las imágenes desde el panel
+publish_mode: editorial_workflow
+
+site_url: https://institutotecnico.edu.co
+display_url: https://institutotecnico.edu.co
+logo_url: https://institutotecnico.edu.co/assets/images/logo.png
+
 media_folder: "assets/images/noticias"
 public_folder: "/assets/images/noticias"
 
-# Idioma del panel
 locale: 'es'
 
-# ============================================================
-# COLECCIONES DE CONTENIDO
-# ============================================================
+editor:
+  preview: false
+
 collections:
   - name: "noticias"
-    label: "📰 Noticias y Eventos"
+    label: "Noticias y eventos"
     label_singular: "Noticia"
     description: >
       Administra las noticias y eventos que aparecen en la página principal.
       Puedes agregar, editar, reordenar o eliminar noticias desde aquí.
+      Los cambios pasan por el flujo editorial antes de publicarse.
     files:
       - name: "lista"
-        label: "📋 Todas las Noticias"
+        label: "Listado de noticias"
         file: "content/noticias.json"
         description: >
-          Arrastra las noticias para cambiar el orden (las primeras aparecen arriba).
-          Usa el botón "+" para agregar una nueva.
+          Arrastra las noticias para cambiar el orden: las primeras aparecen arriba.
+          Usa el botón de agregar para crear una nueva.
         fields:
           - name: "items"
             label: "Noticias publicadas"
@@ -43,40 +49,40 @@ collections:
             allow_add: true
             allow_delete: true
             fields:
-              - label: "📌 Título de la noticia"
+              - label: "Título de la noticia"
                 name: "title"
                 widget: "string"
                 hint: >
                   Escribe un título claro y corto (máximo 80 caracteres).
-                  Ejemplo: "Feria Universitaria para el grado 11°"
+                  Ejemplo: Feria universitaria para el grado 11.
                 pattern: ['^.{5,100}$', 'El título debe tener entre 5 y 100 caracteres']
 
-              - label: "📅 Fecha"
+              - label: "Fecha"
                 name: "date"
                 widget: "datetime"
-                format: "DD MMMM, YYYY"
-                date_format: "DD MMMM, YYYY"
+                format: "DD MMMM YYYY"
+                date_format: "DD MMMM YYYY"
                 time_format: false
                 picker_utc: false
                 hint: "Selecciona el día en que se publica o sucede la noticia."
 
-              - label: "🏷️ Categoría"
+              - label: "Categoría"
                 name: "category"
                 widget: "select"
                 default: "Institucional"
                 hint: "Elige la categoría que mejor describa la noticia."
                 options:
-                  - { label: "🎓 Evento Académico", value: "Evento Académico" }
-                  - { label: "🎉 Celebración", value: "Celebración" }
-                  - { label: "📝 Admisiones", value: "Admisiones" }
-                  - { label: "📢 Comunicado", value: "Comunicado" }
-                  - { label: "⚽ Deportes", value: "Deportes" }
-                  - { label: "🎭 Cultura", value: "Cultura" }
-                  - { label: "🇬🇧 Inglés", value: "Inglés" }
-                  - { label: "🔬 Ciencia y Tecnología", value: "Ciencia y Tecnología" }
-                  - { label: "🏫 Institucional", value: "Institucional" }
+                  - { label: "Evento académico", value: "Evento Académico" }
+                  - { label: "Celebración", value: "Celebración" }
+                  - { label: "Admisiones", value: "Admisiones" }
+                  - { label: "Comunicado", value: "Comunicado" }
+                  - { label: "Deportes", value: "Deportes" }
+                  - { label: "Cultura", value: "Cultura" }
+                  - { label: "Inglés", value: "Inglés" }
+                  - { label: "Ciencia y tecnología", value: "Ciencia y Tecnología" }
+                  - { label: "Institucional", value: "Institucional" }
 
-              - label: "🖼️ Imagen de portada"
+              - label: "Imagen de portada"
                 name: "image"
                 widget: "image"
                 media_library:
@@ -84,34 +90,35 @@ collections:
                     multiple: false
                 choose_url: false
                 hint: >
-                  Sube una foto horizontal (ideal: 1200x800 px, menos de 500 KB).
+                  Sube una foto horizontal. Medida ideal: 1200x800 px,
+                  con un peso menor a 500 KB.
 
-              - label: "✏️ Extracto corto"
+              - label: "Extracto corto"
                 name: "excerpt"
                 widget: "text"
                 pattern: ['^.{20,220}$', 'El extracto debe tener entre 20 y 220 caracteres']
-                hint: >
-                  Resumen breve (1-2 líneas) que aparece en la tarjeta.
+                hint: "Resumen breve de 1 o 2 líneas que aparece en la tarjeta."
 
-              - label: "📄 Contenido completo"
+              - label: "Contenido completo"
                 name: "body"
                 widget: "markdown"
                 hint: >
                   Aquí va la noticia completa. Puedes usar negrita, listas,
                   subtítulos y enlaces.
 
-              - label: "✍️ Autor"
+              - label: "Autor"
                 name: "author"
                 widget: "string"
                 default: "Instituto Técnico"
                 required: false
-                hint: >
-                  ¿Quién escribe la noticia? Puede ser un área, un cargo o una persona.
+                hint: "Quién firma la noticia: un área, un cargo o una persona."
 
-              - label: "⭐ Marcar como destacada"
+              - label: "Marcar como destacada"
                 name: "featured"
                 widget: "boolean"
                 default: false
                 required: false
                 hint: >
-                  Actívala si quieres que esta noticia llame más la atención.
+                  Solo la primera noticia marcada como destacada en el listado
+                  se muestra como destacada en la portada. Las demás se
+                  publican como noticias normales.
