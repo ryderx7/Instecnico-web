@@ -728,7 +728,9 @@
     opacity: 0;
     animation: fadeUp .75s var(--ease) 1.15s forwards;
     padding-bottom: .08em;
+    text-decoration: none;
   }
+  .hero-title-sub::before, .hero-title-sub::after { content: none; }
   .hero-lead {
     max-width: 42ch;
     margin-bottom: clamp(28px, 4vw, 44px);
@@ -1280,7 +1282,7 @@
       transition-delay: 0s;
     }
     .pre-photo { width: min(100%, 192px); max-width: none; margin: 0 0 20px; }
-    .pre-info { text-align: left; align-content: start; }
+    .pre-info { align-content: start; }
     .pre-nav {
       display: flex;
       justify-content: center;
@@ -2053,36 +2055,85 @@
   .noscript-content .interlude::after { display: none; }
   .noscript-content .period-head :is(.period-roman, h2) { opacity: 1 !important; transform: none !important; }
 
-  .scroll-curve {
+  .timeline-track {
+    --tl-dot: 10px;
     position: fixed;
     top: 0;
     bottom: 0;
-    right: 12px;
-    width: 14px;
-    z-index: 5;
+    left: 40px;
+    width: 10px;
+    z-index: 90;
     pointer-events: none;
     opacity: 0;
     transition: opacity .8s var(--ease) 1.2s;
   }
-  .scroll-curve.is-ready { opacity: 1; }
-  .scroll-curve svg { width: 100%; height: 100%; display: block; overflow: visible; }
-  .scroll-curve path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-  .curve-track { stroke: rgba(27, 58, 42, .1); stroke-width: 1.5; }
-  .curve-fill { stroke: #C9A227; stroke: url(#curveGrad); stroke-width: 2; }
-  .curve-head {
-    fill: var(--dorado-claro);
+  .timeline-track.is-ready { opacity: 1; }
+  .timeline-rail {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border: 1px solid rgba(27, 58, 42, .14);
+    border-radius: 999px;
+    background: rgba(27, 58, 42, .1);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .12);
+  }
+  .timeline-fill {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--dorado-claro), var(--dorado));
+    transform: scaleY(0);
+    transform-origin: top center;
+    transition: transform .18s cubic-bezier(.22, .61, .36, 1);
+    will-change: transform;
+  }
+  .timeline-dot {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: var(--tl-dot);
+    height: var(--tl-dot);
+    margin: calc(var(--tl-dot) / -2) 0 0 calc(var(--tl-dot) / -2);
+    border-radius: 50%;
+    background: var(--dorado-claro);
+    box-shadow: 0 0 0 2px rgba(251, 250, 245, .85), 0 0 12px 3px rgba(223, 185, 63, .7);
     opacity: 0;
-    transition: opacity .3s var(--ease);
-    filter: drop-shadow(0 0 4px rgba(223, 185, 63, .7));
+    transform: translate3d(0, 0, 0);
+    transition: opacity .3s var(--ease), transform .18s cubic-bezier(.22, .61, .36, 1);
+    will-change: transform;
   }
-  @media (hover: hover) and (pointer: fine) {
-    .curve-fill { filter: drop-shadow(0 0 3px rgba(223, 185, 63, .4)); }
+  .timeline-dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 1px solid var(--dorado-claro);
+    border-radius: 50%;
+    opacity: 0;
+    animation: timelinePulse 2.2s var(--ease) infinite;
   }
-  @media (max-width: 860px) {
-    .scroll-curve { right: 4px; width: 10px; }
-    .curve-fill { stroke-width: 1.5; }
-    .curve-track { stroke-width: 1; }
+  .timeline-track.has-progress .timeline-dot { opacity: 1; }
+  @keyframes timelinePulse {
+    0% { transform: scale(.7); opacity: .8; }
+    100% { transform: scale(1.9); opacity: 0; }
   }
+  @media (max-width: 1100px) {
+    .timeline-track { --tl-dot: 8px; left: 16px; width: 8px; }
+  }
+  @media (max-width: 720px) {
+    .timeline-track { --tl-dot: 8px; left: 12px; width: 6px; }
+  }
+
+  .tl-connector {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: clamp(72px, 10vw, 112px);
+    pointer-events: none;
+    contain: layout paint;
+  }
+  .tl-connector svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .tl-base, .tl-draw { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .tl-base { stroke: rgba(30, 26, 20, .14); stroke-width: 2; }
+  .tl-draw { stroke: var(--dorado); stroke-width: 2.5; }
   @media (hover: none) {
     .pre-card:active,
     .hero-principle:active { scale: .98; }
@@ -2325,9 +2376,21 @@
     .nav-menu-col + .nav-menu-col { border-left: 0; border-top: 1px solid var(--borde); }
     .nav-menu-col { padding: 6px 20px 20px; }
     .nav-menu a { font-size: 1.06rem; min-height: 56px; }
-    .concepts-overlay { display: flex; padding: 0; overflow: hidden; }
+    .concepts-overlay {
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+      height: 100vh;
+      height: 100dvh;
+      padding: 0;
+      overflow: hidden;
+    }
     .concepts-panel {
+      display: flex;
+      flex-direction: column;
       flex: 1 1 auto;
+      width: 100%;
+      height: 100%;
       min-height: 0;
       max-width: none;
       max-height: none;
@@ -2340,14 +2403,32 @@
     .concepts-head {
       position: sticky;
       top: 0;
-      z-index: 2;
+      z-index: 10;
       flex-shrink: 0;
       padding: calc(12px + var(--safe-top)) 20px 12px;
+      background-color: var(--hueso);
     }
     .concepts-head h2 { font-size: var(--fs-xl); }
-    .concepts-body { padding: 6px 20px 20px; overscroll-behavior: contain; min-height: 0; }
-    .concept-card summary { min-height: 44px; }
+    .concepts-close { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
+    .concepts-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      padding: 6px 20px 80px;
+    }
+    .concept-card { padding: 16px; }
+    .concept-card summary {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 48px;
+    }
     .concept-title { font-size: 1.08rem; }
+    .concept-short { font-size: .94rem; line-height: 1.55; }
+    .concept-body p { font-size: .96rem; line-height: 1.7; }
+    .concept-ex { font-size: .94rem; }
     .concept-chip { display: inline-flex; align-items: center; min-height: 44px; }
     .concepts-foot { flex-shrink: 0; padding: 12px 20px calc(12px + var(--safe-bottom)); }
     .concepts-close-btn { width: 100%; min-height: 48px; }
@@ -2499,9 +2580,11 @@
       --gris-calido: #2a2620;
       --borde: color-mix(in srgb, var(--tinta) 30%, transparent);
     }
-    .curve-track { stroke: rgba(27, 58, 42, .4); }
-    .curve-fill { stroke: var(--dorado-texto); filter: none; }
-    .curve-head { fill: var(--dorado-texto); filter: none; }
+    .timeline-rail { background: rgba(27, 58, 42, .3); border-color: rgba(27, 58, 42, .5); }
+    .timeline-fill { background: var(--dorado-texto); }
+    .timeline-dot { background: var(--dorado-texto); box-shadow: none; }
+    .tl-base { stroke: rgba(27, 58, 42, .5); }
+    .tl-draw { stroke: var(--dorado-texto); }
   }
 }
 
@@ -2535,19 +2618,9 @@
 
 <a class="skip-link" href="#main">Saltar al contenido</a>
 
-<div class="scroll-curve" data-curve aria-hidden="true">
-  <svg viewBox="0 0 14 800" focusable="false">
-    <defs>
-      <linearGradient id="curveGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#8A6D1B"></stop>
-        <stop offset="50%" stop-color="#DFB93F"></stop>
-        <stop offset="100%" stop-color="#8A6D1B"></stop>
-      </linearGradient>
-    </defs>
-    <path class="curve-track" d=""></path>
-    <path class="curve-fill" d=""></path>
-    <circle class="curve-head" r="2.5" cx="7" cy="0"></circle>
-  </svg>
+<div class="timeline-track" data-timeline aria-hidden="true">
+  <span class="timeline-rail"><span class="timeline-fill" data-timeline-fill></span></span>
+  <span class="timeline-dot" data-timeline-dot></span>
 </div>
 
 <nav class="nav" data-nav aria-label="Navegación y búsqueda de Filosofía">
@@ -3506,6 +3579,12 @@
     }).join('');
   }
 
+  var TL_CONNECTOR = '<div class="tl-connector" data-tl-connector aria-hidden="true">' +
+    '<svg viewBox="0 0 120 100" preserveAspectRatio="xMidYMid meet" focusable="false">' +
+      '<path class="tl-base" d="M 60 0 C 60 30, 96 26, 96 50 C 96 74, 60 70, 60 100"></path>' +
+      '<path class="tl-draw" d="M 60 0 C 60 30, 96 26, 96 50 C 96 74, 60 70, 60 100"></path>' +
+    '</svg></div>';
+
   function renderTimeline() {
     var main = $('[data-main]');
     if (!main) return;
@@ -3514,7 +3593,11 @@
     var html = '';
     var n = PRE.length;
     var periodIndex = 0;
+    var prevKind = '';
     TIMELINE.forEach(function (it) {
+      var kind = it.type === 'interlude' ? 'interlude' : 'period';
+      if (prevKind && prevKind !== kind) html += TL_CONNECTOR;
+      prevKind = kind;
       if (it.type === 'interlude') {
         html += '<section class="interlude interlude--' + it.tone + '" id="concepto-' + escapeHtml(it.id) + '" aria-labelledby="h-' + escapeHtml(it.id) + '">' +
           '<span class="interlude-mark" aria-hidden="true">' + escapeHtml(it.number) + '</span>' +
@@ -3953,51 +4036,84 @@
     return { resize: resize };
   }
 
-  function setupCurve() {
-    var box = $('[data-curve]');
-    if (!box) return null;
-    var svg = $('svg', box);
-    var track = $('.curve-track', box);
-    var fill = $('.curve-fill', box);
-    var head = $('.curve-head', box);
-    if (!svg || !track || !fill || !head || !fill.getTotalLength) return null;
-    var len = 0, lastP = 0;
-    function build() {
-      var W = Math.max(8, box.clientWidth);
-      var H = Math.max(200, box.clientHeight);
-      var amp = Math.max(2, W * 0.28);
-      var n = Math.max(3, Math.round(H / 220));
-      var dy = H / n;
-      var d = 'M ' + (W / 2) + ' 0';
-      for (var k = 0; k < n; k++) {
-        var x1 = k === n - 1 ? W / 2 : W / 2 + (k % 2 === 0 ? amp : -amp);
-        var y0 = k * dy, y1 = y0 + dy;
-        var x0 = k === 0 ? W / 2 : W / 2 + (k % 2 === 1 ? amp : -amp);
-        d += ' C ' + x0.toFixed(2) + ' ' + (y0 + dy * 0.5).toFixed(1) + ', ' + x1.toFixed(2) + ' ' + (y1 - dy * 0.5).toFixed(1) + ', ' + x1.toFixed(2) + ' ' + y1.toFixed(1);
-      }
-      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-      track.setAttribute('d', d);
-      fill.setAttribute('d', d);
-      len = fill.getTotalLength();
-      fill.style.strokeDasharray = String(len);
-      update(lastP);
+  function setupTimeline() {
+    var track = $('[data-timeline]');
+    var fill = $('[data-timeline-fill]');
+    var dot = $('[data-timeline-dot]');
+    var items = [];
+    var trackH = 0;
+    var lastP = -1;
+    var dotOn = false;
+
+    function clamp01(v) { return v < 0 ? 0 : (v > 1 ? 1 : v); }
+    function measure() { trackH = track ? track.clientHeight : window.innerHeight; }
+    function paint(it, q) {
+      it.p = q;
+      it.draw.style.strokeDashoffset = (it.len * (1 - q)).toFixed(2);
     }
-    function update(p) {
-      lastP = p;
+
+    $$('[data-tl-connector]').forEach(function (el) {
+      var draw = $('.tl-draw', el);
+      if (!draw || !draw.getTotalLength) return;
+      var len = draw.getTotalLength();
       if (!len) return;
-      fill.style.strokeDashoffset = String(len * (1 - p));
-      if (p > 0.01 && p < 0.99) {
-        var pt = fill.getPointAtLength(len * p);
-        head.setAttribute('cx', pt.x.toFixed(2));
-        head.setAttribute('cy', pt.y.toFixed(2));
-        head.style.opacity = '1';
-      } else {
-        head.style.opacity = '0';
+      draw.style.strokeDasharray = len.toFixed(2);
+      var it = { el: el, draw: draw, len: len, p: -1, vis: false };
+      paint(it, reduced ? 1 : 0);
+      el._tl = it;
+      items.push(it);
+    });
+
+    function updateConnectors() {
+      if (reduced) return;
+      var vh = window.innerHeight;
+      for (var i = 0; i < items.length; i++) {
+        var it = items[i];
+        if (!it.vis) continue;
+        var r = it.el.getBoundingClientRect();
+        var q = clamp01((vh * 0.85 - r.top) / (r.height + vh * 0.3));
+        if (Math.abs(q - it.p) > 0.002) paint(it, q);
       }
     }
-    build();
-    setTimeout(function () { box.classList.add('is-ready'); }, 100);
-    return { update: update, rebuild: build };
+
+    if (items.length && !reduced) {
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var it = e.target._tl;
+            if (!it) return;
+            it.vis = e.isIntersecting;
+            if (!e.isIntersecting) paint(it, e.boundingClientRect.top < 0 ? 1 : 0);
+          });
+          updateConnectors();
+        }, { rootMargin: '25% 0px 25% 0px' });
+        items.forEach(function (it) { io.observe(it.el); });
+      } else {
+        items.forEach(function (it) { it.vis = true; });
+      }
+    }
+
+    function update(p) {
+      if (track && p !== lastP) {
+        lastP = p;
+        if (fill) fill.style.transform = 'scaleY(' + p.toFixed(4) + ')';
+        if (dot) dot.style.transform = 'translate3d(0,' + (p * trackH).toFixed(1) + 'px,0)';
+        var on = p > 0.003 && p < 0.997;
+        if (on !== dotOn) { dotOn = on; track.classList.toggle('has-progress', on); }
+      }
+      updateConnectors();
+    }
+
+    function rebuild() {
+      measure();
+      var p = lastP < 0 ? 0 : lastP;
+      lastP = -1;
+      update(p);
+    }
+
+    measure();
+    if (track) setTimeout(function () { track.classList.add('is-ready'); }, 100);
+    return { update: update, rebuild: rebuild };
   }
 
   function init() {
@@ -4775,7 +4891,7 @@
       setActive(0);
     }
 
-    var curve = setupCurve();
+    var tl = setupTimeline();
     var heroScroll = $('.hero-scroll');
     var heroAway = false;
     var scrollRaf = 0;
@@ -4789,12 +4905,15 @@
         ring.style.strokeDasharray = String(circ);
         ring.style.strokeDashoffset = String(circ * (1 - p));
       }
-      if (curve) curve.update(p);
+      if (tl) tl.update(p);
       if (heroScroll) {
         var away = y > 120;
         if (away !== heroAway) { heroAway = away; heroScroll.classList.toggle('is-away', away); }
       }
-      if (toTop) toTop.hidden = y < 500;
+      if (toTop) {
+        var hideTop = y < 500;
+        if (toTop.hidden !== hideTop) toTop.hidden = hideTop;
+      }
     };
     window.addEventListener('scroll', function () {
       if (scrollRaf) return;
@@ -4805,7 +4924,7 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function () {
         if (scrollRaf) cancelAnimationFrame(scrollRaf);
-        if (curve) curve.rebuild();
+        if (tl) tl.rebuild();
         if (particles) particles.resize();
         scrollRaf = requestAnimationFrame(updateScroll);
         if (isMobile) adjustForKeyboard();

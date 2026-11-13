@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-gNRd4Tr6jfAnWrrac8ZCj5Eln1gj7ypv0nzO5C6RZVg=' 'sha256-vMKKLjU2EhBygDGvYtOdMxfOG7GbA3SWuTsciGP0Qk0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob:; frame-src https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
 <script>
@@ -16,16 +17,6 @@
   window.__isMobileDevice = isMobile;
 })();
 </script>
-<script>
-(function () {
-  var hash = window.location.hash || '';
-  if (/invite_token|recovery_token|confirmation_token|email_change_token/.test(hash)) {
-    var s = document.createElement('script');
-    s.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
-    document.head.appendChild(s);
-  }
-})();
-</script>
 <title>Instituto Técnico | Oficial</title>
 <meta name="description" content="Institución educativa oficial de Santander de Quilichao, Cauca. Fundada en 1913.">
 <meta name="theme-color" content="#142E20">
@@ -37,42 +28,123 @@
 <meta property="og:site_name" content="Instituto Técnico">
 <meta property="og:title" content="Instituto Técnico | Oficial">
 <meta property="og:description" content="Institución educativa oficial de Santander de Quilichao, Cauca. Fundada en 1913.">
-<meta property="og:image" content="assets/images/og-image.jpg">
+<meta property="og:image" content="https://institutotecnico.edu.co/assets/images/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Fachada del Instituto Técnico de Santander de Quilichao, Cauca">
 <meta property="og:url" content="https://institutotecnico.edu.co/">
 <meta property="og:locale" content="es_CO">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Instituto Técnico | Oficial">
 <meta name="twitter:description" content="Institución educativa oficial de Santander de Quilichao, Cauca.">
-<meta name="twitter:image" content="assets/images/og-image.jpg">
+<meta name="twitter:image" content="https://institutotecnico.edu.co/assets/images/og-image.jpg">
+<meta name="twitter:image:alt" content="Fachada del Instituto Técnico de Santander de Quilichao, Cauca">
 <link rel="canonical" href="https://institutotecnico.edu.co/">
 <link rel="icon" type="image/png" href="assets/images/logo.png">
 <link rel="apple-touch-icon" href="assets/images/logo.png">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
-  "name": "Instituto Técnico",
-  "foundingDate": "1913",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Calle 3 #7-68",
-    "addressLocality": "Santander de Quilichao",
-    "addressRegion": "Cauca",
-    "addressCountry": "CO"
-  },
-  "telephone": "+573183308974",
-  "email": "rectoria@instecnico.edu.co"
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://institutotecnico.edu.co/#website",
+      "url": "https://institutotecnico.edu.co/",
+      "name": "Instituto Técnico",
+      "inLanguage": "es-CO",
+      "publisher": {
+        "@id": "https://institutotecnico.edu.co/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://institutotecnico.edu.co/noticias.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "EducationalOrganization",
+      "@id": "https://institutotecnico.edu.co/#organization",
+      "name": "Instituto Técnico",
+      "alternateName": "Institución Educativa Instituto Técnico",
+      "url": "https://institutotecnico.edu.co/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://institutotecnico.edu.co/assets/images/logo.png"
+      },
+      "image": "https://institutotecnico.edu.co/assets/images/og-image.jpg",
+      "description": "Institución educativa oficial de Santander de Quilichao, Cauca. Fundada en 1913.",
+      "foundingDate": "1913",
+      "telephone": "+573183308974",
+      "email": "rectoria@instecnico.edu.co",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Calle 3 # 7-68, Barrio Centro",
+        "addressLocality": "Santander de Quilichao",
+        "addressRegion": "Cauca",
+        "addressCountry": "CO"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 3.0048861,
+        "longitude": -76.4809358
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "telephone": "+573183308974",
+        "email": "rectoria@instecnico.edu.co",
+        "areaServed": "CO",
+        "availableLanguage": "es"
+      },
+      "sameAs": [
+        "https://www.facebook.com/IT.TECNICO2013/",
+        "https://www.youtube.com/channel/UCwMarfY8Bpd3uRq8pfGAJbw",
+        "https://institucion-educativa-instituto-tecnico-1.micolombiadigital.gov.co/"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://institutotecnico.edu.co/#faq",
+      "inLanguage": "es-CO",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuándo fue fundado el Instituto Técnico?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El Instituto Técnico fue fundado en 1913 en Santander de Quilichao, Cauca. Es una institución educativa oficial que lleva más de un siglo formando estudiantes con rigor académico y preparación técnica."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué sedes tiene el Instituto Técnico?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El Instituto Técnico cuenta con cuatro sedes: la Sede Principal (básica secundaria y media técnica, en la Calle 3 # 7-68, Barrio Centro), Francisco de Paula Santander (preescolar y básica primaria), Rafael Tello (básica primaria, barrio Olaya Herrera) y José Edmundo Sandoval (preescolar y básica primaria, barrio El Jardín)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo puedo contactarlos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Puedes llamar al +57 318 330 8974, escribir a rectoria@instecnico.edu.co o visitar la Sede Principal en la Calle 3 # 7-68, Barrio Centro, Santander de Quilichao, Cauca. También puedes usar el formulario de la sección Contacto de este sitio."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 <link rel="preload" as="image" href="assets/images/hero-poster.jpg" fetchpriority="high" media="(min-width: 861px)">
 <link rel="preload" as="image" href="assets/images/hero-mobile.jpg" fetchpriority="high" media="(max-width: 860px)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,300..700&family=Public+Sans:wght@400..700&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,300..700&family=Public+Sans:wght@400..700&display=swap" media="print" onload="this.media='all'">
-<noscript>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,300..700&family=Public+Sans:wght@400..700&display=swap">
-</noscript>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,300..700&family=Public+Sans:wght@400..700&display=swap">
 <style>
 @layer reset, tokens, base, layout, components, utilities, motion;
 
@@ -655,7 +727,9 @@
     letter-spacing: -.035em;
     line-height: .98;
     margin-bottom: var(--s-4);
-    white-space: nowrap;
+    max-width: 100%;
+    text-wrap: balance;
+    overflow-wrap: normal;
     background: linear-gradient(
       180deg,
       #FFFFFF 0%,
@@ -1685,7 +1759,7 @@
     border-radius: var(--r-sm);
     box-shadow: var(--shadow-1);
   }
-  .info-item h4 {
+  .info-item h3 {
     margin-bottom: 2px;
     color: var(--verde-oscuro);
     font-family: var(--font-body);
@@ -1758,7 +1832,7 @@
     font-size: var(--fs-sm);
     line-height: 1.75;
   }
-  .footer-col h4 {
+  .footer-col h2 {
     margin-bottom: var(--s-2);
     color: var(--hueso);
     font-family: var(--font-body);
@@ -2069,7 +2143,6 @@
     .hero {
       padding: calc(78px + var(--safe-top)) 0 calc(100px + var(--safe-bottom));
     }
-    .hero-video, .hero-controls { display: none; }
     .hero-still {
       background-image: url('assets/images/hero-mobile.jpg');
       animation: heroStill 1.6s var(--ease) both;
@@ -2294,13 +2367,11 @@
     transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
     -webkit-tap-highlight-color: transparent;
   }
-  .bento-md, .bento-sm { contain: layout paint style; }
+  .bento-md, .bento-sm { contain: layout style; }
   .bento-card[data-cat="institucional"] { --cat: var(--dorado); --cat-ink: var(--verde-profundo); --pill-bg: rgb(201 162 39 / .18); --pill-fg: var(--dorado-texto); }
   .bento-card[data-cat="apoyo"] { --cat: #4F7FA6; --cat-ink: #fff; --pill-bg: #DCE8F2; --pill-fg: #24465F; }
-  .bento-card[data-cat="proximamente"] { --cat: var(--gris-calido); --pill-bg: rgb(110 104 88 / .14); --pill-fg: var(--gris-oscuro); }
-  .bento-feat { grid-column: span 7; grid-row: span 2; }
-  .bento-md { grid-column: span 5; }
-  .bento-sm { grid-column: span 3; }
+  .bento-feat { grid-column: span 8; grid-row: span 2; }
+  .bento-md, .bento-sm { grid-column: span 4; }
 
   .bento-num {
     position: absolute;
@@ -2351,7 +2422,7 @@
     letter-spacing: var(--track-tight);
     line-height: 1.18;
   }
-  .bento-md h3 { font-size: clamp(1.3rem, 1.1rem + .8vw, 1.6rem); }
+  .bento-md h3, .bento-sm h3 { font-size: clamp(1.2rem, 1.05rem + .6vw, 1.45rem); }
   .bento-card p {
     color: var(--gris-calido);
     font-size: .9rem;
@@ -2375,28 +2446,23 @@
   a.bento-card:active { transform: scale(.98); transition-duration: .1s; }
   @media (hover: hover) {
     a.bento-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--cat);
-      box-shadow: 0 16px 32px -16px rgba(20, 46, 32, .3);
+      transform: translateY(-4px);
+      border-color: var(--dorado);
+      box-shadow: 0 0 0 1px var(--dorado), 0 18px 36px -18px rgba(201, 162, 39, .5), 0 12px 28px -18px rgba(20, 46, 32, .35);
     }
-    a.bento-card:hover .bento-icon { background: var(--cat); border-color: var(--cat); color: var(--cat-ink); }
+    a.bento-card:hover .bento-icon { transform: rotate(-8deg); background: var(--dorado-claro); border-color: var(--dorado); color: var(--verde-profundo); }
   }
-  .bento-card[aria-disabled="true"] {
-    border-style: dashed;
-    background: transparent;
-    box-shadow: none;
-    opacity: .62;
-    cursor: default;
-  }
+  a.bento-card:focus-visible { border-color: var(--dorado); box-shadow: 0 0 0 1px var(--dorado), 0 18px 36px -18px rgba(201, 162, 39, .5); }
 
   .bento-feat {
-    min-height: 360px;
+    min-height: 420px;
     padding: clamp(24px, 3.2vw, 44px);
-    border: 0;
+    border: 1px solid rgb(201 162 39 / .38);
     border-radius: var(--r-lg);
     background:
-      radial-gradient(circle at 80% 20%, rgba(223, 185, 63, .18), transparent 60%),
-      linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde-profundo) 100%);
+      radial-gradient(circle at 80% 18%, rgba(223, 185, 63, .16), transparent 58%),
+      linear-gradient(150deg, var(--verde-oscuro) 0%, var(--verde-profundo) 58%, #102818 100%);
+    box-shadow: 0 18px 40px -24px rgba(20, 46, 32, .55), inset 0 1px 0 rgb(223 185 63 / .14);
     color: var(--hueso);
     overflow: hidden;
     isolation: isolate;
@@ -2448,14 +2514,15 @@
   }
   .bento-cta svg { color: currentColor; }
   @media (hover: hover) {
-    a.bento-feat:hover { box-shadow: 0 20px 40px -20px rgba(201, 162, 39, .3), 0 16px 32px -16px rgba(20, 46, 32, .4); }
-    a.bento-feat:hover .bento-icon { transform: scale(1.05); background: rgba(255, 255, 255, .08); border-color: var(--dorado-claro); color: var(--dorado-claro); }
+    a.bento-feat:hover { border-color: var(--dorado-claro); box-shadow: 0 0 0 1px var(--dorado), 0 24px 48px -22px rgba(201, 162, 39, .45), 0 16px 32px -16px rgba(20, 46, 32, .5); }
+    a.bento-feat:hover .bento-icon { transform: rotate(-8deg) scale(1.05); background: rgba(255, 255, 255, .08); border-color: var(--dorado-claro); color: var(--dorado-claro); }
   }
 
   @media (max-width: 860px) {
     .accesos-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .bento-feat { grid-column: 1 / -1; grid-row: auto; min-height: 0; }
     .bento-md, .bento-sm { grid-column: auto; }
+    .bento-sm:last-child { grid-column: 1 / -1; }
   }
   @media (max-width: 720px) {
     .accesos-bento { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
@@ -2478,10 +2545,154 @@
     .bento-cta { align-self: stretch; justify-content: center; }
   }
 
+
+  .vm {
+    position: fixed;
+    z-index: 4500;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: max(16px, var(--safe-top)) max(16px, var(--safe-right)) max(16px, var(--safe-bottom)) max(16px, var(--safe-left));
+    background: rgb(7 16 9 / .62);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    overscroll-behavior: contain;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s var(--ease), visibility 0s linear .3s;
+  }
+  .vm.is-open { opacity: 1; visibility: visible; transition-delay: 0s; }
+  .vm-card {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    max-height: 100%;
+    overflow-y: auto;
+    padding: clamp(24px, 5vw, 36px);
+    border: 1px solid rgb(201 162 39 / .45);
+    border-radius: var(--r-lg);
+    background: linear-gradient(160deg, rgb(27 58 42 / .88), rgb(20 46 32 / .94));
+    color: var(--hueso);
+    box-shadow: 0 30px 80px -30px rgb(0 0 0 / .7), inset 0 1px 0 rgb(223 185 63 / .18);
+    transform: translateY(14px) scale(.98);
+    transition: transform .35s var(--ease);
+  }
+  .vm.is-open .vm-card { transform: none; }
+  .vm-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    color: var(--hueso);
+    transition: background-color .2s var(--ease), color .2s var(--ease);
+  }
+  .vm-close:hover { background: rgb(223 185 63 / .16); color: var(--dorado-claro); }
+  .vm-kicker {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: var(--dorado-claro);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+  }
+  .vm-title {
+    margin-bottom: 12px;
+    padding-right: 44px;
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);
+    font-weight: 600;
+    letter-spacing: var(--track-tight);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .vm-text {
+    margin-bottom: 24px;
+    color: rgb(245 241 232 / .84);
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+  .vm-actions { display: flex; flex-direction: column; gap: 10px; }
+  .vm-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    padding: 0 22px;
+    border: 1px solid transparent;
+    border-radius: var(--r-pill);
+    font-size: .95rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    transition: background-color .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
+  }
+  .vm-btn:active { transform: scale(.98); }
+  .vm-btn-gold { background: var(--dorado-claro); border-color: var(--dorado-claro); color: var(--verde-profundo); }
+  .vm-btn-gold:hover { background: var(--dorado); border-color: var(--dorado); }
+  .vm-btn-ghost { background: transparent; border-color: rgb(245 241 232 / .38); color: var(--hueso); }
+  .vm-btn-ghost:hover { border-color: var(--dorado-claro); color: var(--dorado-claro); }
+  .vm-status { margin-bottom: 16px; color: rgb(245 241 232 / .9); font-size: .95rem; line-height: 1.5; }
+  .vm-status.is-error { color: #F2C9A0; }
+  .vm-bar {
+    position: relative;
+    height: 10px;
+    overflow: hidden;
+    border: 1px solid rgb(223 185 63 / .35);
+    border-radius: var(--r-pill);
+    background: rgb(255 255 255 / .08);
+  }
+  .vm-bar-fill {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--dorado), var(--dorado-claro));
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform .2s linear;
+  }
+  .vm-bar.is-indeterminate .vm-bar-fill { width: 40%; transform: none; animation: vmSlide 1.2s ease-in-out infinite; }
+  .vm-bar.is-hidden { display: none; }
+  .vm-pct {
+    margin: 10px 0 22px;
+    color: var(--dorado-claro);
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+  @keyframes vmSlide {
+    from { left: -40%; }
+    to { left: 100%; }
+  }
+  body.vm-open { overflow: hidden; }
+  body.vm-open .cookie-banner { opacity: 0; visibility: hidden; pointer-events: none; }
+  @media (min-width: 560px) {
+    .vm-actions { flex-direction: row-reverse; }
+    .vm-btn { width: auto; flex: 1 1 0; }
+  }
+  @media (max-width: 380px) {
+    .vm-card { padding: 22px 18px; }
+    .vm-btn { padding: 0 14px; font-size: .9rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vm, .vm-card, .vm-bar-fill, .vm-btn { transition: none; }
+    .vm-bar.is-indeterminate .vm-bar-fill { animation: none; width: 100%; }
+  }
+
   .filosofia { content-visibility: auto; contain-intrinsic-size: auto 800px; }
   .sedes { content-visibility: auto; contain-intrinsic-size: auto 720px; }
   .accesos { content-visibility: auto; contain-intrinsic-size: auto 900px; }
   .galeria { content-visibility: auto; contain-intrinsic-size: auto 600px; }
+  #noticias { content-visibility: auto; contain-intrinsic-size: auto 900px; }
   .reco-band { content-visibility: auto; contain-intrinsic-size: auto 400px; }
   #contacto { content-visibility: auto; contain-intrinsic-size: auto 900px; }
 }
@@ -2539,6 +2750,7 @@
     .filosofia-hero-title { animation: none; background-position: 50% center; }
     .bento-card, .bento-icon, .bento-go svg, .bento-cta svg { transition: none; }
     a.bento-card:active { transform: none; }
+    a.bento-card:hover, a.bento-card:hover .bento-icon, a.bento-feat:hover .bento-icon { transform: none; }
   }
   @keyframes gallery-scroll {
     from { transform: translate3d(0, 0, 0); }
@@ -2599,7 +2811,7 @@
   <div class="nav-drawer-inner">
     <div class="nav-drawer-head">
       <a href="#inicio" class="nav-drawer-brand">
-        <img src="assets/images/logo.png" alt="" width="52" height="52" decoding="async">
+        <img src="assets/images/logo.png" alt="" width="52" height="52" loading="lazy" decoding="async">
         <div>
           <span class="nav-drawer-name">Instituto Técnico</span>
           <span class="nav-drawer-est">Est. 1913</span>
@@ -2803,9 +3015,9 @@
         <p class="sede-desc" data-sede-desc>Atiende básica secundaria y media técnica en jornadas de mañana y tarde. Cuenta con laboratorios de química y física, aulas de cómputo, biblioteca y cafetería. Frente al parque Bolívar, su edificio es símbolo del municipio.</p>
         <p class="sede-address">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <span data-sede-address>Calle 2-107 Carrera 10 #2-1, Cra. 6 #2844</span>
+          <span data-sede-address>Calle 3 # 7-68, Barrio Centro</span>
         </p>
-        <a class="sede-goto" data-sede-goto href="https://maps.app.goo.gl/Y4KSmaV1bzsrioyp8" target="_blank" rel="noopener noreferrer">
+        <a class="sede-goto" data-sede-goto href="https://www.google.com/maps/search/?api=1&query=Calle%203%20%23%207-68%2C%20Barrio%20Centro%2C%20Santander%20de%20Quilichao%2C%20Cauca" target="_blank" rel="noopener noreferrer">
           Cómo llegar
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
@@ -2896,13 +3108,6 @@
           <span class="bento-go">Abrir <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span class="sr-only"> (se abre en una pestaña nueva)</span></span>
         </a>
 
-        <div class="bento-card bento-sm reveal-up" data-cat="proximamente" aria-disabled="true" style="--d:6">
-          <span class="bento-num" aria-hidden="true">06</span>
-          <span class="bento-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-          <span class="bento-pill">Próximamente</span>
-          <h3>Docentes</h3>
-          <p>Próximamente.</p>
-        </div>
       </div>
     </div>
   </section>
@@ -2919,7 +3124,7 @@
         </a>
       </div>
 
-      <div class="news-feature" data-news-feature aria-live="polite">
+      <article class="news-feature" data-news-feature aria-live="polite">
         <div class="news-feature-bg" data-news-feature-bg></div>
         <div class="news-feature-body">
           <span class="news-feature-cat" data-news-feature-cat></span>
@@ -2927,7 +3132,7 @@
           <p class="news-feature-meta" data-news-feature-meta></p>
           <a href="#" class="btn btn-ghost-light" data-news-feature-link>Leer noticia</a>
         </div>
-      </div>
+      </article>
 
       <div class="news-grid" data-news-grid aria-live="polite" aria-busy="true"></div>
       <noscript>
@@ -3080,7 +3285,7 @@
                 <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               </div>
               <div>
-                <h4>Ubicación</h4>
+                <h3>Ubicación</h3>
                 <p>Calle 3 # 7-68, Barrio Centro<br>Santander de Quilichao, Cauca, Colombia</p>
               </div>
             </div>
@@ -3089,7 +3294,7 @@
                 <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
               </div>
               <div>
-                <h4>Teléfono</h4>
+                <h3>Teléfono</h3>
                 <p>318 3308974</p>
               </div>
             </div>
@@ -3098,7 +3303,7 @@
                 <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               </div>
               <div>
-                <h4>Correo</h4>
+                <h3>Correo</h3>
                 <p>rectoria@instecnico.edu.co</p>
               </div>
             </div>
@@ -3137,7 +3342,7 @@
       </div>
 
       <div class="footer-col reveal-up" style="--d:1">
-        <h4>Institución</h4>
+        <h2>Institución</h2>
         <a href="#nosotros">Historia</a>
         <a href="#sedes">Nuestras sedes</a>
         <a href="#noticias">Noticias y eventos</a>
@@ -3145,7 +3350,7 @@
       </div>
 
       <div class="footer-col reveal-up" style="--d:2">
-        <h4>Accesos</h4>
+        <h2>Accesos</h2>
         <a href="laboratorio-virtual.html">Laboratorio Virtual</a>
         <a href="https://tecnico.educa20.com" target="_blank" rel="noopener noreferrer">Portal de Notas</a>
         <a href="https://educa20.com/gegar-soft.com/" target="_blank" rel="noopener noreferrer">Sistema GegarSoft</a>
@@ -3154,7 +3359,7 @@
       </div>
 
       <div class="footer-col reveal-up" style="--d:3">
-        <h4>Legal</h4>
+        <h2>Legal</h2>
         <button type="button" data-open-modal="politicas">Políticas de Privacidad</button>
         <button type="button" data-open-modal="terminos">Términos de Uso</button>
         <a href="#">Manual de Convivencia</a>
@@ -3169,7 +3374,7 @@
         <button type="button" data-open-modal="terminos">Términos</button>
         <a href="https://institucion-educativa-instituto-tecnico-1.micolombiadigital.gov.co/" target="_blank" rel="noopener noreferrer">Transparencia</a>
       </div>
-      <p class="credit">Desarrollado por <span>DevKeiner</span> y <span>Ali Sinesterra</span></p>
+      <p class="credit">Diseñado y desarrollado por <span>DevKeiner</span></p>
     </div>
   </div>
 </footer>
@@ -3181,7 +3386,7 @@
 <div class="modal" data-modal role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-content" data-modal-content>
     <button class="modal-close" data-modal-close aria-label="Cerrar">&times;</button>
-    <img class="modal-hero" data-modal-img src="" alt="">
+    <img decoding="async" loading="lazy" class="modal-hero" data-modal-img src="" alt="">
     <div class="modal-body">
       <span class="modal-category" data-modal-category></span>
       <h2 class="modal-title" id="modalTitle" data-modal-title></h2>
@@ -3196,7 +3401,34 @@
 
 <div class="lightbox" data-lightbox-container role="dialog" aria-modal="true" aria-label="Imagen ampliada">
   <button class="lightbox-close" data-lightbox-close aria-label="Cerrar imagen">&times;</button>
-  <img src="" data-lightbox-img alt="Imagen en grande">
+  <img decoding="async" loading="lazy" src="" data-lightbox-img alt="Imagen en grande">
+</div>
+
+<div class="vm" data-video-modal role="dialog" aria-modal="true" aria-labelledby="vmTitle" aria-describedby="vmText" aria-hidden="true">
+  <div class="vm-card">
+    <button type="button" class="vm-close" data-vm-close aria-label="Cerrar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div data-vm-prompt>
+      <span class="vm-kicker">Video de portada</span>
+      <h2 class="vm-title" id="vmTitle">¿Quieres ver el video de fondo?</h2>
+      <p class="vm-text" id="vmText">Podemos guardarlo una sola vez en tu dispositivo para que las próximas visitas carguen al instante, sin gastar datos de nuevo. Si prefieres, usaremos una imagen estática.</p>
+      <div class="vm-actions">
+        <button type="button" class="vm-btn vm-btn-gold" data-vm-accept>Descargar video</button>
+        <button type="button" class="vm-btn vm-btn-ghost" data-vm-decline>Usar imagen estática</button>
+      </div>
+    </div>
+    <div data-vm-loading hidden>
+      <span class="vm-kicker">Video de portada</span>
+      <h2 class="vm-title">Descargando</h2>
+      <p class="vm-status" data-vm-status role="status" aria-live="polite">Descargando video...</p>
+      <div class="vm-bar" data-vm-bar role="progressbar" aria-label="Progreso de la descarga" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="vm-bar-fill" data-vm-fill></span></div>
+      <p class="vm-pct" data-vm-pct aria-hidden="true">0%</p>
+      <div class="vm-actions">
+        <button type="button" class="vm-btn vm-btn-ghost" data-vm-cancel>Cancelar</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="cookie-banner" data-cookie-banner role="dialog" aria-live="polite" aria-label="Aviso de cookies">
@@ -3462,6 +3694,57 @@
   }
 
   var HERO_KEY = 'instecnico_hero_mode';
+  var VIDEO_CHOICE_KEY = 'instecnico_video_choice';
+  var DB_NAME = 'InstitutoDB';
+  var DB_STORE = 'media';
+  var DB_VIDEO_KEY = 'hero-video';
+  var VIDEO_SOURCES = [
+    { src: 'assets/videos/hero.webm', type: 'video/webm' },
+    { src: 'assets/videos/hero.mp4', type: 'video/mp4' }
+  ];
+
+  function readChoice() {
+    try { return localStorage.getItem(VIDEO_CHOICE_KEY); } catch (e) { return null; }
+  }
+  function writeChoice(value) {
+    try {
+      if (value === null) localStorage.removeItem(VIDEO_CHOICE_KEY);
+      else localStorage.setItem(VIDEO_CHOICE_KEY, value);
+    } catch (e) {}
+  }
+
+  function openDB() {
+    return new Promise(function (resolve, reject) {
+      if (!window.indexedDB) { reject(new Error('indexedDB no disponible')); return; }
+      var req;
+      try { req = window.indexedDB.open(DB_NAME, 1); } catch (e) { reject(e); return; }
+      req.onupgradeneeded = function () {
+        if (!req.result.objectStoreNames.contains(DB_STORE)) req.result.createObjectStore(DB_STORE);
+      };
+      req.onsuccess = function () { resolve(req.result); };
+      req.onerror = function () { reject(req.error); };
+      req.onblocked = function () { reject(new Error('indexedDB bloqueado')); };
+    });
+  }
+
+  function dbRun(mode, run) {
+    return openDB().then(function (db) {
+      return new Promise(function (resolve, reject) {
+        var tx, request;
+        try {
+          tx = db.transaction(DB_STORE, mode);
+          request = run(tx.objectStore(DB_STORE));
+        } catch (e) { db.close(); reject(e); return; }
+        tx.oncomplete = function () { db.close(); resolve(request ? request.result : undefined); };
+        tx.onerror = function () { db.close(); reject(tx.error); };
+        tx.onabort = function () { db.close(); reject(tx.error || new Error('transaccion abortada')); };
+      });
+    });
+  }
+
+  function dbGetVideo() { return dbRun('readonly', function (store) { return store.get(DB_VIDEO_KEY); }); }
+  function dbPutVideo(blob) { return dbRun('readwrite', function (store) { return store.put(blob, DB_VIDEO_KEY); }); }
+  function dbDeleteVideo() { return dbRun('readwrite', function (store) { return store.delete(DB_VIDEO_KEY); }); }
 
   function initHeroVideo() {
     var video = document.querySelector('.hero-video');
@@ -3487,18 +3770,27 @@
     }
 
     var root = document.documentElement;
-    var mq = window.matchMedia('(max-width: 860px)');
-    var mode = root.classList.contains('hero-image') ? 'image' : 'video';
-    var loaded = false;
-    var failed = false;
-    var sources = [
-      { src: 'assets/videos/hero.webm', type: 'video/webm' },
-      { src: 'assets/videos/hero.mp4',  type: 'video/mp4'  }
-    ];
+    var modal = document.querySelector('[data-video-modal]');
+    var els = modal ? {
+      prompt: modal.querySelector('[data-vm-prompt]'),
+      loading: modal.querySelector('[data-vm-loading]'),
+      accept: modal.querySelector('[data-vm-accept]'),
+      decline: modal.querySelector('[data-vm-decline]'),
+      close: modal.querySelector('[data-vm-close]'),
+      cancel: modal.querySelector('[data-vm-cancel]'),
+      status: modal.querySelector('[data-vm-status]'),
+      bar: modal.querySelector('[data-vm-bar]'),
+      fill: modal.querySelector('[data-vm-fill]'),
+      pct: modal.querySelector('[data-vm-pct]')
+    } : null;
 
-    function shouldPlay() {
-      return !mq.matches && mode === 'video' && !failed;
-    }
+    var mode = root.classList.contains('hero-image') ? 'image' : 'video';
+    var hasVideo = false;
+    var userPaused = false;
+    var objectUrl = null;
+    var controller = null;
+    var modalOpen = false;
+    var lastFocus = null;
 
     function setPauseState(paused) {
       if (!pauseBtn) return;
@@ -3506,12 +3798,20 @@
       pauseBtn.setAttribute('aria-label', paused ? 'Reproducir video de fondo' : 'Pausar video de fondo');
     }
 
+    function renderControls() {
+      if (pauseBtn) pauseBtn.hidden = !hasVideo;
+      if (!modeBtn) return;
+      var label = !hasVideo ? 'Activar video de fondo' : (mode === 'video' ? 'Cambiar a imagen' : 'Cambiar a video');
+      modeBtn.setAttribute('aria-label', label);
+      modeBtn.setAttribute('title', label);
+    }
+
     function tryPlay() {
-      if (!shouldPlay() || !loaded) return;
+      if (!hasVideo || mode !== 'video' || userPaused) return;
       var p = video.play();
       if (p && p.then) {
         p.then(function () {
-          if (!shouldPlay()) { video.pause(); return; }
+          if (mode !== 'video') { video.pause(); return; }
           video.classList.add('is-loaded');
           setPauseState(false);
         }).catch(function () {
@@ -3523,61 +3823,227 @@
       }
     }
 
-    function loadSources() {
-      if (loaded) return;
-      loaded = true;
-      sources.forEach(function (s) {
-        var source = document.createElement('source');
-        source.src = s.src;
-        source.type = s.type;
-        video.appendChild(source);
-      });
-      video.preload = 'auto';
-      video.load();
-    }
-
     function sync() {
-      if (shouldPlay()) {
-        if (!loaded) loadSources();
-        else if (video.readyState >= 2) tryPlay();
+      if (hasVideo && mode === 'video') {
+        if (video.readyState >= 2) tryPlay();
       } else {
         video.pause();
         video.classList.remove('is-loaded');
       }
     }
 
-    function renderModeBtn() {
-      if (!modeBtn) return;
-      var label = mode === 'video' ? 'Cambiar a imagen' : 'Cambiar a video';
-      modeBtn.setAttribute('aria-label', label);
-      modeBtn.setAttribute('title', label);
+    function attachBlob(blob) {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      objectUrl = URL.createObjectURL(blob);
+      video.classList.remove('is-loaded');
+      video.src = objectUrl;
+      video.preload = 'auto';
+      hasVideo = true;
+      video.load();
     }
 
     function applyMode(next, persist) {
       mode = next;
       root.classList.toggle('hero-image', mode === 'image');
-      renderModeBtn();
+      renderControls();
       if (persist) {
         try { localStorage.setItem(HERO_KEY, mode); } catch (e) {}
       }
       sync();
     }
 
-    video.addEventListener('canplay', tryPlay, { once: true });
-    video.addEventListener('error', function (e) {
-      if (e.target !== video && e.target !== video.lastElementChild) return;
-      failed = true;
+    function showView(name) {
+      if (!els) return;
+      els.prompt.hidden = name !== 'prompt';
+      els.loading.hidden = name !== 'loading';
+    }
+
+    function setStatus(text, isError) {
+      if (!els) return;
+      els.status.textContent = text;
+      els.status.classList.toggle('is-error', !!isError);
+    }
+
+    function setProgress(received, total) {
+      if (!els) return;
+      if (total > 0) {
+        var p = Math.min(100, Math.floor((received / total) * 100));
+        els.bar.classList.remove('is-indeterminate');
+        els.bar.setAttribute('aria-valuenow', String(p));
+        els.fill.style.transform = 'scaleX(' + (p / 100) + ')';
+        els.pct.textContent = p + '%';
+      } else {
+        els.bar.classList.add('is-indeterminate');
+        els.bar.removeAttribute('aria-valuenow');
+        els.pct.textContent = (received / 1048576).toFixed(1) + ' MB';
+      }
+    }
+
+    function openModal() {
+      if (!modal || modalOpen) return;
+      modalOpen = true;
+      lastFocus = document.activeElement;
+      showView('prompt');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('vm-open');
+      window.requestAnimationFrame(function () {
+        modal.classList.add('is-open');
+        if (els.accept) els.accept.focus();
+      });
+    }
+
+    function closeModal() {
+      if (!modalOpen) return;
+      modalOpen = false;
+      if (controller) { controller.abort(); controller = null; }
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('vm-open');
+      if (lastFocus && lastFocus.focus) {
+        try { lastFocus.focus({ preventScroll: true }); } catch (e) {}
+      }
+    }
+
+    function dismissAsDeclined() {
+      writeChoice('declined');
+      closeModal();
+    }
+
+    function readStream(res, fallbackType) {
+      var contentType = res.headers.get('Content-Type') || '';
+      if (contentType && !/^(video\/|application\/octet-stream)/i.test(contentType)) {
+        throw new Error('tipo de contenido inesperado');
+      }
+      var type = /^video\//i.test(contentType) ? contentType : fallbackType;
+      var total = parseInt(res.headers.get('Content-Length') || '0', 10) || 0;
+      if (!res.body || !res.body.getReader) {
+        setProgress(0, 0);
+        return res.blob();
+      }
+      var reader = res.body.getReader();
+      var chunks = [];
+      var received = 0;
+      var pump = function () {
+        return reader.read().then(function (r) {
+          if (r.done) return new Blob(chunks, { type: type });
+          chunks.push(r.value);
+          received += r.value.length;
+          setProgress(received, total);
+          return pump();
+        });
+      };
+      return pump();
+    }
+
+    function finishDownload(blob) {
+      setProgress(1, 1);
+      var saved = false;
+      return dbPutVideo(blob).then(function () { saved = true; }).catch(function () {}).then(function () {
+        if (saved) writeChoice('accepted');
+        userPaused = false;
+        attachBlob(blob);
+        mode = 'video';
+        root.classList.remove('hero-image');
+        try { localStorage.setItem(HERO_KEY, 'video'); } catch (e) {}
+        renderControls();
+        sync();
+        setStatus(saved ? 'Video listo.' : 'Video listo. No se pudo guardar en este navegador.', false);
+        window.setTimeout(closeModal, saved ? 700 : 1800);
+      });
+    }
+
+    function startDownload() {
+      if (!els) return;
+      showView('loading');
+      els.cancel.textContent = 'Cancelar';
+      els.bar.classList.remove('is-hidden');
+      setStatus('Descargando video...', false);
+      setProgress(0, 1);
+
+      var ctrl = new AbortController();
+      controller = ctrl;
+      var candidates = VIDEO_SOURCES.filter(function (src) { return video.canPlayType(src.type) !== ''; });
+      if (!candidates.length) candidates = VIDEO_SOURCES;
+
+      var attempt = function (i) {
+        return fetch(candidates[i].src, { signal: ctrl.signal }).then(function (res) {
+          if (!res.ok) throw new Error('http ' + res.status);
+          return readStream(res, candidates[i].type);
+        }).catch(function (err) {
+          if (ctrl.signal.aborted) throw err;
+          if (i + 1 < candidates.length) return attempt(i + 1);
+          throw err;
+        });
+      };
+
+      attempt(0).then(function (blob) {
+        if (controller === ctrl) controller = null;
+        if (!modalOpen) return;
+        return finishDownload(blob);
+      }).catch(function () {
+        if (ctrl.signal.aborted) return;
+        if (controller === ctrl) controller = null;
+        setStatus('No se pudo descargar el video. Revisa tu conexion e intentalo de nuevo.', true);
+        els.bar.classList.add('is-hidden');
+        els.pct.textContent = '';
+        els.cancel.textContent = 'Volver';
+      });
+    }
+
+    if (modal && els) {
+      els.accept.addEventListener('click', startDownload);
+      els.decline.addEventListener('click', dismissAsDeclined);
+      els.close.addEventListener('click', dismissAsDeclined);
+      els.cancel.addEventListener('click', function () {
+        if (controller) { controller.abort(); controller = null; }
+        showView('prompt');
+        if (els.accept) els.accept.focus();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (!modalOpen) return;
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          dismissAsDeclined();
+          return;
+        }
+        if (e.key !== 'Tab') return;
+        var focusables = Array.prototype.filter.call(modal.querySelectorAll('button'), function (b) {
+          return !b.disabled && b.offsetParent !== null;
+        });
+        if (!focusables.length) return;
+        var first = focusables[0];
+        var last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      });
+    }
+
+    video.addEventListener('canplay', tryPlay);
+    video.addEventListener('error', function () {
+      if (!hasVideo) return;
+      hasVideo = false;
       video.classList.remove('is-loaded');
-      video.style.display = 'none';
-      if (pauseBtn) pauseBtn.style.display = 'none';
-      if (modeBtn) modeBtn.style.display = 'none';
-    }, true);
+      video.removeAttribute('src');
+      if (objectUrl) { URL.revokeObjectURL(objectUrl); objectUrl = null; }
+      dbDeleteVideo().catch(function () {});
+      writeChoice(null);
+      mode = 'image';
+      root.classList.add('hero-image');
+      renderControls();
+    });
 
     if (pauseBtn) {
       pauseBtn.addEventListener('click', function () {
         if (video.paused) {
+          userPaused = false;
           tryPlay();
         } else {
+          userPaused = true;
           video.pause();
           setPauseState(true);
         }
@@ -3586,25 +4052,33 @@
 
     if (modeBtn) {
       modeBtn.addEventListener('click', function () {
+        if (!hasVideo) { openModal(); return; }
         applyMode(mode === 'video' ? 'image' : 'video', true);
       });
     }
 
     document.addEventListener('visibilitychange', function () {
+      if (!hasVideo) return;
       if (document.hidden) {
         video.pause();
-        setPauseState(true);
       } else {
         tryPlay();
       }
     });
 
-    var onViewport = function () { sync(); };
-    if (mq.addEventListener) mq.addEventListener('change', onViewport);
-    else if (mq.addListener) mq.addListener(onViewport);
-
-    renderModeBtn();
-    sync();
+    renderControls();
+    var choice = readChoice();
+    dbGetVideo().then(function (blob) {
+      if (blob && blob.size > 0) attachBlob(blob);
+    }).catch(function () {}).then(function () {
+      if (!hasVideo) {
+        mode = 'image';
+        root.classList.add('hero-image');
+      }
+      renderControls();
+      sync();
+      if (!hasVideo && modal && choice !== 'declined') openModal();
+    });
   }
 
   var fxIO = null;
@@ -3673,21 +4147,6 @@
     observeFx(document.querySelectorAll('.reveal-up'));
     loadNews();
 
-    var headerEl = document.querySelector('[data-site-header]');
-    if (headerEl) {
-      var headerRaf = false;
-      var onScroll = function () {
-        if (headerRaf) return;
-        headerRaf = true;
-        window.requestAnimationFrame(function () {
-          headerEl.classList.toggle('is-scrolled', window.scrollY > 30);
-          headerRaf = false;
-        });
-      };
-      onScroll();
-      window.addEventListener('scroll', onScroll, { passive: true });
-    }
-
     var yearCounter = document.querySelector('[data-counter-year]');
     if (yearCounter) {
       yearCounter.dataset.counter = String(new Date().getFullYear() - 1913);
@@ -3735,15 +4194,21 @@
     if (toTop) toTop.addEventListener('click', function () {
       window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
     });
-    var tickingScroll = false;
-    window.addEventListener('scroll', function () {
-      if (tickingScroll) return;
-      tickingScroll = true;
-      window.requestAnimationFrame(function () {
-        if (toTop) toTop.classList.toggle('is-visible', window.scrollY > 500);
-        tickingScroll = false;
-      });
-    }, { passive: true });
+    var headerEl = document.querySelector('[data-site-header]');
+    var scrollTicking = false;
+    var applyScroll = function () {
+      var y = window.scrollY;
+      if (headerEl) headerEl.classList.toggle('is-scrolled', y > 30);
+      if (toTop) toTop.classList.toggle('is-visible', y > 500);
+      scrollTicking = false;
+    };
+    var onScroll = function () {
+      if (scrollTicking) return;
+      scrollTicking = true;
+      window.requestAnimationFrame(applyScroll);
+    };
+    applyScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     if ('IntersectionObserver' in window) {
       var revealIO = new IntersectionObserver(function (entries, obs) {
@@ -3810,8 +4275,8 @@
     var sedesData = [
       { name: 'Sede Principal', level: 'Básica Secundaria y Media Técnica · Jornadas de la mañana y tarde',
         desc: 'Atiende básica secundaria y media técnica en jornadas de mañana y tarde. Cuenta con laboratorios de química y física, aulas de cómputo, biblioteca y cafetería. Frente al parque Bolívar, su edificio es símbolo del municipio.',
-        address: 'Calle 2-107 Carrera 10 #2-1, Cra. 6 #2844',
-        maps: 'Calle 3A #7-68, Santander de Quilichao, Cauca' },
+        address: 'Calle 3 # 7-68, Barrio Centro',
+        maps: 'Calle 3 # 7-68, Barrio Centro, Santander de Quilichao, Cauca' },
       { name: 'Francisco de Paula Santander', level: 'Preescolar y Básica Primaria',
         desc: 'Atiende preescolar y básica primaria hasta quinto grado, en la Calle 2A. Aquí empieza el camino de los niños en el Instituto Técnico, una institución que los acompaña desde el preescolar hasta la media técnica.',
         address: 'Calle 2A #7-27',
@@ -4130,15 +4595,6 @@
     init();
   }
 
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on('init', function (user) {
-      if (!user) {
-        window.netlifyIdentity.on('login', function () {
-          document.location.href = '/admin/';
-        });
-      }
-    });
-  }
 })();
 </script>
 </body>
