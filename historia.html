@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <script>
 (function(){var ua=navigator.userAgent||'';var isMobile=/Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile|webOS/i.test(ua)||window.innerWidth<=860;document.documentElement.classList.add(isMobile?'device-mobile':'device-pc');window.__isMobileDevice=isMobile;})();
@@ -547,14 +548,18 @@
   .ms-text { max-width: 54ch; color: rgb(245 241 232 / .8); line-height: 1.7; }
   .chronicle-odo, .chronicle-rail { display: none; }
 
-  .chronicle.is-enhanced { --step: 62svh; }
-  .chronicle.is-enhanced .chronicle-track { height: calc(100svh + var(--n) * var(--step)); }
+  .chronicle.is-enhanced { --step: 62vh; }
+  .chronicle.is-enhanced .chronicle-track { height: calc(100vh + var(--n) * var(--step)); }
   .chronicle.is-enhanced .chronicle-stage {
     position: sticky;
     top: 0;
     height: 100vh;
-    height: 100svh;
+    height: 100dvh;
     padding: 0;
+  }
+  @supports (height: 100dvh) {
+    .chronicle.is-enhanced { --step: 62dvh; }
+    .chronicle.is-enhanced .chronicle-track { height: calc(100dvh + var(--n) * var(--step)); }
   }
   .chronicle.is-enhanced .chronicle-inner {
     display: grid;
@@ -848,6 +853,156 @@
   .himno-player-icon .icon-pause { display: none; }
   .simbolo-himno.is-playing .icon-play { display: none; }
   .simbolo-himno.is-playing .icon-pause { display: block; }
+
+  .mini-player {
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    bottom: calc(12px + var(--safe-bottom));
+    width: min(640px, calc(100% - 24px - var(--safe-left) - var(--safe-right)));
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: "play title dl close" "play seek dl close";
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 2px;
+    padding: 12px 14px;
+    background: rgb(20 46 32 / .9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgb(245 241 232 / .12);
+    border-top: 2px solid var(--dorado);
+    border-radius: var(--r-md);
+    color: var(--hueso);
+    box-shadow: 0 -10px 36px -12px rgb(0 0 0 / .45);
+    transform: translate(-50%, 140%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform .45s var(--ease), opacity .3s ease, visibility 0s linear .45s;
+  }
+  .mini-player.is-open {
+    transform: translate(-50%, 0);
+    opacity: 1;
+    visibility: visible;
+    transition: transform .45s var(--ease), opacity .3s ease, visibility 0s linear 0s;
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .mini-player { background: rgb(20 46 32 / .97); }
+  }
+  .mp-btn {
+    display: flex;
+    width: 44px; height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--hueso);
+    transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  }
+  .mp-btn svg { width: 20px; height: 20px; }
+  .mp-btn:hover { background: rgb(245 241 232 / .12); }
+  .mp-play {
+    grid-area: play;
+    width: 48px; height: 48px;
+    background: var(--dorado);
+    color: var(--verde-profundo);
+  }
+  .mp-play:hover { background: var(--dorado-claro); }
+  .mp-play svg { width: 18px; height: 18px; }
+  .mp-play .icon-pause { display: none; }
+  .mini-player.is-playing .mp-play .icon-play { display: none; }
+  .mini-player.is-playing .mp-play .icon-pause { display: block; }
+  .mp-download { grid-area: dl; }
+  .mp-close { grid-area: close; }
+  .mp-title {
+    grid-area: title;
+    overflow: hidden;
+    font-family: var(--font-display);
+    font-size: .98rem;
+    font-weight: 500;
+    letter-spacing: var(--track-tight);
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mp-seek {
+    grid-area: seek;
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+  }
+  .mp-time {
+    flex: none;
+    min-width: 2.6em;
+    color: rgb(245 241 232 / .75);
+    font-size: .72rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    letter-spacing: .04em;
+  }
+  .mp-time:last-child { text-align: right; }
+  .mp-range {
+    --p: 0%;
+    flex: 1;
+    min-width: 0;
+    height: 28px;
+    background: transparent;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    touch-action: pan-y;
+  }
+  .mp-range:disabled { cursor: default; opacity: .5; }
+  .mp-range::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: var(--r-pill);
+    background: linear-gradient(90deg, var(--dorado) var(--p), rgb(245 241 232 / .22) var(--p));
+  }
+  .mp-range::-moz-range-track {
+    height: 4px;
+    border-radius: var(--r-pill);
+    background: rgb(245 241 232 / .22);
+  }
+  .mp-range::-moz-range-progress {
+    height: 4px;
+    border-radius: var(--r-pill);
+    background: var(--dorado);
+  }
+  .mp-range::-webkit-slider-thumb {
+    width: 14px; height: 14px;
+    margin-top: -5px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--dorado-claro);
+    box-shadow: 0 0 0 4px rgb(201 162 39 / .22);
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .mp-range::-moz-range-thumb {
+    width: 14px; height: 14px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--dorado-claro);
+    box-shadow: 0 0 0 4px rgb(201 162 39 / .22);
+  }
+  body.player-open .to-top { bottom: calc(104px + var(--safe-bottom)); }
+  @media (max-width: 520px) {
+    .mini-player {
+      grid-template-columns: auto minmax(0, 1fr) auto auto;
+      grid-template-areas: "play title dl close" "seek seek seek seek";
+      column-gap: 8px;
+      row-gap: 4px;
+      padding: 10px 12px 12px;
+    }
+    .mp-btn { width: 40px; height: 40px; }
+    .mp-play { width: 44px; height: 44px; }
+    body.player-open .to-top { bottom: calc(124px + var(--safe-bottom)); }
+  }
+
+  #epocas, #simbolos, #legado, #actualidad {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
+  }
 
   .legado-section { background: var(--surface-cream); }
   .legado-wrap { position: relative; }
@@ -1201,9 +1356,18 @@
     .hero-stats span { font-size: .6rem; letter-spacing: .1em; text-align: left; }
     .hero-ghost { right: -8vw; bottom: 24%; font-size: 70vw; }
 
-    .chronicle.is-enhanced { --step: 56svh; }
-    .chronicle.is-enhanced .chronicle-head { padding-right: 76px; }
-    .chronicle.is-enhanced .chronicle-title { font-size: 1.2rem; }
+    .chronicle.is-enhanced { --step: 56vh; }
+    @supports (height: 100dvh) {
+      .chronicle.is-enhanced { --step: 56dvh; }
+    }
+    .chronicle.is-enhanced .chronicle-head {
+      padding-top: calc(var(--safe-top) + 48px);
+      margin-bottom: clamp(16px, 3svh, 28px);
+    }
+    .chronicle.is-enhanced .chronicle-title {
+      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      line-height: 1.1;
+    }
     .chronicle.is-enhanced .chronicle-main {
       grid-template-columns: minmax(0, 1fr);
       align-content: center;
@@ -1350,13 +1514,9 @@
       <li><a href="index.html#sedes">Sedes</a></li>
       <li><a href="index.html#accesos">Accesos</a></li>
       <li><a href="index.html#noticias">Noticias</a></li>
-      <li><a href="laboratorio-virtual.html">Laboratorio</a></li>
       <li><a href="historia.html" aria-current="page">Historia</a></li>
       <li><a href="index.html#contacto">Contacto</a></li>
     </ul>
-    <div class="nav-drawer-footer">
-      <a href="index.html#contacto" class="btn btn-primary">Admisiones</a>
-    </div>
   </div>
 </nav>
 <button type="button" class="nav-backdrop" data-nav-backdrop aria-label="Cerrar menú" tabindex="-1"></button>
@@ -1551,7 +1711,7 @@
     </div>
   </section>
 
-  <section class="section simbolos-section" aria-labelledby="simbolos-title">
+  <section class="section simbolos-section" id="simbolos" aria-labelledby="simbolos-title">
     <div class="container">
       <header class="section-head centered reveal">
         <h2 class="section-title" id="simbolos-title">Símbolos institucionales</h2>
@@ -1602,7 +1762,7 @@
     </div>
   </section>
 
-  <section class="section legado-section" aria-labelledby="legado-title">
+  <section class="section legado-section" id="legado" aria-labelledby="legado-title">
     <div class="container">
       <header class="section-head centered reveal">
         <h2 class="section-title" id="legado-title">Egresados que dejaron huella</h2>
@@ -1658,7 +1818,7 @@
     </div>
   </section>
 
-  <section class="section actualidad-section" aria-labelledby="actualidad-title">
+  <section class="section actualidad-section" id="actualidad" aria-labelledby="actualidad-title">
     <div class="container">
       <header class="section-head centered reveal">
         <h2 class="section-title" id="actualidad-title">Reconocimiento legal y actualidad</h2>
@@ -1781,7 +1941,7 @@
 
     <div class="footer-bottom">
       <p>&copy; <span data-current-year>2026</span> Instituto Técnico. Todos los derechos reservados.</p>
-      <p class="credit">Desarrollado por <span>DevKeiner</span> y <span>Ali Sinesterra</span></p>
+      <p class="credit">Dirigido y desarrollado por <span>DevKeiner</span> y <span>Ali Sinesterra</span></p>
     </div>
   </div>
 </footer>
@@ -1790,7 +1950,25 @@
   <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
-<audio id="himnoAudio" src="assets/audio/himno-institucional.mp3" preload="metadata" loop aria-label="Himno institucional del Instituto Técnico"></audio>
+<div class="mini-player" id="miniPlayer" role="region" aria-label="Reproductor del himno institucional" inert>
+  <audio id="himnoAudio" src="assets/audio/himno-institucional.mp3" preload="metadata" aria-label="Himno institucional del Instituto Técnico"></audio>
+  <button type="button" class="mp-btn mp-play" id="mpPlay" aria-label="Reproducir">
+    <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+    <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+  </button>
+  <p class="mp-title">Himno institucional</p>
+  <div class="mp-seek">
+    <span class="mp-time" id="mpCurrent">0:00</span>
+    <input type="range" class="mp-range" id="mpRange" min="0" max="0" step="any" value="0" aria-label="Posición del himno" disabled>
+    <span class="mp-time" id="mpDuration">0:00</span>
+  </div>
+  <a class="mp-btn mp-download" href="assets/audio/himno-institucional.mp3" download aria-label="Descargar el himno institucional">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>
+  </a>
+  <button type="button" class="mp-btn mp-close" id="mpClose" aria-label="Cerrar reproductor">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+</div>
 
 <script>
 (function () {
@@ -1824,7 +2002,6 @@
     var enabled = false;
     var visible = false;
     var cur = -1;
-    var scrollable = 1;
 
     for (var c = 0; c < 4; c++) {
       var col = document.createElement('span');
@@ -1895,13 +2072,16 @@
       countNow.textContent = pad(i + 1);
     }
 
-    function measure() {
-      scrollable = Math.max(1, track.offsetHeight - stage.offsetHeight);
+    function metrics() {
+      var trackRect = track.getBoundingClientRect();
+      var stageHeight = stage.getBoundingClientRect().height;
+      return { top: trackRect.top, scrollable: Math.max(1, trackRect.height - stageHeight) };
     }
 
     function update(force) {
       if (!enabled || (!visible && !force)) return;
-      var p = clamp(-track.getBoundingClientRect().top / scrollable, 0, 1);
+      var m = metrics();
+      var p = clamp(-m.top / m.scrollable, 0, 1);
       var i = Math.min(n - 1, Math.floor(p * n));
       if (i !== cur) setIndex(i);
       fill.style.transform = 'scaleX(' + p.toFixed(4) + ')';
@@ -1909,7 +2089,8 @@
     }
 
     function goTo(i) {
-      var top = window.scrollY + track.getBoundingClientRect().top + ((i + 0.5) / n) * scrollable;
+      var m = metrics();
+      var top = window.scrollY + m.top + ((i + 0.5) / n) * m.scrollable;
       window.scrollTo({ top: top, behavior: 'smooth' });
     }
 
@@ -1917,7 +2098,6 @@
       enabled = !reduceMQ.matches;
       root.classList.toggle('is-enhanced', enabled);
       if (!enabled) return;
-      measure();
       cur = -1;
       setIndex(0);
       update(true);
@@ -1933,14 +2113,13 @@
       new IntersectionObserver(function (entries) {
         visible = entries[0].isIntersecting;
         document.body.classList.toggle('in-chronicle', visible && enabled);
-        if (visible) measure();
         update(true);
       }, { rootMargin: '25% 0px' }).observe(track);
     } else {
       visible = true;
     }
 
-    return { update: update, measure: measure };
+    return { update: update };
   }
 
   function initMobileTip() {
@@ -2000,20 +2179,17 @@
     function frame() {
       ticking = false;
       var y = window.scrollY;
+      if (chronicle) chronicle.update();
       if (toTop) toTop.classList.toggle('is-visible', y > 500);
       if (ghost && heroVisible && !reduceMQ.matches) {
         ghost.style.transform = 'translate3d(0,' + (y * 0.14).toFixed(1) + 'px,0)';
       }
-      if (chronicle) chronicle.update();
     }
     function request() {
       if (!ticking) { ticking = true; requestAnimationFrame(frame); }
     }
     window.addEventListener('scroll', request, { passive: true });
-    window.addEventListener('resize', function () {
-      if (chronicle) chronicle.measure();
-      request();
-    }, { passive: true });
+    window.addEventListener('resize', request, { passive: true });
     if (hero && 'IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {
         heroVisible = entries[0].isIntersecting;
@@ -2125,30 +2301,101 @@
     var himnoCard = document.getElementById('himnoCard');
     var himnoAudio = document.getElementById('himnoAudio');
     var himnoText = document.getElementById('himnoText');
-    if (himnoCard && himnoAudio && himnoText) {
-      var updateHimno = function (playing) {
+    var player = document.getElementById('miniPlayer');
+    var mpPlay = document.getElementById('mpPlay');
+    var mpRange = document.getElementById('mpRange');
+    var mpCurrent = document.getElementById('mpCurrent');
+    var mpDuration = document.getElementById('mpDuration');
+    var mpClose = document.getElementById('mpClose');
+    if (himnoCard && himnoAudio && himnoText && player && mpPlay && mpRange && mpCurrent && mpDuration && mpClose) {
+      var seeking = false;
+
+      var fmt = function (s) {
+        if (!isFinite(s) || s < 0) s = 0;
+        var m = Math.floor(s / 60);
+        var r = Math.floor(s % 60);
+        return m + ':' + (r < 10 ? '0' : '') + r;
+      };
+      var paint = function (t) {
+        var d = himnoAudio.duration;
+        var pct = isFinite(d) && d > 0 ? clamp((t / d) * 100, 0, 100) : 0;
+        mpRange.value = t;
+        mpRange.style.setProperty('--p', pct.toFixed(2) + '%');
+        mpCurrent.textContent = fmt(t);
+      };
+      var setDuration = function () {
+        var d = himnoAudio.duration;
+        var ok = isFinite(d) && d > 0;
+        mpRange.max = ok ? d : 0;
+        mpRange.disabled = !ok;
+        mpDuration.textContent = fmt(ok ? d : 0);
+        paint(himnoAudio.currentTime);
+      };
+      var setPlaying = function (playing) {
+        player.classList.toggle('is-playing', playing);
         himnoCard.classList.toggle('is-playing', playing);
+        mpPlay.setAttribute('aria-label', playing ? 'Pausar' : 'Reproducir');
         himnoCard.setAttribute('aria-label', playing ? 'Pausar el himno institucional' : 'Reproducir el himno institucional');
         himnoText.textContent = playing ? 'Reproduciendo…' : 'Toca para reproducir';
       };
-      var toggleHimno = function () {
+      var openPlayer = function () {
+        player.classList.add('is-open');
+        player.removeAttribute('inert');
+        document.body.classList.add('player-open');
+      };
+      var closePlayer = function () {
+        var hadFocus = player.contains(document.activeElement);
+        himnoAudio.pause();
+        player.classList.remove('is-open');
+        player.setAttribute('inert', '');
+        document.body.classList.remove('player-open');
+        if (hadFocus) himnoCard.focus({ preventScroll: true });
+      };
+      var playPause = function () {
         if (himnoAudio.paused || himnoAudio.ended) {
           var p = himnoAudio.play();
-          if (p && p.catch) p.catch(function () { updateHimno(false); });
+          if (p && p.catch) p.catch(function () { setPlaying(false); });
         } else {
           himnoAudio.pause();
         }
       };
-      himnoCard.addEventListener('click', toggleHimno);
+      var onCard = function () {
+        if (!player.classList.contains('is-open')) openPlayer();
+        playPause();
+      };
+
+      himnoCard.addEventListener('click', onCard);
       himnoCard.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleHimno(); }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onCard(); }
       });
-      himnoAudio.addEventListener('play', function () { updateHimno(true); });
-      himnoAudio.addEventListener('pause', function () { updateHimno(false); });
-      himnoAudio.addEventListener('ended', function () { updateHimno(false); });
+      mpPlay.addEventListener('click', playPause);
+      mpClose.addEventListener('click', closePlayer);
+
+      mpRange.addEventListener('input', function () {
+        seeking = true;
+        paint(parseFloat(mpRange.value) || 0);
+      });
+      mpRange.addEventListener('change', function () {
+        himnoAudio.currentTime = parseFloat(mpRange.value) || 0;
+        seeking = false;
+      });
+
+      himnoAudio.addEventListener('timeupdate', function () { if (!seeking) paint(himnoAudio.currentTime); });
+      himnoAudio.addEventListener('seeked', function () { if (!seeking) paint(himnoAudio.currentTime); });
+      himnoAudio.addEventListener('loadedmetadata', setDuration);
+      himnoAudio.addEventListener('durationchange', setDuration);
+      himnoAudio.addEventListener('play', function () { setPlaying(true); });
+      himnoAudio.addEventListener('pause', function () { setPlaying(false); });
+      himnoAudio.addEventListener('ended', function () {
+        setPlaying(false);
+        himnoAudio.currentTime = 0;
+        paint(0);
+      });
       document.addEventListener('visibilitychange', function () {
         if (document.hidden && !himnoAudio.paused) himnoAudio.pause();
       });
+
+      setDuration();
     }
 
     initMobileTip();

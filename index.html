@@ -2,9 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-gNRd4Tr6jfAnWrrac8ZCj5Eln1gj7ypv0nzO5C6RZVg=' 'sha256-vMKKLjU2EhBygDGvYtOdMxfOG7GbA3SWuTsciGP0Qk0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob:; frame-src https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-gNRd4Tr6jfAnWrrac8ZCj5Eln1gj7ypv0nzO5C6RZVg=' 'sha256-vMKKLjU2EhBygDGvYtOdMxfOG7GbA3SWuTsciGP0Qk0=' https://identity.netlify.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob: https://identity.netlify.com https://*.netlify.app https://institutotecnico.edu.co; frame-src https://www.google.com https://identity.netlify.com blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script src="assets/js/identity-redirect.js"></script>
 <script>
 (function () {
   var ua = navigator.userAgent || '';
@@ -3098,16 +3100,28 @@
           <p>Documentos oficiales en PDF.</p>
           <span class="bento-go">Abrir <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span class="sr-only"> (se abre en una pestaña nueva)</span></span>
         </a>
-
-        <a href="https://orientacionieitbachillerato.weebly.com/" target="_blank" rel="noopener noreferrer" class="bento-card bento-sm reveal-up" data-cat="apoyo" style="--d:5">
+        <a href="calculadora.html" class="bento-card bento-sm reveal-up" data-cat="academico" style="--d:5">
           <span class="bento-num" aria-hidden="true">05</span>
-          <span class="bento-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
-          <span class="bento-pill">Apoyo</span>
-          <h3>Orientación Escolar</h3>
-          <p>Blog de psicoorientación estudiantil.</p>
-          <span class="bento-go">Abrir <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span class="sr-only"> (se abre en una pestaña nueva)</span></span>
-        </a>
-
+          <span class="bento-icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="2" width="16" height="20" rx="2"/>
+          <line x1="8" y1="6" x2="16" y2="6"/>
+          <line x1="8" y1="10" x2="8" y2="10"/>
+          <line x1="12" y1="10" x2="12" y2="10"/>
+          <line x1="16" y1="10" x2="16" y2="10"/>
+          <line x1="8" y1="14" x2="8" y2="14"/>
+          <line x1="12" y1="14" x2="12" y2="14"/>
+          <line x1="16" y1="14" x2="16" y2="14"/>
+          <line x1="8" y1="18" x2="8" y2="18"/>
+          <line x1="12" y1="18" x2="12" y2="18"/>
+          <line x1="16" y1="18" x2="16" y2="18"/>
+        </svg>
+  </span>
+  <span class="bento-pill">Académico</span>
+  <h3>Calculadora de Notas</h3>
+  <p>Calcula lo que necesitas para aprobar o tu nota definitiva.</p>
+  <span class="bento-go">Abrir <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+</a>
       </div>
     </div>
   </section>

@@ -17,8 +17,7 @@
   <noscript><style>#custom-loading { display: none; }</style></noscript>
 
   <style>
-    /* Loader */
-    html, body { margin: 0; background: #0F2418; }
+    html, body { margin: 0; background: #0A1A11; }
     .splash {
       position: fixed;
       inset: 0;
@@ -30,10 +29,10 @@
       gap: 18px;
       padding: 24px;
       text-align: center;
-      color: #F5F1E8;
+      color: #F5F0E1;
       font-family: 'Public Sans', Georgia, serif;
       background:
-        radial-gradient(ellipse at 50% 40%, #1B3A2A 0%, #142E20 45%, #0F2418 100%);
+        radial-gradient(ellipse at 50% 40%, #142E20 0%, #0A1A11 45%, #050D08 100%);
       transition: opacity .6s ease, visibility .6s ease;
     }
     .splash::before {
@@ -84,6 +83,7 @@
       font-weight: 500;
       letter-spacing: -.02em;
       line-height: 1.1;
+      color: #F5F0E1;
     }
     .splash__title em { font-style: italic; color: #DFB93F; }
     .splash__subtitle {
@@ -93,7 +93,7 @@
       font-weight: 600;
       letter-spacing: .22em;
       text-transform: uppercase;
-      color: #C9A227;
+      color: #C4BBA5;
     }
     .splash__bar {
       position: relative;
@@ -118,7 +118,7 @@
       max-width: 34ch;
       font-size: 16px;
       line-height: 1.5;
-      color: #EEE9DB;
+      color: #EDE6D2;
     }
     .splash__actions {
       position: relative;
@@ -134,12 +134,12 @@
       border: 0;
       border-radius: 999px;
       background: #C9A227;
-      color: #142E20;
+      color: #0A1A11;
       font: 600 15px 'Public Sans', sans-serif;
       cursor: pointer;
       transition: background .2s ease;
     }
-    .splash__button:hover { background: #DFB93F; }
+    .splash__button:hover { background: #E8C750; }
     .splash__button:focus-visible,
     .splash__link:focus-visible {
       outline: 2px solid #DFB93F;
@@ -162,480 +162,796 @@
     }
   </style>
 
-  <style>
-    /* Variables */
-    :root {
-      --verde-profundo: #142E20;
-      --verde-oscuro: #1B3A2A;
-      --verde-medio: #2E563E;
-      --dorado: #C9A227;
-      --dorado-claro: #DFB93F;
-      --hueso: #F5F1E8;
-      --crema: #EEE9DB;
-      --tinta: #1E1A14;
-      --gris-calido: #6E6858;
-      --rojo-apagado: #C7453A;
-      --fondo-admin: #0F2418;
-      --campo: #244834;
-      --borde: #2A4A38;
-      --borde-fuerte: #3C6A50;
-      --radio-sm: 6px;
-      --radio-md: 10px;
-      --radio-lg: 16px;
-      --radio-xl: 22px;
-      --radio-pill: 999px;
-      --sombra-sm: 0 1px 2px rgba(0, 0, 0, .3);
-      --sombra-md: 0 8px 24px -12px rgba(0, 0, 0, .5);
-      --sombra-lg: 0 20px 48px -16px rgba(0, 0, 0, .6);
-      --glow: 0 0 0 3px rgba(223, 185, 63, .15);
-      --fuente-titulo: 'Fraunces', Georgia, serif;
-      --fuente-cuerpo: 'Public Sans', Georgia, sans-serif;
-    }
+  <style id="decap-custom-theme">
+  :root {
+    --fondo: #EFE9DD;
+    --fondo-alt: #E8E1D2;
+    --fondo-hover: #E0D8C5;
+    --superficie: #F7F2E6;
+    --superficie-alt: #F2ECDD;
+    --superficie-hover: #EDE6D4;
+    --texto: #2D2A24;
+    --texto-medio: #45413A;
+    --texto-suave: #5C574C;
+    --texto-tenue: #8A8374;
+    --texto-inverso: #FBF8F0;
+    --borde: #D4CCB8;
+    --borde-fuerte: #B5AB92;
+    --dorado: #B8921F;
+    --dorado-claro: #C9A227;
+    --dorado-hover: #D4AE35;
+    --dorado-suave: #F2E6C0;
+    --dorado-borde: #E0CC94;
+    --rojo: #B94A40;
+    --rojo-hover: #C75A50;
+    --rojo-suave: #F5E0DD;
+    --texto-error: #97332B;
+    --texto-exito: #3D7A54;
+    --radio-sm: 6px;
+    --radio-md: 10px;
+    --radio-lg: 16px;
+    --radio-xl: 22px;
+    --radio-pill: 999px;
+    --sombra-sm: 0 1px 2px rgba(61, 52, 38, .08);
+    --sombra-md: 0 8px 24px -12px rgba(61, 52, 38, .18);
+    --sombra-lg: 0 20px 48px -16px rgba(61, 52, 38, .25);
+    --glow-dorado: 0 0 0 3px rgba(201, 162, 39, .22);
+    --glow-error: 0 0 0 3px rgba(185, 74, 64, .18);
+    --fuente-titulo: 'Fraunces', Georgia, serif;
+    --fuente-cuerpo: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
 
-    /* Base */
-    html, body, #nc-root {
-      min-height: 100%;
-      background: var(--fondo-admin);
-      color: var(--hueso);
-      font-family: var(--fuente-cuerpo);
-      font-size: 16px;
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-    }
-    #nc-root a { color: var(--dorado-claro); }
-    #nc-root p, #nc-root li, #nc-root span, #nc-root label, #nc-root button, #nc-root input, #nc-root textarea, #nc-root select {
-      font-family: var(--fuente-cuerpo);
-    }
-    ::selection { background: var(--dorado); color: var(--verde-profundo); }
+  html,
+  body,
+  #nc-root {
+    min-height: 100%;
+    background-color: var(--fondo) !important;
+    color: var(--texto) !important;
+    font-family: var(--fuente-cuerpo);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
 
-    /* Tipografia */
-    #nc-root h1, #nc-root h2, #nc-root h3, #nc-root h4, #nc-root h5, #nc-root h6 {
-      font-family: var(--fuente-titulo);
-      font-weight: 500;
-      letter-spacing: -.02em;
-      color: var(--hueso);
-    }
+  #nc-root a {
+    color: var(--dorado) !important;
+    text-decoration-color: var(--dorado-borde);
+    text-underline-offset: 2px;
+  }
 
-    /* Reset de fondos */
-    #nc-root [class*="AppMainContainer"],
-    #nc-root [class*="AppHeaderContent"],
-    #nc-root [class*="CollectionContainer"],
-    #nc-root [class*="CollectionMain"],
-    #nc-root [class*="EditorContainer"],
-    #nc-root [class*="EditorContent"],
-    #nc-root [class*="ControlContainer"],
-    #nc-root [class*="StyledEditor"],
-    #nc-root [class*="ListContainer"],
-    #nc-root [class*="WorkflowContainer"] {
-      background: transparent;
-      color: var(--hueso);
-    }
+  #nc-root a:hover {
+    color: var(--dorado-hover) !important;
+  }
 
-    /* Scrollbar */
-    * { scrollbar-width: thin; scrollbar-color: var(--verde-medio) var(--verde-profundo); }
-    ::-webkit-scrollbar { width: 10px; height: 10px; }
-    ::-webkit-scrollbar-track { background: var(--verde-profundo); }
-    ::-webkit-scrollbar-thumb {
-      background: var(--verde-medio);
-      border-radius: var(--radio-pill);
-      border: 2px solid var(--verde-profundo);
-    }
-    ::-webkit-scrollbar-thumb:hover { background: var(--dorado); }
+  #nc-root p,
+  #nc-root li,
+  #nc-root span,
+  #nc-root div,
+  #nc-root label,
+  #nc-root button,
+  #nc-root input,
+  #nc-root textarea,
+  #nc-root select {
+    font-family: var(--fuente-cuerpo);
+  }
 
-    /* Login */
-    #nc-root [class*="AuthenticationPage"] {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      background: radial-gradient(ellipse at 50% 35%, var(--verde-oscuro) 0%, var(--verde-profundo) 50%, var(--fondo-admin) 100%);
-    }
-    #nc-root [class*="AuthenticationPage"] h5 { color: var(--crema); }
-    #nc-root [class*="AuthenticationPage"] [class*="Logo"] { max-width: 120px; }
+  #nc-root h1,
+  #nc-root h2,
+  #nc-root h3,
+  #nc-root h4,
+  #nc-root h5,
+  #nc-root h6 {
+    font-family: var(--fuente-titulo);
+    font-weight: 500;
+    letter-spacing: -.02em;
+    color: var(--texto) !important;
+    background-color: transparent !important;
+  }
 
-    /* Header */
-    #nc-root [class*="AppHeader"] {
-      background: var(--verde-profundo);
-      border-bottom: 1px solid var(--borde);
-      box-shadow: var(--sombra-sm);
-    }
-    #nc-root [class*="AppHeader"] a,
-    #nc-root [class*="AppHeader"] button {
-      color: var(--crema);
-    }
-    #nc-root [class*="AppHeader"] a:hover,
-    #nc-root [class*="AppHeader"] button:hover {
-      color: var(--dorado-claro);
-    }
-    #nc-root [class*="AppHeader"] [class*="Active"] {
-      color: var(--dorado-claro);
-      background: rgba(201, 162, 39, .12);
-    }
+  #nc-root [class*="AppMainContainer"],
+  #nc-root [class*="AppHeaderContent"],
+  #nc-root [class*="CollectionContainer"],
+  #nc-root [class*="CollectionMain"],
+  #nc-root [class*="EditorContainer"],
+  #nc-root [class*="EditorContent"],
+  #nc-root [class*="ControlContainer"],
+  #nc-root [class*="StyledEditor"],
+  #nc-root [class*="ListContainer"],
+  #nc-root [class*="WorkflowContainer"],
+  #nc-root [class*="WorkflowBoard"] {
+    background-color: transparent !important;
+    color: var(--texto) !important;
+  }
 
-    /* Sidebar */
+  #nc-root input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]):not([type="range"]),
+  #nc-root textarea,
+  #nc-root select,
+  #nc-root [class*="Control"] input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  #nc-root [class*="Control"] textarea,
+  #nc-root [class*="Control"] select,
+  #nc-root [class*="StyledInput"],
+  #nc-root [class*="SelectControl"] {
+    background-color: var(--superficie) !important;
+    color: var(--texto) !important;
+    border: 1px solid var(--borde) !important;
+    border-radius: var(--radio-md) !important;
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 16px;
+    font-family: var(--fuente-cuerpo);
+    box-shadow: inset 0 1px 2px rgba(61, 52, 38, .04);
+    -webkit-text-fill-color: var(--texto) !important;
+    transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+  }
+
+  #nc-root input::placeholder,
+  #nc-root textarea::placeholder {
+    color: var(--texto-tenue) !important;
+    opacity: 1;
+    -webkit-text-fill-color: var(--texto-tenue) !important;
+  }
+
+  #nc-root input:focus,
+  #nc-root textarea:focus,
+  #nc-root select:focus {
+    border-color: var(--dorado) !important;
+    box-shadow: var(--glow-dorado) !important;
+    outline: none !important;
+    background-color: var(--superficie) !important;
+    color: var(--texto) !important;
+  }
+
+  #nc-root input:disabled,
+  #nc-root textarea:disabled,
+  #nc-root select:disabled,
+  #nc-root button:disabled {
+    color: var(--texto-tenue) !important;
+    background-color: var(--fondo-alt) !important;
+    border-color: var(--borde) !important;
+    cursor: not-allowed;
+    -webkit-text-fill-color: var(--texto-tenue) !important;
+    opacity: 1;
+  }
+
+  #nc-root input[aria-invalid="true"],
+  #nc-root textarea[aria-invalid="true"],
+  #nc-root [aria-invalid="true"] {
+    border-color: var(--rojo) !important;
+    box-shadow: var(--glow-error) !important;
+  }
+
+  #nc-root label,
+  #nc-root [class*="FieldLabel"],
+  #nc-root [class*="Control"] > div > label,
+  #nc-root [class*="ControlContainer"] label,
+  #nc-root [class*="StyledField"] > label,
+  #nc-root [class*="Field"] > label {
+    background-color: transparent !important;
+    color: var(--texto-medio) !important;
+    font-weight: 600;
+    font-family: var(--fuente-cuerpo);
+    font-size: 15px;
+  }
+
+  #nc-root [class*="ControlHint"],
+  #nc-root [class*="FieldHint"],
+  #nc-root [class*="Hint"] {
+    color: var(--texto-suave) !important;
+    background-color: transparent !important;
+    font-style: normal;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  #nc-root [class*="ControlErrorsList"],
+  #nc-root [class*="ErrorMessage"] {
+    color: var(--texto-error) !important;
+    background-color: transparent !important;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  #nc-root [contenteditable="true"],
+  #nc-root [class*="EditorControlBar"] + div,
+  #nc-root [class*="RawEditor"],
+  #nc-root [class*="Editor"] [contenteditable="true"] {
+    background-color: var(--superficie) !important;
+    color: var(--texto) !important;
+    border: 1px solid var(--borde) !important;
+    border-radius: var(--radio-md);
+    min-height: 280px;
+    padding: 14px 16px;
+    font-size: 16px;
+    line-height: 1.7;
+    box-shadow: inset 0 1px 2px rgba(61, 52, 38, .04);
+  }
+
+  #nc-root [contenteditable="true"]:focus {
+    border-color: var(--dorado) !important;
+    box-shadow: var(--glow-dorado) !important;
+    outline: none;
+  }
+
+  #nc-root [contenteditable="true"] p,
+  #nc-root [contenteditable="true"] li,
+  #nc-root [contenteditable="true"] h1,
+  #nc-root [contenteditable="true"] h2,
+  #nc-root [contenteditable="true"] h3,
+  #nc-root [contenteditable="true"] h4,
+  #nc-root [contenteditable="true"] span {
+    color: var(--texto) !important;
+    background-color: transparent !important;
+  }
+
+  #nc-root [contenteditable="true"] a {
+    color: var(--dorado) !important;
+  }
+
+  #nc-root [class*="EditorControlBar"] {
+    background-color: var(--fondo-alt) !important;
+    border-bottom: 1px solid var(--borde) !important;
+    border-radius: var(--radio-md) var(--radio-md) 0 0;
+  }
+
+  #nc-root [class*="EditorControlBar"] button,
+  #nc-root [class*="EditorControlBar"] [role="button"] {
+    color: var(--texto-suave) !important;
+    background-color: transparent !important;
+    border-radius: var(--radio-sm);
+    transition: background-color .15s ease, color .15s ease;
+  }
+
+  #nc-root [class*="EditorControlBar"] button:hover,
+  #nc-root [class*="EditorControlBar"] [role="button"]:hover {
+    background-color: var(--dorado-suave) !important;
+    color: var(--texto) !important;
+  }
+
+  #nc-root [class*="AppHeader"] {
+    background-color: var(--superficie) !important;
+    border-bottom: 1px solid var(--borde);
+    box-shadow: var(--sombra-sm);
+  }
+
+  #nc-root [class*="AppHeader"] a,
+  #nc-root [class*="AppHeader"] button {
+    color: var(--texto-medio) !important;
+  }
+
+  #nc-root [class*="AppHeader"] a:hover,
+  #nc-root [class*="AppHeader"] button:hover {
+    color: var(--dorado) !important;
+  }
+
+  #nc-root [class*="AppHeader"] [class*="Active"] {
+    color: var(--dorado) !important;
+    background-color: var(--dorado-suave) !important;
+  }
+
+  #nc-root [class*="SidebarContainer"] {
+    background-color: var(--fondo-alt) !important;
+    border-right: 1px solid var(--borde);
+    box-shadow: none;
+  }
+
+  #nc-root [class*="SidebarHeading"],
+  #nc-root [class*="SidebarContainer"] h2 {
+    color: var(--texto-tenue) !important;
+    background-color: transparent !important;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  #nc-root [class*="SidebarNavLink"] {
+    color: var(--texto-suave) !important;
+    background-color: transparent !important;
+    border-left: 3px solid transparent;
+    border-radius: 0 var(--radio-md) var(--radio-md) 0;
+    transition: background-color .2s ease, color .2s ease;
+  }
+
+  #nc-root [class*="SidebarNavLink"]:hover {
+    background-color: var(--fondo-hover) !important;
+    color: var(--texto) !important;
+  }
+
+  #nc-root [class*="SidebarNavLink"][class*="active"],
+  #nc-root [class*="SidebarNavLink"][aria-current="page"] {
+    color: var(--texto) !important;
+    background-color: var(--dorado-suave) !important;
+    border-left-color: var(--dorado);
+    font-weight: 600;
+  }
+
+  #nc-root [class*="ListCardLink"],
+  #nc-root [class*="ListItem"],
+  #nc-root [class*="CardLink"],
+  #nc-root [class*="EntryCard"] {
+    background-color: var(--superficie) !important;
+    border: 1px solid var(--borde) !important;
+    border-radius: var(--radio-lg);
+    box-shadow: var(--sombra-sm);
+    color: var(--texto) !important;
+    transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+  }
+
+  #nc-root [class*="ListCardLink"]:hover,
+  #nc-root [class*="ListItem"]:hover,
+  #nc-root [class*="CardLink"]:hover,
+  #nc-root [class*="EntryCard"]:hover {
+    border-color: var(--dorado-borde) !important;
+    background-color: var(--superficie-alt) !important;
+    box-shadow: var(--sombra-md);
+  }
+
+  #nc-root [class*="ListCardTitle"],
+  #nc-root [class*="CardHeading"] {
+    font-family: var(--fuente-titulo);
+    color: var(--texto) !important;
+    background-color: transparent !important;
+  }
+
+  #nc-root [class*="ListCardLink"] p,
+  #nc-root [class*="ListItem"] p,
+  #nc-root [class*="CardLink"] p,
+  #nc-root [class*="EntryCard"] p,
+  #nc-root [class*="ListCardLink"] span,
+  #nc-root [class*="ListItem"] span,
+  #nc-root [class*="CardLink"] span,
+  #nc-root [class*="EntryCard"] span {
+    color: var(--texto-suave) !important;
+    background-color: transparent !important;
+  }
+
+  #nc-root button[class*="primary"],
+  #nc-root [class*="PublishButton"],
+  #nc-root [class*="NewEntryButton"],
+  #nc-root [class*="NewButton"],
+  #nc-root [class*="SaveButton"],
+  #nc-root [class*="ButtonPrimary"] {
+    min-height: 44px;
+    padding: 0 22px;
+    border: 1px solid var(--dorado) !important;
+    border-radius: var(--radio-pill);
+    background-color: var(--dorado) !important;
+    color: var(--texto-inverso) !important;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px -2px rgba(184, 146, 31, .4);
+    transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+
+  #nc-root button[class*="primary"]:hover,
+  #nc-root [class*="PublishButton"]:hover,
+  #nc-root [class*="NewEntryButton"]:hover,
+  #nc-root [class*="NewButton"]:hover,
+  #nc-root [class*="SaveButton"]:hover,
+  #nc-root [class*="ButtonPrimary"]:hover {
+    background-color: var(--dorado-hover) !important;
+    border-color: var(--dorado-hover) !important;
+    box-shadow: 0 4px 10px -4px rgba(184, 146, 31, .55);
+  }
+
+  #nc-root [class*="DropdownButton"],
+  #nc-root [class*="ButtonSecondary"],
+  #nc-root [class*="ToolbarButton"],
+  #nc-root [class*="PreviewButton"] {
+    min-height: 44px;
+    padding: 0 20px;
+    border: 1px solid var(--borde-fuerte) !important;
+    border-radius: var(--radio-pill);
+    background-color: var(--superficie) !important;
+    color: var(--texto-medio) !important;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: border-color .2s ease, background-color .2s ease, color .2s ease;
+  }
+
+  #nc-root [class*="DropdownButton"]:hover,
+  #nc-root [class*="ButtonSecondary"]:hover,
+  #nc-root [class*="ToolbarButton"]:hover,
+  #nc-root [class*="PreviewButton"]:hover {
+    border-color: var(--dorado) !important;
+    background-color: var(--dorado-suave) !important;
+    color: var(--texto) !important;
+  }
+
+  #nc-root [class*="DeleteButton"],
+  #nc-root button[class*="danger"],
+  #nc-root [class*="ButtonDanger"] {
+    border: 1px solid var(--rojo) !important;
+    background-color: var(--superficie) !important;
+    color: var(--rojo) !important;
+    border-radius: var(--radio-pill);
+    min-height: 44px;
+    padding: 0 20px;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  #nc-root [class*="DeleteButton"]:hover,
+  #nc-root button[class*="danger"]:hover,
+  #nc-root [class*="ButtonDanger"]:hover {
+    background-color: var(--rojo) !important;
+    border-color: var(--rojo-hover) !important;
+    color: var(--texto-inverso) !important;
+  }
+
+  #nc-root [class*="WorkflowBoard"],
+  #nc-root [class*="WorkflowContainer"],
+  #nc-root [class*="Workflow"] [class*="Board"] {
+    background-color: transparent !important;
+    color: var(--texto) !important;
+  }
+
+  #nc-root [class*="WorkflowColumn"],
+  #nc-root [class*="Workflow"] [class*="Column"] {
+    background-color: var(--superficie-alt) !important;
+    border: 1px solid var(--borde) !important;
+    border-radius: var(--radio-lg) !important;
+    color: var(--texto) !important;
+    box-shadow: none !important;
+  }
+
+  #nc-root [class*="WorkflowColumnHeading"],
+  #nc-root [class*="Workflow"] [class*="Column"] > h2,
+  #nc-root [class*="Workflow"] [class*="Column"] > h3,
+  #nc-root [class*="Workflow"] [class*="Column"] > header,
+  #nc-root [class*="Workflow"] [class*="ColumnHeading"] {
+    background-color: transparent !important;
+    color: var(--texto) !important;
+    border-bottom: 1px solid var(--borde) !important;
+    box-shadow: none !important;
+  }
+
+  #nc-root [class*="WorkflowColumnHeading"] span,
+  #nc-root [class*="Workflow"] [class*="Column"] > header span {
+    background-color: var(--dorado-suave) !important;
+    color: var(--dorado) !important;
+    border-radius: var(--radio-pill);
+    padding: 2px 10px;
+    font-weight: 700;
+  }
+
+  #nc-root [class*="WorkflowCard"],
+  #nc-root [class*="WorkflowCardContainer"],
+  #nc-root [class*="Workflow"] [class*="Card"] {
+    background-color: var(--superficie) !important;
+    border: 1px solid var(--borde) !important;
+    border-radius: var(--radio-md) !important;
+    color: var(--texto) !important;
+    box-shadow: var(--sombra-sm) !important;
+  }
+
+  #nc-root [class*="WorkflowCard"] a,
+  #nc-root [class*="WorkflowCardContainer"] a,
+  #nc-root [class*="Workflow"] [class*="Card"] a {
+    color: var(--texto) !important;
+    background-color: transparent !important;
+  }
+
+  #nc-root [class*="WorkflowCard"] h3,
+  #nc-root [class*="WorkflowCard"] h4,
+  #nc-root [class*="WorkflowCard"] p,
+  #nc-root [class*="WorkflowCard"] span {
+    background-color: transparent !important;
+    color: var(--texto) !important;
+  }
+
+  #nc-root [class*="WorkflowCard"] [class*="Badge"],
+  #nc-root [class*="Workflow"] [class*="Badge"],
+  #nc-root [class*="Workflow"] [class*="Status"] {
+    background-color: var(--dorado) !important;
+    color: var(--texto-inverso) !important;
+    border-radius: var(--radio-pill);
+    padding: 2px 10px;
+    font-weight: 700;
+  }
+
+  #nc-root [class*="Workflow"] [class*="Column"] [class*="Count"] {
+    background-color: var(--dorado-suave) !important;
+    color: var(--dorado) !important;
+    font-weight: 700;
+  }
+
+  #nc-root [class*="ModalContent"],
+  #nc-root [class*="DropdownList"],
+  #nc-root [class*="PopupMenu"],
+  #nc-root [class*="Dialog"] {
+    background-color: var(--superficie) !important;
+    border: 1px solid var(--borde) !important;
+    border-radius: var(--radio-xl);
+    box-shadow: var(--sombra-lg);
+    color: var(--texto) !important;
+  }
+
+  #nc-root [class*="ModalContent"] h2,
+  #nc-root [class*="ModalContent"] h3,
+  #nc-root [class*="ModalContent"] p,
+  #nc-root [class*="Dialog"] h2,
+  #nc-root [class*="Dialog"] h3 {
+    background-color: transparent !important;
+    color: var(--texto) !important;
+  }
+
+  #nc-root [class*="DropdownItem"] {
+    color: var(--texto) !important;
+    background-color: transparent !important;
+    border-radius: var(--radio-sm);
+  }
+
+  #nc-root [class*="DropdownItem"]:hover {
+    background-color: var(--dorado-suave) !important;
+    color: var(--texto) !important;
+  }
+
+  #nc-root [class*="ModalBackground"],
+  [class*="ReactModal__Overlay"] {
+    background-color: rgba(61, 52, 38, .3) !important;
+  }
+
+  .Toastify__toast {
+    background-color: var(--superficie) !important;
+    border: 1px solid var(--borde) !important;
+    border-radius: var(--radio-lg);
+    color: var(--texto) !important;
+    font-family: var(--fuente-cuerpo);
+    box-shadow: var(--sombra-md);
+  }
+
+  #nc-root input[type="checkbox"],
+  #nc-root input[type="radio"] {
+    accent-color: var(--dorado);
+    width: 20px;
+    height: 20px;
+  }
+
+  #nc-root [class*="Toggle"][class*="Active"],
+  #nc-root [class*="ToggleBackground"] {
+    background-color: var(--dorado) !important;
+  }
+
+  #nc-root [class*="ImageWidget"],
+  #nc-root [class*="ImageWrapper"],
+  #nc-root [class*="MediaLibrary"],
+  #nc-root [class*="MediaLibraryModal"] {
+    background-color: var(--superficie-alt) !important;
+    border: 1px dashed var(--dorado-borde) !important;
+    border-radius: var(--radio-lg);
+    color: var(--texto) !important;
+  }
+
+  #nc-root [class*="CardImage"],
+  #nc-root [class*="MediaLibraryCard"] {
+    background-color: var(--superficie) !important;
+    border: 1px solid var(--borde) !important;
+    border-radius: var(--radio-md);
+    color: var(--texto) !important;
+  }
+
+  #nc-root [class*="ControlPane"],
+  #nc-root [class*="PreviewPane"] {
+    padding: 28px 32px;
+    border-right: 1px solid var(--borde);
+    background-color: transparent !important;
+    color: var(--texto) !important;
+  }
+
+  #nc-root [class*="PreviewPane"] {
+    border-right: 0;
+    border-left: 1px solid var(--borde);
+    background-color: var(--superficie-alt) !important;
+  }
+
+  #nc-root [class*="ToolbarContainer"],
+  #nc-root [class*="EditorToolbar"] {
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+    padding: 12px 20px;
+    background-color: var(--superficie) !important;
+    border-top: 1px solid var(--borde);
+    box-shadow: 0 -4px 12px -8px rgba(61, 52, 38, .12);
+    color: var(--texto) !important;
+  }
+
+  #nc-root [class*="CollectionTopContainer"],
+  #nc-root [class*="ViewControls"] {
+    background-color: var(--superficie) !important;
+    border: 1px solid var(--borde) !important;
+    border-radius: var(--radio-lg);
+    color: var(--texto) !important;
+  }
+
+  #nc-root [class*="ViewControlsButton"] {
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: var(--radio-pill);
+    background-color: transparent !important;
+    color: var(--texto-suave) !important;
+  }
+
+  #nc-root [class*="ViewControlsButton"]:hover {
+    color: var(--texto) !important;
+    background-color: var(--fondo-hover) !important;
+  }
+
+  #nc-root [class*="ViewControlsButton"][class*="active"],
+  #nc-root [class*="ViewControlsButton"][aria-pressed="true"] {
+    background-color: var(--dorado) !important;
+    color: var(--texto-inverso) !important;
+  }
+
+  #nc-root [class*="AuthenticationPage"] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 50% 35%, var(--fondo) 0%, var(--fondo-alt) 60%, var(--fondo-hover) 100%) !important;
+  }
+
+  #nc-root [class*="AuthenticationPage"] h5 {
+    color: var(--texto) !important;
+    background-color: transparent !important;
+  }
+
+  #nc-root [class*="AuthenticationPage"] p,
+  #nc-root [class*="AuthenticationPage"] span {
+    color: var(--texto-suave) !important;
+    background-color: transparent !important;
+  }
+
+  #nc-root [class*="AuthenticationPage"] [class*="Logo"] {
+    max-width: 120px;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--borde-fuerte) var(--fondo);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--fondo);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--borde-fuerte);
+    border-radius: var(--radio-pill);
+    border: 2px solid var(--fondo);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--dorado);
+  }
+
+  ::selection {
+    background: var(--dorado-suave);
+    color: var(--texto);
+  }
+
+  #nc-root :focus-visible {
+    outline: 2px solid var(--dorado);
+    outline-offset: 2px;
+  }
+
+  #nc-root button[class*="primary"]:focus-visible,
+  #nc-root [class*="PublishButton"]:focus-visible,
+  #nc-root [class*="NewEntryButton"]:focus-visible,
+  #nc-root [class*="NewButton"]:focus-visible,
+  #nc-root [class*="SaveButton"]:focus-visible {
+    box-shadow: var(--glow-dorado);
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    #nc-root [class*="ControlPane"],
+    #nc-root [class*="PreviewPane"] {
+      padding: 22px 22px;
+    }
+    #nc-root [class*="CollectionMain"] {
+      padding: 20px 22px;
+    }
+  }
+
+  @media (max-width: 768px) {
     #nc-root [class*="SidebarContainer"] {
-      background: var(--verde-profundo);
-      border-right: 1px solid var(--borde);
-      box-shadow: none;
+      width: 100%;
+      border-right: 0;
+      border-bottom: 1px solid var(--borde);
     }
-    #nc-root [class*="SidebarHeading"],
-    #nc-root [class*="SidebarContainer"] h2 {
-      color: var(--gris-calido);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-    }
-    #nc-root [class*="SidebarNavLink"] {
-      color: var(--crema);
-      border-left: 3px solid transparent;
-      border-radius: 0 var(--radio-md) var(--radio-md) 0;
-      transition: background .2s ease, color .2s ease;
-    }
-    #nc-root [class*="SidebarNavLink"]:hover {
-      background: rgba(255, 255, 255, .04);
-      color: var(--hueso);
-    }
-    #nc-root [class*="SidebarNavLink"][class*="active"],
-    #nc-root [class*="SidebarNavLink"][aria-current="page"] {
-      color: var(--dorado-claro);
-      background: rgba(201, 162, 39, .1);
-      border-left-color: var(--dorado);
-    }
-
-    /* Lista de noticias */
     #nc-root [class*="ListCardLink"],
-    #nc-root [class*="ListItem"],
-    #nc-root [class*="CardLink"] {
-      background: var(--verde-oscuro);
-      border: 1px solid var(--borde);
-      border-radius: var(--radio-lg);
-      box-shadow: var(--sombra-sm);
-      color: var(--hueso);
-      transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+    #nc-root [class*="CardGrid"] {
+      flex-wrap: wrap;
     }
-    #nc-root [class*="ListCardLink"]:hover,
-    #nc-root [class*="ListItem"]:hover,
-    #nc-root [class*="CardLink"]:hover {
-      border-color: var(--dorado);
-      box-shadow: var(--sombra-md);
-    }
-    #nc-root [class*="ListCardTitle"],
-    #nc-root [class*="CardHeading"] {
-      font-family: var(--fuente-titulo);
-      color: var(--hueso);
-    }
-
-    /* Boton primario */
     #nc-root button[class*="primary"],
     #nc-root [class*="PublishButton"],
     #nc-root [class*="NewEntryButton"],
-    #nc-root [class*="NewButton"],
-    #nc-root [class*="SaveButton"],
-    #nc-root [class*="ButtonPrimary"] {
-      min-height: 44px;
-      padding: 0 22px;
-      border: 1px solid var(--dorado);
-      border-radius: var(--radio-pill);
-      background: var(--dorado);
-      color: var(--verde-profundo);
-      font-weight: 600;
-      cursor: pointer;
-      transition: background .2s ease, box-shadow .2s ease;
-    }
-    #nc-root button[class*="primary"]:hover,
-    #nc-root [class*="PublishButton"]:hover,
-    #nc-root [class*="NewEntryButton"]:hover,
-    #nc-root [class*="NewButton"]:hover,
-    #nc-root [class*="SaveButton"]:hover,
-    #nc-root [class*="ButtonPrimary"]:hover {
-      background: var(--dorado-claro);
-      border-color: var(--dorado-claro);
-    }
-    #nc-root button[class*="primary"]:focus-visible,
-    #nc-root [class*="PublishButton"]:focus-visible,
-    #nc-root [class*="NewEntryButton"]:focus-visible,
-    #nc-root [class*="NewButton"]:focus-visible,
-    #nc-root [class*="SaveButton"]:focus-visible {
-      box-shadow: var(--glow);
-    }
-
-    /* Boton secundario */
-    #nc-root [class*="DropdownButton"],
-    #nc-root [class*="ButtonSecondary"],
-    #nc-root [class*="ToolbarButton"],
-    #nc-root [class*="PreviewButton"],
     #nc-root [class*="DeleteButton"] {
-      min-height: 44px;
-      padding: 0 20px;
-      border: 1px solid var(--borde-fuerte);
-      border-radius: var(--radio-pill);
-      background: var(--verde-medio);
-      color: var(--hueso);
-      font-weight: 600;
-      cursor: pointer;
-      transition: border-color .2s ease, background .2s ease;
+      width: 100%;
     }
-    #nc-root [class*="DropdownButton"]:hover,
-    #nc-root [class*="ButtonSecondary"]:hover,
-    #nc-root [class*="ToolbarButton"]:hover,
-    #nc-root [class*="PreviewButton"]:hover {
-      border-color: var(--dorado);
-    }
-
-    /* Boton danger */
-    #nc-root [class*="DeleteButton"],
-    #nc-root button[class*="danger"],
-    #nc-root [class*="ButtonDanger"] {
-      border: 1px solid var(--rojo-apagado);
-      background: var(--rojo-apagado);
-      color: var(--hueso);
-    }
-    #nc-root [class*="DeleteButton"]:hover,
-    #nc-root button[class*="danger"]:hover,
-    #nc-root [class*="ButtonDanger"]:hover {
-      background: #D8574C;
-      border-color: #D8574C;
-    }
-
-    /* Campos */
-    #nc-root input[type="text"],
-    #nc-root input[type="email"],
-    #nc-root input[type="password"],
-    #nc-root input[type="url"],
-    #nc-root input[type="number"],
-    #nc-root input[type="search"],
-    #nc-root input[type="date"],
+    #nc-root input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
     #nc-root textarea,
-    #nc-root select,
-    #nc-root [class*="StyledInput"],
-    #nc-root [class*="SelectControl"] {
-      min-height: 44px;
-      padding: 10px 14px;
-      border: 1px solid var(--borde);
-      border-radius: var(--radio-md);
-      background: var(--campo);
-      color: var(--hueso);
+    #nc-root select {
+      min-height: 50px;
       font-size: 16px;
-      transition: border-color .2s ease, box-shadow .2s ease;
     }
-    #nc-root input::placeholder,
-    #nc-root textarea::placeholder { color: var(--gris-calido); opacity: 1; }
-    #nc-root input:focus,
-    #nc-root textarea:focus,
-    #nc-root select:focus {
-      border-color: var(--dorado-claro);
-      box-shadow: var(--glow);
-      outline: none;
+    #nc-root [class*="ControlPane"],
+    #nc-root [class*="PreviewPane"] {
+      padding: 18px 14px;
     }
+    #nc-root [class*="ModalContent"] {
+      margin: 12px;
+      max-width: calc(100vw - 24px);
+    }
+    #nc-root [class*="WorkflowColumn"],
+    #nc-root [class*="Workflow"] [class*="Column"] {
+      min-width: 100% !important;
+    }
+  }
 
-    /* Labels y hints */
-    #nc-root label,
-    #nc-root [class*="FieldLabel"] {
-      color: var(--hueso);
-      font-weight: 600;
+  @media (prefers-color-scheme: light) {
+    :root {
+      color-scheme: light;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: .01ms;
+      animation-iteration-count: 1;
+      transition-duration: .01ms;
+      scroll-behavior: auto;
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    :root {
+      --fondo: #FBF8F0;
+      --fondo-alt: #F2ECDD;
+      --superficie: #FFFFFF;
+      --texto: #1A1710;
+      --texto-medio: #2D2A24;
+      --texto-suave: #45413A;
+      --texto-tenue: #5C574C;
+      --borde: #8A8374;
+      --borde-fuerte: #5C574C;
+      --dorado: #8A6E14;
+      --dorado-suave: #F0E4B8;
+      --rojo: #8F2E25;
+      --texto-error: #7A2820;
+    }
+    html,
+    body,
+    #nc-root {
+      background-color: #FBF8F0 !important;
+      color: #1A1710 !important;
+    }
+    #nc-root h1,
+    #nc-root h2,
+    #nc-root h3,
+    #nc-root h4,
+    #nc-root h5,
+    #nc-root h6,
+    #nc-root label {
+      color: #1A1710 !important;
     }
     #nc-root [class*="ControlHint"],
     #nc-root [class*="FieldHint"],
     #nc-root [class*="Hint"] {
-      color: var(--gris-calido);
-      font-style: normal;
-      font-size: 14px;
+      color: #45413A !important;
     }
-    #nc-root [class*="ControlErrorsList"],
-    #nc-root [class*="ErrorMessage"] {
-      color: #F08A80;
-      font-size: 14px;
-    }
-
-    /* Toolbar */
-    #nc-root [class*="CollectionTopContainer"],
-    #nc-root [class*="ViewControls"],
-    #nc-root [class*="EditorToolbar"] {
-      background: var(--verde-medio);
-      border: 1px solid var(--borde-fuerte);
-      border-radius: var(--radio-lg);
-      color: var(--hueso);
-    }
-    #nc-root [class*="ViewControlsButton"] {
-      min-width: 44px;
-      min-height: 44px;
-      border-radius: var(--radio-pill);
-      background: transparent;
-      color: var(--crema);
-    }
-    #nc-root [class*="ViewControlsButton"][class*="active"],
-    #nc-root [class*="ViewControlsButton"][aria-pressed="true"] {
-      background: var(--dorado);
-      color: var(--verde-profundo);
-    }
-
-    /* Modal, toast y menus */
-    #nc-root [class*="ModalContent"],
-    #nc-root [class*="DropdownList"],
-    #nc-root [class*="PopupMenu"],
-    #nc-root [class*="Dialog"] {
-      background: var(--verde-oscuro);
-      border: 1px solid var(--borde-fuerte);
-      border-radius: var(--radio-xl);
-      box-shadow: var(--sombra-lg);
-      color: var(--hueso);
-    }
-    #nc-root [class*="DropdownItem"] { color: var(--hueso); border-radius: var(--radio-sm); }
-    #nc-root [class*="DropdownItem"]:hover { background: var(--verde-medio); color: var(--dorado-claro); }
-    #nc-root [class*="ModalBackground"],
-    [class*="ReactModal__Overlay"] { background: rgba(8, 20, 13, .72); }
-    .Toastify__toast {
-      background: var(--verde-oscuro);
-      border: 1px solid var(--borde-fuerte);
-      border-radius: var(--radio-lg);
-      color: var(--hueso);
-      font-family: var(--fuente-cuerpo);
-    }
-
-    /* Checkbox y radio */
-    #nc-root input[type="checkbox"],
-    #nc-root input[type="radio"] {
-      accent-color: var(--dorado);
-      width: 20px;
-      height: 20px;
-    }
-    #nc-root [class*="Toggle"][class*="Active"],
-    #nc-root [class*="ToggleBackground"] { background: var(--dorado); }
-
-    /* Focus global */
-    #nc-root :focus-visible {
-      outline: 2px solid var(--dorado-claro);
-      outline-offset: 3px;
-    }
-
-    /* Editor */
-    #nc-root [contenteditable="true"],
-    #nc-root [class*="EditorControlBar"] + div,
-    #nc-root [class*="RawEditor"] {
-      min-height: 280px;
-      padding: 14px 16px;
-      border: 1px solid var(--borde);
-      border-radius: var(--radio-md);
-      background: var(--campo);
-      color: var(--hueso);
-      font-size: 16px;
-      line-height: 1.7;
-    }
-    #nc-root [contenteditable="true"]:focus {
-      border-color: var(--dorado-claro);
-      box-shadow: var(--glow);
-      outline: none;
-    }
-    #nc-root [class*="EditorControlBar"] {
-      background: var(--verde-medio);
-      border-bottom: 1px solid var(--borde-fuerte);
-    }
-
-    /* Imagen y medios */
-    #nc-root [class*="ImageWidget"],
-    #nc-root [class*="ImageWrapper"],
-    #nc-root [class*="MediaLibrary"],
-    #nc-root [class*="MediaLibraryModal"] {
-      background: var(--verde-medio);
-      border: 1px dashed var(--dorado);
-      border-radius: var(--radio-lg);
-      color: var(--hueso);
-    }
-    #nc-root [class*="CardImage"],
-    #nc-root [class*="MediaLibraryCard"] {
-      background: var(--verde-oscuro);
-      border: 1px solid var(--borde);
-      border-radius: var(--radio-md);
-    }
-
-    /* Paneles */
-    #nc-root [class*="ControlPane"],
-    #nc-root [class*="PreviewPane"] {
-      padding: 28px 32px;
-      border-right: 1px solid var(--borde);
-      background: transparent;
-    }
-    #nc-root [class*="PreviewPane"] { border-right: 0; border-left: 1px solid var(--borde); }
-
-    /* Acciones inferiores */
-    #nc-root [class*="ToolbarContainer"],
-    #nc-root [class*="EditorToolbar"] {
-      position: sticky;
-      bottom: 0;
-      z-index: 20;
-      padding: 12px 20px;
-      background: var(--verde-profundo);
-      border-top: 1px solid var(--borde);
-      box-shadow: var(--sombra-md);
-    }
-
-    /* Movil */
-    @media (max-width: 768px) {
-      #nc-root [class*="SidebarContainer"] {
-        width: 100%;
-        border-right: 0;
-        border-bottom: 1px solid var(--borde);
-      }
-      #nc-root [class*="ListCardLink"],
-      #nc-root [class*="CardGrid"] { flex-wrap: wrap; }
-      #nc-root button[class*="primary"],
-      #nc-root [class*="PublishButton"],
-      #nc-root [class*="NewEntryButton"],
-      #nc-root [class*="DeleteButton"] { width: 100%; }
-      #nc-root input[type="text"],
-      #nc-root input[type="email"],
-      #nc-root input[type="password"],
-      #nc-root input[type="url"],
-      #nc-root input[type="search"],
-      #nc-root textarea,
-      #nc-root select {
-        min-height: 50px;
-        font-size: 16px;
-      }
-      #nc-root [class*="ControlPane"],
-      #nc-root [class*="PreviewPane"] { padding: 18px 14px; }
-      #nc-root [class*="ModalContent"] {
-        margin: 12px;
-        max-width: calc(100vw - 24px);
-      }
-    }
-
-    /* Tablet */
-    @media (min-width: 769px) and (max-width: 1024px) {
-      #nc-root [class*="ControlPane"],
-      #nc-root [class*="PreviewPane"] { padding: 22px 22px; }
-      #nc-root [class*="CollectionMain"] { padding: 20px 22px; }
-    }
-
-    /* Modo claro del sistema */
-    @media (prefers-color-scheme: light) {
-      :root { color-scheme: dark; }
-      html, body, #nc-root { background: var(--fondo-admin); color: var(--hueso); }
-    }
-
-    /* Movimiento reducido */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms;
-        animation-iteration-count: 1;
-        transition-duration: .01ms;
-        scroll-behavior: auto;
-      }
-    }
-
-    /* Alto contraste */
-    @media (prefers-contrast: more) {
-      :root {
-        --fondo-admin: #0B1A12;
-        --borde: #6E8F7B;
-        --borde-fuerte: #9FBFAB;
-        --gris-calido: #C9C2AE;
-      }
-      html, body, #nc-root { background: #0B1A12; color: #FFFFFF; }
-      #nc-root h1, #nc-root h2, #nc-root h3, #nc-root h4, #nc-root h5, #nc-root h6, #nc-root label { color: #FFFFFF; }
-    }
+  }
   </style>
 </head>
 <body>
