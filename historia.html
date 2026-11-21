@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<script>
-(function(){var ua=navigator.userAgent||'';var isMobile=/Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile|webOS/i.test(ua)||window.innerWidth<=860;document.documentElement.classList.add(isMobile?'device-mobile':'device-pc');window.__isMobileDevice=isMobile;})();
-</script>
 <title>Historia | Instituto Técnico</title>
 <meta name="description" content="Historia del Instituto Técnico de Santander de Quilichao, Cauca. Desde 1913 hasta el presente.">
 <meta name="theme-color" content="#142E20">
@@ -16,7 +13,7 @@
 <meta property="og:site_name" content="Instituto Técnico">
 <meta property="og:title" content="Historia | Instituto Técnico">
 <meta property="og:description" content="Desde 1913, el Instituto Técnico ha acompañado a miles de familias de Santander de Quilichao.">
-<meta property="og:image" content="assets/images/historia-hero-bg.jpg">
+<meta property="og:image" content="https://institutotecnico.edu.co/assets/images/historia-hero-bg.jpg">
 <meta property="og:url" content="https://institutotecnico.edu.co/historia.html">
 <meta property="og:locale" content="es_CO">
 <link rel="canonical" href="https://institutotecnico.edu.co/historia.html">
@@ -129,7 +126,7 @@
 }
 
 @layer base {
-  html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+  html { scroll-behavior: smooth; scroll-padding-top: 16px; overflow-x: clip; }
   body {
     min-width: 320px;
     overflow-x: clip;
@@ -303,7 +300,6 @@
     transition: transform .38s var(--ease), opacity .3s ease, visibility 0s linear .38s;
     overflow-y: auto;
     overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
   }
   .nav-drawer.is-open {
     transform: translateX(0);
@@ -501,6 +497,7 @@
   }
   .hero-scroll:hover { color: #fff; }
   .hero-scroll svg { animation: bob 2.6s ease-in-out infinite; }
+  .hero.is-out .hero-scroll svg { animation-play-state: paused; }
 
   @keyframes sweep { to { transform: translate3d(110%, 0, 0); } }
   @keyframes rise {
@@ -848,161 +845,92 @@
     flex-shrink: 0;
     transition: background var(--dur-fast) var(--ease);
   }
-  .simbolo-himno.is-playing .himno-player-icon { background: var(--dorado); }
   .himno-player-icon svg { width: 11px; height: 11px; }
-  .himno-player-icon .icon-pause { display: none; }
-  .simbolo-himno.is-playing .icon-play { display: none; }
-  .simbolo-himno.is-playing .icon-pause { display: block; }
 
-  .mini-player {
-    position: fixed;
-    z-index: 1000;
-    left: 50%;
-    bottom: calc(12px + var(--safe-bottom));
-    width: min(640px, calc(100% - 24px - var(--safe-left) - var(--safe-right)));
+  .hm { position: fixed; z-index: 1200; inset: 0; display: grid; place-items: center; padding: var(--s-3); opacity: 0; transition: opacity .28s var(--ease); }
+  .hm.is-open { opacity: 1; }
+  .hm-backdrop { position: absolute; inset: 0; background: rgb(20 46 32 / .62); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  .hm-panel {
+    position: relative;
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto auto;
-    grid-template-areas: "play title dl close" "play seek dl close";
-    align-items: center;
-    column-gap: 12px;
-    row-gap: 2px;
-    padding: 12px 14px;
-    background: rgb(20 46 32 / .9);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgb(245 241 232 / .12);
-    border-top: 2px solid var(--dorado);
-    border-radius: var(--r-md);
-    color: var(--hueso);
-    box-shadow: 0 -10px 36px -12px rgb(0 0 0 / .45);
-    transform: translate(-50%, 140%);
-    opacity: 0;
-    visibility: hidden;
-    transition: transform .45s var(--ease), opacity .3s ease, visibility 0s linear .45s;
-  }
-  .mini-player.is-open {
-    transform: translate(-50%, 0);
-    opacity: 1;
-    visibility: visible;
-    transition: transform .45s var(--ease), opacity .3s ease, visibility 0s linear 0s;
-  }
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .mini-player { background: rgb(20 46 32 / .97); }
-  }
-  .mp-btn {
-    display: flex;
-    width: 44px; height: 44px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    color: var(--hueso);
-    transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
-  }
-  .mp-btn svg { width: 20px; height: 20px; }
-  .mp-btn:hover { background: rgb(245 241 232 / .12); }
-  .mp-play {
-    grid-area: play;
-    width: 48px; height: 48px;
-    background: var(--dorado);
-    color: var(--verde-profundo);
-  }
-  .mp-play:hover { background: var(--dorado-claro); }
-  .mp-play svg { width: 18px; height: 18px; }
-  .mp-play .icon-pause { display: none; }
-  .mini-player.is-playing .mp-play .icon-play { display: none; }
-  .mini-player.is-playing .mp-play .icon-pause { display: block; }
-  .mp-download { grid-area: dl; }
-  .mp-close { grid-area: close; }
-  .mp-title {
-    grid-area: title;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    width: min(720px, 100%);
     overflow: hidden;
-    font-family: var(--font-display);
-    font-size: .98rem;
-    font-weight: 500;
-    letter-spacing: var(--track-tight);
-    line-height: 1.2;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    border: 1px solid rgb(245 241 232 / .12);
+    border-radius: 24px;
+    background: var(--satin-dark);
+    color: var(--hueso);
+    box-shadow: 0 44px 90px -32px rgb(0 0 0 / .7), inset 0 1px 0 rgb(255 255 255 / .06);
+    transform: translateY(18px) scale(.98);
+    transition: transform .4s var(--ease);
   }
-  .mp-seek {
-    grid-area: seek;
-    display: flex;
-    min-width: 0;
-    align-items: center;
-    gap: 10px;
+  .hm.is-open .hm-panel { transform: none; }
+  .hm-grab { display: none; height: 28px; touch-action: none; }
+  .hm-grab::after { content: ''; display: block; width: 40px; height: 4px; margin: 12px auto 0; border-radius: var(--r-pill); background: rgb(245 241 232 / .3); }
+  .hm-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-2); padding: 24px 24px 8px; }
+  .hm-eyebrow { margin-bottom: 6px; color: var(--dorado-claro); font-size: .68rem; font-weight: 700; letter-spacing: var(--track-wide); text-transform: uppercase; }
+  .hm-title { color: var(--hueso); font-size: var(--fs-xl); font-weight: 500; line-height: 1.1; }
+  .hm-btn {
+    display: flex; flex: none; width: 44px; height: 44px; align-items: center; justify-content: center;
+    border-radius: 50%; color: var(--hueso);
+    transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
   }
-  .mp-time {
-    flex: none;
-    min-width: 2.6em;
-    color: rgb(245 241 232 / .75);
-    font-size: .72rem;
-    font-variant-numeric: tabular-nums;
-    font-weight: 600;
-    letter-spacing: .04em;
+  .hm-btn svg { width: 20px; height: 20px; }
+  .hm-btn:hover { background: rgb(245 241 232 / .12); }
+  .hm-btn:active { transform: scale(.94); }
+  .hm-tabs { display: flex; width: fit-content; gap: 4px; margin: 8px 24px 0; padding: 4px; border-radius: var(--r-pill); background: rgb(0 0 0 / .22); }
+  .hm-tab { min-width: 112px; min-height: 44px; padding: 0 20px; border-radius: var(--r-pill); color: rgb(245 241 232 / .72); font-size: var(--fs-sm); font-weight: 600; transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+  .hm-tab[aria-selected="true"] { background: var(--dorado); color: var(--verde-profundo); }
+  .hm-body { display: grid; height: clamp(260px, 48dvh, 420px); min-height: 0; margin-top: 8px; }
+  .hm-view { grid-area: 1 / 1; position: relative; min-height: 0; }
+  .hm-view:focus-visible { outline-offset: -3px; }
+  .hm-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hm-status {
+    position: absolute; left: 0; right: 0; bottom: 14px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    color: rgb(245 241 232 / .75); font-size: .74rem; font-weight: 600; letter-spacing: .1em; text-align: center; text-transform: uppercase;
   }
-  .mp-time:last-child { text-align: right; }
-  .mp-range {
-    --p: 0%;
-    flex: 1;
-    min-width: 0;
-    height: 28px;
-    background: transparent;
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-    touch-action: pan-y;
-  }
-  .mp-range:disabled { cursor: default; opacity: .5; }
-  .mp-range::-webkit-slider-runnable-track {
-    height: 4px;
-    border-radius: var(--r-pill);
-    background: linear-gradient(90deg, var(--dorado) var(--p), rgb(245 241 232 / .22) var(--p));
-  }
-  .mp-range::-moz-range-track {
-    height: 4px;
-    border-radius: var(--r-pill);
-    background: rgb(245 241 232 / .22);
-  }
-  .mp-range::-moz-range-progress {
-    height: 4px;
-    border-radius: var(--r-pill);
-    background: var(--dorado);
-  }
-  .mp-range::-webkit-slider-thumb {
-    width: 14px; height: 14px;
-    margin-top: -5px;
-    border: 0;
-    border-radius: 50%;
-    background: var(--dorado-claro);
-    box-shadow: 0 0 0 4px rgb(201 162 39 / .22);
-    -webkit-appearance: none;
-    appearance: none;
-  }
-  .mp-range::-moz-range-thumb {
-    width: 14px; height: 14px;
-    border: 0;
-    border-radius: 50%;
-    background: var(--dorado-claro);
-    box-shadow: 0 0 0 4px rgb(201 162 39 / .22);
-  }
-  body.player-open .to-top { bottom: calc(104px + var(--safe-bottom)); }
-  @media (max-width: 520px) {
-    .mini-player {
-      grid-template-columns: auto minmax(0, 1fr) auto auto;
-      grid-template-areas: "play title dl close" "seek seek seek seek";
-      column-gap: 8px;
-      row-gap: 4px;
-      padding: 10px 12px 12px;
-    }
-    .mp-btn { width: 40px; height: 40px; }
-    .mp-play { width: 44px; height: 44px; }
-    body.player-open .to-top { bottom: calc(124px + var(--safe-bottom)); }
+  .hm-retry { min-height: 44px; padding: 0 22px; border-radius: var(--r-pill); background: var(--dorado); color: var(--verde-profundo); font-size: var(--fs-sm); font-weight: 700; letter-spacing: 0; text-transform: none; }
+  .hm-lyrics { overflow-y: auto; overscroll-behavior: contain; padding: 8px 24px 32px; -webkit-mask-image: linear-gradient(transparent, #000 20px, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(transparent, #000 20px, #000 calc(100% - 28px), transparent); }
+  .hm-stanza { max-width: 34ch; margin: 0 auto 1.8em; color: var(--hueso); font-family: var(--font-display); font-size: clamp(1.15rem, 1.02rem + .7vw, 1.4rem); font-style: italic; line-height: 1.75; text-align: center; }
+  .hm-stanza.is-chorus { color: var(--dorado-claro); }
+  .hm-empty { max-width: 32ch; margin: 18% auto 0; color: rgb(245 241 232 / .7); font-family: var(--font-display); font-size: var(--fs-lg); font-style: italic; text-align: center; }
+  .hm-controls { display: grid; gap: 6px; padding: 12px 24px calc(20px + var(--safe-bottom)); border-top: 1px solid rgb(245 241 232 / .1); background: rgb(0 0 0 / .16); }
+  .hm-seek { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; }
+  .hm-time { min-width: 2.8em; color: rgb(245 241 232 / .75); font-size: .78rem; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .hm-time:last-child { text-align: right; }
+  .hm-range { --p: 0%; width: 100%; height: 44px; background: transparent; cursor: pointer; -webkit-appearance: none; appearance: none; touch-action: pan-y; }
+  .hm-range:disabled { cursor: default; opacity: .5; }
+  .hm-range::-webkit-slider-runnable-track { height: 4px; border-radius: var(--r-pill); background: linear-gradient(90deg, var(--dorado) var(--p), rgb(245 241 232 / .22) var(--p)); }
+  .hm-range::-moz-range-track { height: 4px; border-radius: var(--r-pill); background: rgb(245 241 232 / .22); }
+  .hm-range::-moz-range-progress { height: 4px; border-radius: var(--r-pill); background: var(--dorado); }
+  .hm-range::-webkit-slider-thumb { width: 20px; height: 20px; margin-top: -8px; border: 0; border-radius: 50%; background: var(--dorado-claro); box-shadow: 0 0 0 5px rgb(201 162 39 / .24); -webkit-appearance: none; appearance: none; }
+  .hm-range::-moz-range-thumb { width: 20px; height: 20px; border: 0; border-radius: 50%; background: var(--dorado-claro); box-shadow: 0 0 0 5px rgb(201 162 39 / .24); }
+  .hm-row { display: flex; align-items: center; justify-content: center; gap: clamp(20px, 6vw, 40px); }
+  .hm-play { width: 72px; height: 72px; background: var(--dorado); color: var(--verde-profundo); box-shadow: 0 12px 30px -12px rgb(201 162 39 / .7); }
+  .hm-play:hover { background: var(--dorado-claro); }
+  .hm-play svg { width: 26px; height: 26px; }
+  .hm .icon-pause, .hm .icon-muted { display: none; }
+  .hm.is-playing .icon-play, .hm-mute.is-muted .icon-vol { display: none; }
+  .hm.is-playing .icon-pause, .hm-mute.is-muted .icon-muted { display: block; }
+  @media (max-width: 720px) {
+    .hm { padding: 0; place-items: stretch; }
+    .hm-panel { width: 100vw; height: 100dvh; border: 0; border-radius: 24px 24px 0 0; transform: translateY(100%); }
+    .hm-grab { display: block; }
+    .hm-head { padding-top: 4px; }
+    .hm-tabs { width: auto; margin-inline: 24px; }
+    .hm-tab { flex: 1; }
+    .hm-body { height: auto; }
+    .hm-lyrics { padding-bottom: 40px; }
   }
 
   #epocas, #simbolos, #legado, #actualidad {
     content-visibility: auto;
-    contain-intrinsic-size: auto 900px;
+    contain-intrinsic-size: auto 2600px;
   }
+  #simbolos { contain-intrinsic-size: auto 760px; }
+  #legado { contain-intrinsic-size: auto 640px; }
+  #actualidad { contain-intrinsic-size: auto 780px; }
 
   .legado-section { background: var(--surface-cream); }
   .legado-wrap { position: relative; }
@@ -1038,7 +966,6 @@
   .legado-card p { color: var(--gris-oscuro); font-size: .94rem; line-height: 1.75; margin-bottom: .8em; }
   .legado-card p:last-child { margin-bottom: 0; }
   .legado-card strong { color: var(--verde-oscuro); font-weight: 600; }
-  .legado-card .simbolo-lema { font-size: 1.15rem; margin: 0 0 10px; }
 
   .legado-nav { display: none; }
 
@@ -1276,13 +1203,16 @@
     box-shadow: 0 20px 48px -16px rgba(20, 46, 32, .55), 0 2px 8px rgba(20, 46, 32, .15);
     transform: translateY(calc(100% + 24px));
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: transform .45s var(--ease), opacity .3s ease;
+    transition: transform .45s var(--ease), opacity .3s ease, visibility 0s linear .45s;
   }
   .chronicle-tip.is-visible {
     transform: translateY(0);
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
+    transition: transform .45s var(--ease), opacity .3s ease, visibility 0s;
   }
   .chronicle-tip-icon {
     flex-shrink: 0;
@@ -1356,9 +1286,10 @@
     .hero-stats span { font-size: .6rem; letter-spacing: .1em; text-align: left; }
     .hero-ghost { right: -8vw; bottom: 24%; font-size: 70vw; }
 
-    .chronicle.is-enhanced { --step: 56vh; }
-    @supports (height: 100dvh) {
-      .chronicle.is-enhanced { --step: 56dvh; }
+    @supports (height: 100svh) {
+      .chronicle.is-enhanced { --step: 90svh; }
+      .chronicle.is-enhanced .chronicle-track { height: calc(100svh + var(--n) * var(--step)); }
+      .chronicle.is-enhanced .chronicle-stage { height: 100svh; }
     }
     .chronicle.is-enhanced .chronicle-head {
       padding-top: calc(var(--safe-top) + 48px);
@@ -1381,7 +1312,7 @@
     .chronicle.is-enhanced .ms-text { font-size: .95rem; line-height: 1.6; }
     .chronicle.is-enhanced .chronicle-rail { flex-direction: column; align-items: stretch; gap: 4px; }
     .chronicle-count { order: -1; align-self: flex-end; }
-    .rail-btn { min-height: 32px; justify-content: flex-end; }
+    .rail-btn { min-height: 32px; justify-content: flex-end; pointer-events: none; }
     .rail-label {
       position: absolute; width: 1px; height: 1px; margin: -1px;
       overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap;
@@ -1389,6 +1320,11 @@
   }
 
   .in-chronicle .to-top { opacity: 0; pointer-events: none; }
+
+  button, [role="button"], .btn { touch-action: manipulation; }
+  @media (hover: none) {
+    .btn:active, .actualidad-toggle:active, .simbolo-himno:active, .legado-nav button:active, .nav-fab:active, .to-top:active { transform: scale(.98); }
+  }
 
   @media (max-width: 992px) {
     .epoch { grid-template-columns: 1fr; gap: var(--s-4); }
@@ -1402,24 +1338,24 @@
   @media (max-width: 860px) {
     :root { --section-pad: 72px; --header-h: 64px; }
 
-    .legado-wrap { margin-inline: -20px; }
+    .legado-wrap { margin-inline: -24px; }
     .legado-grid {
       display: flex;
       gap: 12px;
       overflow-x: auto;
       overflow-y: hidden;
+      overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
-      -ms-overflow-style: none;
-      padding: 4px 20px 12px;
-      scroll-padding-left: 20px;
+      padding: 4px 24px 12px;
+      scroll-padding-left: 24px;
     }
     .legado-grid::-webkit-scrollbar { display: none; }
     .legado-card {
       flex: 0 0 84%;
       min-width: 0;
       scroll-snap-align: start;
+      scroll-snap-stop: always;
       padding: var(--s-3);
     }
     .legado-card:hover { transform: none; box-shadow: none; border-color: var(--line); }
@@ -1467,6 +1403,8 @@
     .epoch-title { font-size: clamp(1.6rem, 6.5vw, 2.2rem); }
 
     .legado-card { flex: 0 0 88%; }
+    .legado-wrap { margin-inline: -20px; }
+    .legado-grid { padding-inline: 20px; scroll-padding-left: 20px; }
 
     .simbolos-grid { grid-template-columns: 1fr; }
     .actualidad-toggle { width: 100%; }
@@ -1528,7 +1466,6 @@
 
     <div class="container hero-inner">
       <div class="hero-copy">
-        <p class="eyebrow hero-rise" style="--r:0">Santander de Quilichao · Cauca</p>
         <h1 class="hero-title hero-rise" id="hero-title" style="--r:1">Historia del Instituto Técnico</h1>
         <p class="hero-desc hero-rise" style="--r:2">El Instituto Técnico nació el 3 de abril de 1913, cuando la Ordenanza 13 le dio vida jurídica. Desde entonces ha acompañado a miles de familias de Santander de Quilichao.</p>
         <div class="hero-actions hero-rise" style="--r:3">
@@ -1552,7 +1489,7 @@
   </section>
 
   <section class="chronicle" id="recorrido" aria-labelledby="recorrido-title" data-chronicle>
-    <div class="chronicle-track" style="--n:13">
+    <div class="chronicle-track">
       <div class="chronicle-stage">
         <div class="chronicle-sheen" aria-hidden="true"></div>
         <div class="container chronicle-inner">
@@ -1610,7 +1547,7 @@
             <li class="ms">
               <p class="ms-year"><time datetime="2017">2017</time></p>
               <h3 class="ms-title">Primer sitio web</h3>
-              <p class="ms-text">El Magister Gersaín León Franco crea el primer sitio web institucional.</p>
+              <p class="ms-text">El Magíster Gersaín León Franco crea el primer sitio web institucional.</p>
             </li>
             <li class="ms">
               <p class="ms-year"><time datetime="2024">2024</time></p>
@@ -1699,7 +1636,7 @@
           <div class="epoch-text">
             <span class="epoch-year-badge">2010 — Presente</span>
             <h3 class="epoch-title">Era digital</h3>
-            <p>En 2017 el Magister <strong>Gersaín León Franco</strong> creó el primer sitio web institucional. Desde entonces la comunidad puede consultar por internet la información del colegio.</p>
+            <p>En 2017 el Magíster <strong>Gersaín León Franco</strong> creó el primer sitio web institucional. Desde entonces la comunidad puede consultar por internet la información del colegio.</p>
             <p>Hoy el Instituto Técnico tiene más de <strong>3.300 estudiantes</strong>, 31 aulas, 4 laboratorios de química y física, 2 aulas de cómputo, cafetería y biblioteca.</p>
           </div>
           <div class="epoch-img-wrap">
@@ -1721,21 +1658,21 @@
       <div class="simbolos-grid">
         <div class="simbolo-card reveal">
           <div class="simbolo-icon">
-            <img src="assets/images/logo.png" alt="Escudo del Instituto Técnico" width="56" height="56">
+            <img src="assets/images/logo.png" alt="Escudo del Instituto Técnico" width="56" height="56" loading="lazy" decoding="async">
           </div>
           <h3>Escudo</h3>
-          <p>Lleva el lema <em>Labor Omnia Vincit Improbus</em>. Su traducción: «el trabajo de todos vence las dificultades».</p>
+          <p>Lleva el lema <em lang="la">Labor Omnia Vincit Improbus</em>. Su traducción: «el trabajo de todos vence las dificultades».</p>
         </div>
 
         <div class="simbolo-card reveal" style="--d:1">
-          <div class="simbolo-icon" aria-hidden="true">
-            <img src="assets/images/bandera.png" alt="Bandera del Instituto Técnico" width="56" height="56">
+          <div class="simbolo-icon">
+            <img src="assets/images/bandera.png" alt="" width="56" height="56" loading="lazy" decoding="async">
           </div>
           <h3>Bandera</h3>
           <p>Lleva los colores de la institución y se iza en los actos cívicos.</p>
         </div>
 
-        <div class="simbolo-card simbolo-himno reveal" id="himnoCard" style="--d:2" role="button" tabindex="0" aria-label="Reproducir el himno institucional">
+        <div class="simbolo-card simbolo-himno reveal" id="himnoCard" style="--d:2" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Abrir el reproductor del himno institucional">
           <div class="simbolo-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
           </div>
@@ -1743,10 +1680,9 @@
           <p>Se entona en los actos oficiales. La letra recoge más de un siglo de historia institucional.</p>
           <div class="himno-player">
             <div class="himno-player-icon" aria-hidden="true">
-              <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-              <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
             </div>
-            <span id="himnoText">Toca para reproducir</span>
+            <span>Escuchar y ver la letra</span>
           </div>
         </div>
 
@@ -1755,7 +1691,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/></svg>
           </div>
           <h3>Lema</h3>
-          <p class="simbolo-lema">Labor Omnia Vincit Improbus</p>
+          <p class="simbolo-lema" lang="la">Labor Omnia Vincit Improbus</p>
           <p>«El trabajo de todos vence las dificultades». Aparece en el escudo y resume el principio de la institución.</p>
         </div>
       </div>
@@ -1770,7 +1706,7 @@
       </header>
 
       <div class="legado-wrap reveal">
-        <div class="legado-grid" id="legadoScroller">
+        <div class="legado-grid" id="legadoScroller" role="region" aria-label="Egresados destacados" tabindex="0">
           <div class="legado-card">
             <div class="legado-icon" aria-hidden="true">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
@@ -1795,18 +1731,9 @@
             <h3>Profesionales en Colombia y el exterior</h3>
             <p>El Instituto Técnico ha formado a profesionales que hoy trabajan en Colombia y en el exterior. Entre ellos: <strong>Jairo Renán Flórez Hurtado, Lyda Sabogal Paz, Renzo Mina, Arcelio Ararath Guazá, Néstor Racines Carabalí, Diana Patricia Ocampo Holguín y Richard Navia</strong>.</p>
           </div>
-
-          <div class="legado-card">
-            <div class="legado-icon" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/></svg>
-            </div>
-            <h3>Lema institucional</h3>
-            <p class="simbolo-lema">Labor Omnia Vincit Improbus</p>
-            <p>«El trabajo de todos vence las dificultades». Aparece en el escudo y resume el principio de la institución.</p>
-          </div>
         </div>
 
-        <div class="legado-nav" aria-hidden="true">
+        <div class="legado-nav">
           <button id="legadoPrev" type="button" aria-label="Anterior">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
           </button>
@@ -1855,7 +1782,7 @@
             <div class="actualidad-card">
               <span class="actualidad-year">2026</span>
               <h3>Sitio web renovado</h3>
-              <p>Se publicó el nuevo sitio web institucional. Continúa el trabajo que empezó el Magister Gersaín León Franco en 2017.</p>
+              <p>Se publicó el nuevo sitio web institucional. Continúa el trabajo que empezó el Magíster Gersaín León Franco en 2017.</p>
             </div>
           </div>
         </div>
@@ -1879,7 +1806,7 @@
 
 </main>
 
-<div class="chronicle-tip" id="chronicleTip" role="dialog" aria-label="Cómo navegar la línea de tiempo">
+<div class="chronicle-tip" id="chronicleTip" role="region" aria-label="Cómo navegar la línea de tiempo">
   <div class="chronicle-tip-icon" aria-hidden="true">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M12 5v14"/>
@@ -1907,10 +1834,10 @@
         <p>Institución educativa oficial de Santander de Quilichao, Cauca. Fundada en 1913.</p>
         <div class="socials">
           <a href="https://www.facebook.com/IT.TECNICO2013/" target="_blank" rel="noopener noreferrer" class="social" aria-label="Facebook">
-            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
           </a>
           <a href="https://www.youtube.com/channel/UCwMarfY8Bpd3uRq8pfGAJbw" target="_blank" rel="noopener noreferrer" class="social" aria-label="YouTube">
-            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.16 1 12 1 12s0 3.84.46 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.84 23 12 23 12s0-3.84-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.16 1 12 1 12s0 3.84.46 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.84 23 12 23 12s0-3.84-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
           </a>
         </div>
       </div>
@@ -1947,27 +1874,59 @@
 </footer>
 
 <button class="to-top" data-to-top aria-label="Volver arriba">
-  <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
-<div class="mini-player" id="miniPlayer" role="region" aria-label="Reproductor del himno institucional" inert>
-  <audio id="himnoAudio" src="assets/audio/himno-institucional.mp3" preload="metadata" aria-label="Himno institucional del Instituto Técnico"></audio>
-  <button type="button" class="mp-btn mp-play" id="mpPlay" aria-label="Reproducir">
-    <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-    <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
-  </button>
-  <p class="mp-title">Himno institucional</p>
-  <div class="mp-seek">
-    <span class="mp-time" id="mpCurrent">0:00</span>
-    <input type="range" class="mp-range" id="mpRange" min="0" max="0" step="any" value="0" aria-label="Posición del himno" disabled>
-    <span class="mp-time" id="mpDuration">0:00</span>
-  </div>
-  <a class="mp-btn mp-download" href="assets/audio/himno-institucional.mp3" download aria-label="Descargar el himno institucional">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>
-  </a>
-  <button type="button" class="mp-btn mp-close" id="mpClose" aria-label="Cerrar reproductor">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-  </button>
+<div class="hm" id="himnoModal" hidden>
+  <div class="hm-backdrop" data-hm-close></div>
+  <section class="hm-panel" role="dialog" aria-modal="true" aria-labelledby="hmTitle" tabindex="-1">
+    <div class="hm-grab" aria-hidden="true"></div>
+    <header class="hm-head">
+      <div>
+        <p class="hm-eyebrow">Símbolos institucionales</p>
+        <h2 class="hm-title" id="hmTitle">Himno del Instituto Técnico</h2>
+      </div>
+      <button type="button" class="hm-btn" data-hm-close aria-label="Cerrar reproductor del himno">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </header>
+    <div class="hm-tabs" role="tablist" aria-label="Vista del himno">
+      <button type="button" class="hm-tab" role="tab" id="hmTabPlayer" aria-selected="true" aria-controls="hmPlayer">Reproductor</button>
+      <button type="button" class="hm-tab" role="tab" id="hmTabLyrics" aria-selected="false" aria-controls="hmLyrics" tabindex="-1">Letra</button>
+    </div>
+    <div class="hm-body">
+      <div class="hm-view hm-stage" id="hmPlayer" role="tabpanel" aria-labelledby="hmTabPlayer">
+        <canvas id="hmCanvas" aria-hidden="true"></canvas>
+        <div class="hm-status" id="hmStatus" role="status">
+          <span id="hmStatusText"></span>
+          <button type="button" class="hm-retry" id="hmRetry" hidden>Reintentar</button>
+        </div>
+      </div>
+      <div class="hm-view hm-lyrics" id="hmLyrics" role="tabpanel" aria-labelledby="hmTabLyrics" tabindex="0" hidden>
+        <div id="hmLyricsBody"></div>
+      </div>
+    </div>
+    <div class="hm-controls">
+      <div class="hm-seek">
+        <span class="hm-time" id="hmCurrent">0:00</span>
+        <input type="range" class="hm-range" id="hmRange" min="0" max="0" step="any" value="0" aria-label="Posición del himno" disabled>
+        <span class="hm-time" id="hmDuration">0:00</span>
+      </div>
+      <div class="hm-row">
+        <button type="button" class="hm-btn hm-mute" id="hmMute" aria-pressed="false" aria-label="Silenciar">
+          <svg class="icon-vol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+          <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
+        </button>
+        <button type="button" class="hm-btn hm-play" id="hmPlay" aria-label="Reproducir">
+          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="7 4 20 12 7 20 7 4"/></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+        </button>
+        <a class="hm-btn" href="assets/audio/himno-institucional.mp3" download aria-label="Descargar el himno institucional">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
 </div>
 
 <script>
@@ -1996,12 +1955,15 @@
     var n = items.length;
     if (!track || !stage || !odo || !rail || !sheen || !n) return null;
 
+    root.style.setProperty('--n', n);
     var years = items.map(function (el) { return el.querySelector('time').getAttribute('datetime'); });
     var cols = [];
     var buttons = [];
     var enabled = false;
     var visible = false;
     var cur = -1;
+    var settle = 0;
+    var coarse = window.matchMedia('(max-width: 860px)');
 
     for (var c = 0; c < 4; c++) {
       var col = document.createElement('span');
@@ -2078,14 +2040,28 @@
       return { top: trackRect.top, scrollable: Math.max(1, trackRect.height - stageHeight) };
     }
 
+    function pick(p) {
+      var pos = p * n;
+      if (cur >= 0 && pos > cur - 0.06 && pos < cur + 1.06) return cur;
+      return Math.min(n - 1, Math.floor(pos));
+    }
+
     function update(force) {
       if (!enabled || (!visible && !force)) return;
       var m = metrics();
       var p = clamp(-m.top / m.scrollable, 0, 1);
-      var i = Math.min(n - 1, Math.floor(p * n));
-      if (i !== cur) setIndex(i);
+      var i = pick(p);
       fill.style.transform = 'scaleX(' + p.toFixed(4) + ')';
       sheen.style.transform = 'translate3d(' + (-p * 18).toFixed(2) + '%,0,0)';
+      if (i === cur) { clearTimeout(settle); settle = 0; return; }
+      if (force || cur < 0 || !coarse.matches) { clearTimeout(settle); settle = 0; setIndex(i); return; }
+      if (settle) return;
+      settle = setTimeout(function () {
+        settle = 0;
+        var mm = metrics();
+        var k = pick(clamp(-mm.top / mm.scrollable, 0, 1));
+        if (k !== cur) setIndex(k);
+      }, 140);
     }
 
     function goTo(i) {
@@ -2193,6 +2169,7 @@
     if (hero && 'IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {
         heroVisible = entries[0].isIntersecting;
+        hero.classList.toggle('is-out', !heroVisible);
       }).observe(hero);
     }
     frame();
@@ -2298,104 +2275,294 @@
       });
     }
 
-    var himnoCard = document.getElementById('himnoCard');
-    var himnoAudio = document.getElementById('himnoAudio');
-    var himnoText = document.getElementById('himnoText');
-    var player = document.getElementById('miniPlayer');
-    var mpPlay = document.getElementById('mpPlay');
-    var mpRange = document.getElementById('mpRange');
-    var mpCurrent = document.getElementById('mpCurrent');
-    var mpDuration = document.getElementById('mpDuration');
-    var mpClose = document.getElementById('mpClose');
-    if (himnoCard && himnoAudio && himnoText && player && mpPlay && mpRange && mpCurrent && mpDuration && mpClose) {
-      var seeking = false;
+    var LETRA = []; /* [{ versos: ['...'], coro: false }] — pegar aquí la letra oficial */
+    var SRC = 'assets/audio/himno-institucional.mp3';
+    var card = document.getElementById('himnoCard');
+    var modal = document.getElementById('himnoModal');
+    if (card && modal) {
+      var $ = function (id) { return document.getElementById(id); };
+      var panel = modal.querySelector('.hm-panel');
+      var canvas = $('hmCanvas'), g = canvas.getContext('2d');
+      var statusText = $('hmStatusText'), retry = $('hmRetry'), range = $('hmRange');
+      var tCur = $('hmCurrent'), tDur = $('hmDuration'), playBtn = $('hmPlay'), muteBtn = $('hmMute');
+      var tabs = [$('hmTabPlayer'), $('hmTabLyrics')], views = [$('hmPlayer'), $('hmLyrics')];
+      var N = 64, bars = new Float32Array(N), cos = new Float32Array(N), sin = new Float32Array(N);
+      var gold = getComputedStyle(document.documentElement).getPropertyValue('--dorado-claro').trim() || '#DFB93F';
+      var isOpen = false, audio = null, session = null, actx = null, analyser = null, data = null;
+      var raf = 0, resizeT = 0, hideT = 0, seeking = false, lastFocus = null;
+      var W = 0, H = 0, dpr = 1, bass = 0, glow = null;
+      for (var b = 0; b < N; b++) { var a = (b / N) * Math.PI * 2 - Math.PI / 2; cos[b] = Math.cos(a); sin[b] = Math.sin(a); }
 
       var fmt = function (s) {
         if (!isFinite(s) || s < 0) s = 0;
-        var m = Math.floor(s / 60);
         var r = Math.floor(s % 60);
-        return m + ':' + (r < 10 ? '0' : '') + r;
+        return Math.floor(s / 60) + ':' + (r < 10 ? '0' : '') + r;
+      };
+      var say = function (text, withRetry) {
+        statusText.textContent = text || '';
+        retry.hidden = !withRetry;
       };
       var paint = function (t) {
-        var d = himnoAudio.duration;
-        var pct = isFinite(d) && d > 0 ? clamp((t / d) * 100, 0, 100) : 0;
-        mpRange.value = t;
-        mpRange.style.setProperty('--p', pct.toFixed(2) + '%');
-        mpCurrent.textContent = fmt(t);
+        var d = audio ? audio.duration : 0;
+        var ok = isFinite(d) && d > 0;
+        range.value = t;
+        range.style.setProperty('--p', (ok ? clamp((t / d) * 100, 0, 100) : 0).toFixed(2) + '%');
+        range.setAttribute('aria-valuetext', fmt(t) + ' de ' + fmt(ok ? d : 0));
+        tCur.textContent = fmt(t);
       };
       var setDuration = function () {
-        var d = himnoAudio.duration;
-        var ok = isFinite(d) && d > 0;
-        mpRange.max = ok ? d : 0;
-        mpRange.disabled = !ok;
-        mpDuration.textContent = fmt(ok ? d : 0);
-        paint(himnoAudio.currentTime);
+        var d = audio.duration, ok = isFinite(d) && d > 0;
+        range.max = ok ? d : 0;
+        range.disabled = !ok;
+        tDur.textContent = fmt(ok ? d : 0);
+        paint(audio.currentTime);
       };
-      var setPlaying = function (playing) {
-        player.classList.toggle('is-playing', playing);
-        himnoCard.classList.toggle('is-playing', playing);
-        mpPlay.setAttribute('aria-label', playing ? 'Pausar' : 'Reproducir');
-        himnoCard.setAttribute('aria-label', playing ? 'Pausar el himno institucional' : 'Reproducir el himno institucional');
-        himnoText.textContent = playing ? 'Reproduciendo…' : 'Toca para reproducir';
+      var setPlaying = function (p) {
+        modal.classList.toggle('is-playing', p);
+        playBtn.setAttribute('aria-label', p ? 'Pausar' : 'Reproducir');
       };
-      var openPlayer = function () {
-        player.classList.add('is-open');
-        player.removeAttribute('inert');
-        document.body.classList.add('player-open');
-      };
-      var closePlayer = function () {
-        var hadFocus = player.contains(document.activeElement);
-        himnoAudio.pause();
-        player.classList.remove('is-open');
-        player.setAttribute('inert', '');
-        document.body.classList.remove('player-open');
-        if (hadFocus) himnoCard.focus({ preventScroll: true });
-      };
-      var playPause = function () {
-        if (himnoAudio.paused || himnoAudio.ended) {
-          var p = himnoAudio.play();
-          if (p && p.catch) p.catch(function () { setPlaying(false); });
-        } else {
-          himnoAudio.pause();
+
+      function idleBars() {
+        for (var i = 0; i < N; i++) bars[i] = .06 + .05 * Math.abs(Math.sin(i * .45));
+        bass = 0;
+      }
+      function resizeCanvas() {
+        if (!canvas.clientWidth || !canvas.clientHeight) return;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = canvas.clientWidth; H = canvas.clientHeight;
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        var m = Math.min(W, H) * .27;
+        glow = g.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, m * 1.7);
+        glow.addColorStop(0, 'rgba(201,162,39,.55)');
+        glow.addColorStop(1, 'rgba(201,162,39,0)');
+        frame(false);
+      }
+      function frame(live) {
+        if (!W) return;
+        var i, m = Math.min(W, H), r = m * .27, L = m * .2, cx = W / 2, cy = H / 2;
+        if (live) {
+          analyser.getByteFrequencyData(data);
+          var use = Math.floor(data.length * .62), sum = 0;
+          for (i = 0; i < N; i++) {
+            var k = i < N / 2 ? i : N - 1 - i;
+            bars[i] += (data[Math.floor(Math.pow(k / (N / 2), 1.5) * (use - 1))] / 255 - bars[i]) * .35;
+          }
+          for (i = 0; i < 8; i++) sum += data[i];
+          bass += (sum / 8 / 255 - bass) * .25;
         }
-      };
-      var onCard = function () {
-        if (!player.classList.contains('is-open')) openPlayer();
-        playPause();
-      };
+        g.setTransform(dpr, 0, 0, dpr, 0, 0);
+        g.clearRect(0, 0, W, H);
+        g.globalAlpha = .18 + bass * .5;
+        g.fillStyle = glow;
+        g.beginPath(); g.arc(cx, cy, r * 1.7, 0, 6.2832); g.fill();
+        g.globalAlpha = .4 + bass * .5;
+        g.strokeStyle = gold; g.lineWidth = 1.5;
+        g.beginPath(); g.arc(cx, cy, r - 10 - bass * 8, 0, 6.2832); g.stroke();
+        g.globalAlpha = 1;
+        g.lineWidth = Math.max(2, m * .012); g.lineCap = 'round';
+        g.beginPath();
+        for (i = 0; i < N; i++) {
+          var len = 4 + bars[i] * L;
+          g.moveTo(cx + cos[i] * r, cy + sin[i] * r);
+          g.lineTo(cx + cos[i] * (r + len), cy + sin[i] * (r + len));
+        }
+        g.stroke();
+      }
+      function wantLoop() { return isOpen && audio && !audio.paused && analyser && !document.hidden && !reduceMQ.matches; }
+      function loop() {
+        raf = 0;
+        if (!wantLoop()) return;
+        frame(true);
+        raf = requestAnimationFrame(loop);
+      }
+      function sync() {
+        if (wantLoop()) { if (!raf) raf = requestAnimationFrame(loop); }
+        else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      }
+      function setupGraph() {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (actx || !AC || reduceMQ.matches) return;
+        try {
+          actx = new AC();
+          var src = actx.createMediaElementSource(audio);
+          analyser = actx.createAnalyser();
+          analyser.fftSize = 256;
+          analyser.smoothingTimeConstant = .82;
+          src.connect(analyser);
+          analyser.connect(actx.destination);
+          data = new Uint8Array(analyser.frequencyBinCount);
+        } catch (e) { teardownGraph(); }
+      }
+      function teardownGraph() {
+        if (actx) actx.close().catch(function () {});
+        actx = analyser = data = null;
+      }
+      function toggle() {
+        if (!audio) return;
+        if (audio.paused || audio.ended) {
+          setupGraph();
+          if (actx && actx.state === 'suspended') actx.resume();
+          var p = audio.play();
+          if (p && p.catch) p.catch(function (e) { if (isOpen && e.name !== 'AbortError') say('No se pudo reproducir el himno.', true); });
+        } else {
+          audio.pause();
+        }
+      }
 
-      himnoCard.addEventListener('click', onCard);
-      himnoCard.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onCard(); }
-      });
-      mpPlay.addEventListener('click', playPause);
-      mpClose.addEventListener('click', closePlayer);
+      function selectTab(i, focus) {
+        tabs.forEach(function (t, k) {
+          t.setAttribute('aria-selected', String(k === i));
+          t.tabIndex = k === i ? 0 : -1;
+          views[k].hidden = k !== i;
+        });
+        if (focus) tabs[i].focus();
+        if (i === 0) resizeCanvas();
+      }
+      function renderLyrics() {
+        var box = $('hmLyricsBody');
+        if (box.childElementCount) return;
+        if (!LETRA.length) {
+          var e = document.createElement('p');
+          e.className = 'hm-empty';
+          e.textContent = 'La letra del himno aún no está publicada en este sitio.';
+          box.appendChild(e);
+          return;
+        }
+        LETRA.forEach(function (st) {
+          var p = document.createElement('p');
+          p.className = 'hm-stanza' + (st.coro ? ' is-chorus' : '');
+          st.versos.forEach(function (v, i) {
+            if (i) p.appendChild(document.createElement('br'));
+            p.appendChild(document.createTextNode(v));
+          });
+          box.appendChild(p);
+        });
+      }
 
-      mpRange.addEventListener('input', function () {
-        seeking = true;
-        paint(parseFloat(mpRange.value) || 0);
+      function open() {
+        if (isOpen) return;
+        isOpen = true;
+        lastFocus = document.activeElement;
+        clearTimeout(hideT);
+        session = new AbortController();
+        var o = { signal: session.signal };
+        audio = document.createElement('audio');
+        audio.preload = 'metadata';
+        audio.src = SRC;
+        audio.addEventListener('loadedmetadata', setDuration, o);
+        audio.addEventListener('durationchange', setDuration, o);
+        audio.addEventListener('timeupdate', function () { if (!seeking) paint(audio.currentTime); }, o);
+        audio.addEventListener('waiting', function () { say('Cargando…'); }, o);
+        audio.addEventListener('playing', function () { say(''); }, o);
+        audio.addEventListener('play', function () { setPlaying(true); sync(); }, o);
+        audio.addEventListener('pause', function () { setPlaying(false); sync(); }, o);
+        audio.addEventListener('ended', function () { setPlaying(false); audio.currentTime = 0; paint(0); idleBars(); frame(false); sync(); }, o);
+        audio.addEventListener('error', function () { setPlaying(false); say('No se pudo cargar el himno.', true); sync(); }, o);
+        window.addEventListener('resize', function () {
+          clearTimeout(resizeT);
+          resizeT = setTimeout(resizeCanvas, 150);
+        }, o);
+        document.addEventListener('visibilitychange', sync, o);
+        idleBars(); paint(0); setDuration(); setPlaying(false);
+        say('Pulsa reproducir para escuchar el himno');
+        renderLyrics();
+        modal.hidden = false;
+        document.body.classList.add('no-scroll');
+        selectTab(0);
+        void modal.offsetWidth;
+        modal.classList.add('is-open');
+        playBtn.focus({ preventScroll: true });
+        toggle();
+      }
+      function close() {
+        if (!isOpen) return;
+        isOpen = false;
+        if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        clearTimeout(resizeT);
+        session.abort();
+        audio.pause();
+        audio.removeAttribute('src');
+        audio.load();
+        audio = null;
+        teardownGraph();
+        range.disabled = true;
+        muteBtn.classList.remove('is-muted');
+        muteBtn.setAttribute('aria-pressed', 'false');
+        muteBtn.setAttribute('aria-label', 'Silenciar');
+        modal.classList.remove('is-open');
+        document.body.classList.remove('no-scroll');
+        hideT = setTimeout(function () { modal.hidden = true; }, 320);
+        if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+      }
+
+      card.addEventListener('click', open);
+      card.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
       });
-      mpRange.addEventListener('change', function () {
-        himnoAudio.currentTime = parseFloat(mpRange.value) || 0;
+      modal.querySelectorAll('[data-hm-close]').forEach(function (el) { el.addEventListener('click', close); });
+      playBtn.addEventListener('click', toggle);
+      retry.addEventListener('click', function () {
+        say('Cargando…', false);
+        audio.src = SRC;
+        audio.load();
+        toggle();
+      });
+      muteBtn.addEventListener('click', function () {
+        if (!audio) return;
+        audio.muted = !audio.muted;
+        muteBtn.classList.toggle('is-muted', audio.muted);
+        muteBtn.setAttribute('aria-pressed', String(audio.muted));
+        muteBtn.setAttribute('aria-label', audio.muted ? 'Activar sonido' : 'Silenciar');
+      });
+      range.addEventListener('input', function () { seeking = true; paint(parseFloat(range.value) || 0); });
+      range.addEventListener('change', function () {
+        if (audio) audio.currentTime = parseFloat(range.value) || 0;
         seeking = false;
       });
-
-      himnoAudio.addEventListener('timeupdate', function () { if (!seeking) paint(himnoAudio.currentTime); });
-      himnoAudio.addEventListener('seeked', function () { if (!seeking) paint(himnoAudio.currentTime); });
-      himnoAudio.addEventListener('loadedmetadata', setDuration);
-      himnoAudio.addEventListener('durationchange', setDuration);
-      himnoAudio.addEventListener('play', function () { setPlaying(true); });
-      himnoAudio.addEventListener('pause', function () { setPlaying(false); });
-      himnoAudio.addEventListener('ended', function () {
-        setPlaying(false);
-        himnoAudio.currentTime = 0;
-        paint(0);
+      tabs.forEach(function (t, i) {
+        t.addEventListener('click', function () { selectTab(i); });
+        t.addEventListener('keydown', function (e) {
+          var k = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+          if (e.key === 'Home') k = -i;
+          if (e.key === 'End') k = tabs.length - 1 - i;
+          if (k === undefined) return;
+          e.preventDefault();
+          selectTab((i + k + tabs.length) % tabs.length, true);
+        });
       });
-      document.addEventListener('visibilitychange', function () {
-        if (document.hidden && !himnoAudio.paused) himnoAudio.pause();
+      panel.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+        if (e.key !== 'Tab') return;
+        var f = [].filter.call(panel.querySelectorAll('button, a[href], input, [tabindex="0"]'), function (el) {
+          return !el.disabled && !el.hidden && el.offsetParent !== null;
+        });
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && (document.activeElement === first || document.activeElement === panel)) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       });
 
-      setDuration();
+      var grab = modal.querySelector('.hm-grab'), y0 = 0, dy = 0, dragging = false;
+      var endDrag = function () {
+        if (!dragging) return;
+        dragging = false;
+        panel.style.transition = '';
+        panel.style.transform = '';
+        if (dy > 100) close();
+      };
+      grab.addEventListener('pointerdown', function (e) {
+        dragging = true; y0 = e.clientY; dy = 0;
+        grab.setPointerCapture(e.pointerId);
+        panel.style.transition = 'none';
+      });
+      grab.addEventListener('pointermove', function (e) {
+        if (!dragging) return;
+        dy = Math.max(0, e.clientY - y0);
+        panel.style.transform = 'translateY(' + dy + 'px)';
+      });
+      grab.addEventListener('pointerup', endDrag);
+      grab.addEventListener('pointercancel', endDrag);
     }
 
     initMobileTip();

@@ -2,11 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-gNRd4Tr6jfAnWrrac8ZCj5Eln1gj7ypv0nzO5C6RZVg=' 'sha256-vMKKLjU2EhBygDGvYtOdMxfOG7GbA3SWuTsciGP0Qk0=' https://identity.netlify.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob: https://identity.netlify.com https://*.netlify.app https://institutotecnico.edu.co; frame-src https://www.google.com https://identity.netlify.com blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script src="assets/js/identity-redirect.js"></script>
+<script src="assets/js/yumi.js" defer></script>
 <script>
 (function () {
   var ua = navigator.userAgent || '';
@@ -23,6 +23,8 @@
 <meta name="description" content="Institución educativa oficial de Santander de Quilichao, Cauca. Fundada en 1913.">
 <meta name="theme-color" content="#142E20">
 <meta name="color-scheme" content="light">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="robots" content="index, follow">
 <meta name="geo.region" content="CO-CAU">
 <meta name="geo.placename" content="Santander de Quilichao">
@@ -548,22 +550,23 @@
     position: fixed;
     z-index: 1090;
     top: 0; right: 0; bottom: 0;
-    width: min(90vw, 400px);
+    width: min(92vw, 400px);
     transform: translateX(102%);
     background: var(--hueso);
     box-shadow: -20px 0 48px rgba(20, 46, 32, .15);
     opacity: 0;
     visibility: hidden;
-    transition: transform .38s var(--ease), opacity .3s ease, visibility 0s linear .38s;
+    transition: transform .36s var(--ease), opacity .28s ease, visibility 0s linear .36s;
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
   .nav-drawer.is-open {
     transform: translateX(0);
     opacity: 1;
     visibility: visible;
-    transition: transform .38s var(--ease), opacity .3s ease, visibility 0s linear 0s;
+    transition: transform .36s var(--ease), opacity .28s ease, visibility 0s linear 0s;
   }
   .nav-drawer-inner {
     min-height: 100%;
@@ -617,6 +620,31 @@
   }
   .nav-drawer-menu a:hover { color: var(--verde-medio); padding-inline-start: 6px; }
   .nav-drawer-menu a svg { opacity: .5; flex-shrink: 0; }
+  .nav-ext {
+    font-size: .7em;
+    opacity: .55;
+    margin-left: 4px;
+    font-weight: 600;
+  }
+  .nav-drawer-menu a[target="_blank"] {
+    color: var(--verde-oscuro);
+  }
+  /* Yumi adaptive modes */
+  .yumi-lite .hero-video,
+  .yumi-lite .gallery-track { animation: none !important; }
+  .yumi-lite .reveal-up { opacity: 1; transform: none; animation: none !important; }
+  .yumi-reduce .reveal-up,
+  .yumi-reduce .reveal { opacity: 1; transform: none; transition: none !important; animation: none !important; }
+  /* Mobile nav polish */
+  .nav-drawer-menu li + li { border-top: 0; }
+  .nav-drawer-menu a {
+    border-radius: var(--r-sm);
+    padding-inline: 8px;
+    margin-inline: -8px;
+  }
+  .nav-drawer-menu a:active {
+    background: rgba(27, 58, 42, .06);
+  }
   .nav-drawer-footer {
     margin-top: auto;
     padding-top: var(--s-3);
@@ -860,6 +888,9 @@
   @keyframes scrollLine {
     from { transform: translateY(-100%); }
     to { transform: translateY(100%); }
+  }
+  @media (max-width: 860px) {
+    .hero-scroll-line::after { animation-duration: 2.8s; }
   }
   @media (min-width: 861px) {
     .hero-controls { bottom: 36px; right: 40px; }
@@ -2056,75 +2087,90 @@
   .cookie-banner {
     position: fixed;
     z-index: 4000;
-    right: max(20px, calc(var(--safe-right) + 16px));
+    left: 50%;
     bottom: calc(20px + var(--safe-bottom));
-    width: min(420px, calc(100vw - 40px));
-    padding: 24px;
+    width: min(380px, calc(100vw - 32px));
+    padding: 18px 18px 16px;
     background: var(--blanco);
     border: 1px solid var(--line);
-    border-radius: var(--r-lg);
+    border-radius: 16px;
     box-shadow:
-      0 24px 60px -22px rgba(20, 46, 32, .42),
-      0 2px 10px rgba(20, 46, 32, .06);
-    transform: translateY(140%);
+      0 18px 48px -20px rgba(20, 46, 32, .38),
+      0 1px 0 rgba(255, 255, 255, .8) inset;
+    transform: translate(-50%, 120%);
     opacity: 0;
     pointer-events: none;
-    transition: transform .5s var(--ease), opacity .35s ease;
+    transition: transform .45s var(--ease), opacity .3s ease;
   }
   .cookie-banner.is-visible {
-    transform: translateY(0);
+    transform: translate(-50%, 0);
     opacity: 1;
     pointer-events: auto;
   }
   .cookie-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: 10px;
+    margin-bottom: 8px;
   }
   .cookie-header-icon {
-    width: 42px; height: 42px;
+    width: 36px; height: 36px;
     display: flex; align-items: center; justify-content: center;
-    border-radius: 50%;
+    border-radius: 10px;
     background: var(--surface-sage);
     color: var(--verde-oscuro);
     flex-shrink: 0;
   }
   .cookie-header-title {
     font-family: var(--font-display);
-    font-size: 1.08rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--verde-oscuro);
     letter-spacing: var(--track-tight);
     line-height: 1.2;
   }
   .cookie-text {
-    font-size: .86rem;
-    line-height: 1.6;
+    font-size: .82rem;
+    line-height: 1.55;
     color: var(--gris-oscuro);
-    margin-bottom: 18px;
+    margin-bottom: 14px;
   }
   .cookie-text a {
     color: var(--verde-medio);
     text-decoration: underline;
-    text-underline-offset: 3px;
+    text-underline-offset: 2px;
   }
   .cookie-actions {
     display: flex;
     align-items: center;
     gap: 8px;
   }
-  .cookie-actions .btn { flex: 1; min-height: 44px; font-size: .84rem; }
+  .cookie-actions .btn {
+    flex: 1;
+    min-height: 42px;
+    font-size: .84rem;
+    border-radius: 10px;
+  }
   .cookie-btn-more {
     flex: 0 0 auto;
-    padding: 10px 14px;
-    color: var(--gris-oscuro);
-    font-size: .82rem;
+    padding: 8px 12px;
+    color: var(--gris-calido);
+    font-size: .8rem;
     font-weight: 600;
-    border-radius: var(--r-sm);
-    transition: color var(--dur-fast) var(--ease);
+    border-radius: 8px;
+    transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
   }
-  .cookie-btn-more:hover { color: var(--verde-oscuro); }
+  .cookie-btn-more:hover {
+    color: var(--verde-oscuro);
+    background: var(--surface-sage);
+  }
+  .cookie-note {
+    margin-top: 10px;
+    font-size: .72rem;
+    color: var(--gris-calido);
+    line-height: 1.4;
+    text-align: center;
+  }
 
   @media (min-width: 861px) {
     .site-header { display: block; }
@@ -2135,7 +2181,7 @@
   @media (max-width: 1050px) {
     .footer-grid { grid-template-columns: 1.4fr 1fr 1fr; }
     .footer-col:last-child { grid-column: 2 / 4; }
-    .site-nav a { padding: 10px 10px; font-size: .8rem; }
+    .site-nav a { padding: 9px 9px; font-size: .78rem; }
     .gallery-item { width: 340px; margin-right: 18px; }
   }
 
@@ -2260,9 +2306,11 @@
 
     .hero { padding: calc(80px + var(--safe-top)) 0 calc(92px + var(--safe-bottom)); }
     .hero-title {
-      font-size: clamp(1.75rem, 8.5vw, 3.2rem);
+      font-size: clamp(1.7rem, 8.2vw, 3.1rem);
       margin-bottom: var(--s-3);
       letter-spacing: -.03em;
+      max-width: 16ch;
+      margin-inline: auto;
     }
     .hero-desc { font-size: 1rem; line-height: 1.55; margin-bottom: var(--s-3); max-width: 30ch; }
     .hero-actions { width: 100%; max-width: 340px; }
@@ -2309,23 +2357,28 @@
     .footer-col:last-child { grid-column: auto; }
     .footer-bottom { flex-direction: column; align-items: flex-start; gap: var(--s-1); font-size: .72rem; }
     .to-top { width: 44px; height: 44px; }
-    .nav-drawer-menu a { font-size: 1.15rem; min-height: 52px; }
+    .nav-drawer-menu a { font-size: 1.12rem; min-height: 54px; padding-block: 14px; }
+    .nav-drawer-close { width: 48px; height: 48px; }
+    .nav-fab { box-shadow: 0 4px 16px rgba(20, 46, 32, .18); }
     .modal { padding: 10px; }
     .modal-hero { height: 180px; }
     .modal-body { padding: 26px 20px 30px; }
     .modal-close { top: 10px; right: 10px; }
 
     .cookie-banner {
-      left: 12px;
-      right: 12px;
+      left: 50%;
+      right: auto;
       bottom: calc(12px + var(--safe-bottom));
-      width: auto;
-      padding: 20px;
-      border-radius: var(--r-md);
+      width: calc(100vw - 24px);
+      max-width: 380px;
+      padding: 16px;
+      border-radius: 14px;
+      transform: translate(-50%, 120%);
     }
-    .cookie-actions { flex-direction: column-reverse; align-items: stretch; gap: 6px; }
-    .cookie-actions .btn { width: 100%; }
-    .cookie-btn-more { order: 1; padding: 8px; align-self: center; }
+    .cookie-banner.is-visible { transform: translate(-50%, 0); }
+    .cookie-actions { gap: 6px; }
+    .cookie-actions .btn { min-height: 44px; }
+    .cookie-btn-more { padding: 8px 10px; }
 
 
     .reco-band { padding-block: 72px; }
@@ -2795,6 +2848,7 @@
     </a>
     <nav class="site-nav" aria-label="Navegación principal">
       <a href="#nosotros">Nosotros</a>
+      <a href="https://tecnico.educa20.com" target="_blank" rel="noopener noreferrer">Notas</a>
       <a href="#sedes">Sedes</a>
       <a href="#accesos">Accesos</a>
       <a href="#noticias">Noticias</a>
@@ -2825,6 +2879,7 @@
     </div>
     <ul class="nav-drawer-menu">
       <li><a href="#inicio">Inicio</a></li>
+      <li><a href="https://tecnico.educa20.com" target="_blank" rel="noopener noreferrer">Notas <span class="nav-ext" aria-hidden="true">↗</span></a></li>
       <li><a href="#nosotros">Nosotros</a></li>
       <li><a href="#sedes">Sedes</a></li>
       <li><a href="#accesos">Accesos</a></li>
@@ -3445,25 +3500,23 @@
   </div>
 </div>
 
-<div class="cookie-banner" data-cookie-banner role="dialog" aria-live="polite" aria-label="Aviso de cookies">
+<div class="cookie-banner" data-cookie-banner role="dialog" aria-live="polite" aria-label="Aviso de privacidad">
   <div class="cookie-header">
     <div class="cookie-header-icon" aria-hidden="true">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5z"/>
-        <circle cx="8" cy="11" r="0.8" fill="currentColor"/>
-        <circle cx="12" cy="15" r="0.8" fill="currentColor"/>
-        <circle cx="15" cy="10" r="0.8" fill="currentColor"/>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
       </svg>
     </div>
-    <h2 class="cookie-header-title">Cookies y privacidad</h2>
+    <h2 class="cookie-header-title">Tu privacidad</h2>
   </div>
   <p class="cookie-text">
-    Usamos cookies técnicas para mejorar tu experiencia de navegación. Al continuar, aceptas su uso. Consulta nuestras <a href="#" data-open-modal="politicas">políticas de privacidad</a>.
+    Usamos solo cookies técnicas necesarias para que el sitio funcione bien. No rastreamos con fines comerciales. <a href="#" data-open-modal="politicas">Política de privacidad</a>.
   </p>
   <div class="cookie-actions">
     <button type="button" class="cookie-btn-more" data-open-modal="politicas">Más info</button>
-    <button type="button" class="btn btn-primary" data-cookie-accept>Aceptar y continuar</button>
+    <button type="button" class="btn btn-primary" data-cookie-accept>Entendido</button>
   </div>
+  <p class="cookie-note">Apto para toda la comunidad educativa · Ley 1581 de 2012</p>
 </div>
 
 <script>
@@ -3473,11 +3526,13 @@
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var esc = function (s) {
+    if (window.Yumi && Yumi.escape) return Yumi.escape(s);
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   };
   var safeUrl = function (u) {
+    if (window.Yumi && Yumi.safeURL) return Yumi.safeURL(u);
     try {
       var x = new URL(u, location.href);
       return ['http:', 'https:', 'mailto:', 'tel:'].indexOf(x.protocol) !== -1 ? x.href : '#';
@@ -4091,7 +4146,7 @@
       }
       renderControls();
       sync();
-      if (!hasVideo && modal && choice !== 'declined') openModal();
+      /* El aviso de video solo se muestra al pulsar el botón de modo (data-hero-mode) */
     });
   }
 
@@ -4155,6 +4210,9 @@
   }
 
   function init() {
+    if (window.Yumi) {
+      try { Yumi.adaptive(); } catch (e) {}
+    }
     initHeroVideo();
     initGalleryObserver();
     initFilosofia();
@@ -4574,7 +4632,7 @@
       status.setAttribute('data-state', 'loading');
       setTimeout(function () {
         btn.innerHTML = '¡Mensaje enviado!';
-        status.textContent = 'Gracias por escribirnos. Te responderemos pronto.';
+        status.textContent = 'Gracias por escribirnos. Te responderemos en menos de 48 horas hábiles.';
         status.setAttribute('data-state', 'success');
         form.reset();
         setTimeout(function () {
@@ -4584,9 +4642,9 @@
           setTimeout(function () {
             status.textContent = '';
             status.removeAttribute('data-state');
-          }, 1400);
-        }, 2800);
-      }, 1400);
+          }, 1600);
+        }, 3000);
+      }, 1200);
     });
 
     var cookieBanner = document.querySelector('[data-cookie-banner]');

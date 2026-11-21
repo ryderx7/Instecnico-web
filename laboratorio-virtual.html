@@ -12,7 +12,7 @@
 })();
 </script>
 <title>Laboratorio Virtual | Instituto Técnico</title>
-<meta name="description" content="Seis experimentos interactivos de física y química del Instituto Técnico de Santander de Quilichao.">
+<meta name="description" content="Ocho experimentos interactivos de física y química del Instituto Técnico de Santander de Quilichao.">
 <meta name="theme-color" content="#142E20">
 <meta name="color-scheme" content="light">
 <meta name="robots" content="index, follow">
@@ -171,9 +171,9 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after {
-      animation-duration: .01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: .01ms !important;
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
     }
   }
   @media (prefers-contrast: more) {
@@ -214,22 +214,22 @@
                 border-color var(--dur-fast) var(--ease);
   }
   .btn svg { transition: transform var(--dur-fast) var(--ease); flex-shrink: 0; }
-  .btn:hover svg { transform: translateX(4px); }
+  @media (hover: hover) { .btn:hover svg { transform: translateX(4px); } }
   .btn-primary {
     background: var(--verde-oscuro);
     color: var(--hueso);
     border-color: var(--verde-oscuro);
   }
-  .btn-primary:hover { background: var(--verde-profundo); border-color: var(--verde-profundo); }
+  @media (hover: hover) { .btn-primary:hover { background: var(--verde-profundo); border-color: var(--verde-profundo); } }
   .btn-outline {
     background: transparent;
     color: var(--verde-oscuro);
     border-color: var(--line);
   }
-  .btn-outline:hover {
+  @media (hover: hover) { .btn-outline:hover {
     background: var(--surface-cream);
     border-color: var(--verde-oscuro);
-  }
+  } }
   .btn:disabled {
     opacity: .5;
     pointer-events: none;
@@ -253,7 +253,7 @@
                 background var(--dur-fast) var(--ease),
                 opacity var(--dur-fast) var(--ease);
   }
-  .nav-fab:hover { background: var(--blanco); transform: scale(1.04); }
+  @media (hover: hover) { .nav-fab:hover { background: var(--blanco); transform: scale(1.04); } }
   .nav-fab.is-open { opacity: 0; pointer-events: none; }
   .nav-fab-bars { display: flex; flex-direction: column; gap: 5px; width: 24px; }
   .nav-fab-bars span { display: block; height: 2px; background: currentColor; border-radius: 2px; }
@@ -317,7 +317,7 @@
     color: var(--verde-oscuro);
     transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
   }
-  .nav-drawer-close:hover { background: var(--verde-oscuro); color: var(--hueso); border-color: var(--verde-oscuro); }
+  @media (hover: hover) { .nav-drawer-close:hover { background: var(--verde-oscuro); color: var(--hueso); border-color: var(--verde-oscuro); } }
   .nav-drawer-menu { display: flex; flex-direction: column; }
   .nav-drawer-menu a {
     display: flex; align-items: center; justify-content: space-between;
@@ -329,7 +329,7 @@
     letter-spacing: var(--track-tight);
     transition: color var(--dur-fast) var(--ease), padding-inline-start var(--dur-fast) var(--ease);
   }
-  .nav-drawer-menu a:hover { color: var(--verde-medio); padding-inline-start: 6px; }
+  @media (hover: hover) { .nav-drawer-menu a:hover { color: var(--verde-medio); padding-inline-start: 6px; } }
   .nav-drawer-menu a[aria-current="page"] { color: var(--dorado); }
   .nav-drawer-menu a svg { opacity: .5; flex-shrink: 0; }
   .nav-drawer-footer {
@@ -424,12 +424,12 @@
                 border-color var(--dur-fast) var(--ease),
                 transform var(--dur-fast) var(--ease);
   }
-  .hero-back:hover {
+  @media (hover: hover) { .hero-back:hover {
     background: var(--blanco);
     border-color: var(--verde-oscuro);
-  }
+  } }
   .hero-back svg { transition: transform var(--dur-fast) var(--ease); }
-  .hero-back:hover svg { transform: translateX(-3px); }
+  @media (hover: hover) { .hero-back:hover svg { transform: translateX(-3px); } }
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     .hero-back { background: rgba(255, 255, 255, .96); }
   }
@@ -564,11 +564,11 @@
     gap: 8px;
     white-space: nowrap;
   }
-  .filter-btn:hover {
+  @media (hover: hover) { .filter-btn:hover {
     color: var(--verde-oscuro);
     border-color: var(--verde-oscuro);
     background: var(--surface-cream);
-  }
+  } }
   .filter-btn.is-active {
     background: var(--verde-oscuro);
     border-color: var(--verde-oscuro);
@@ -634,7 +634,6 @@
     z-index: 2;
     pointer-events: none;
   }
-  .exp-card:hover,
   .exp-card:focus-visible {
     background: var(--surface-stone-hover);
     border-color: var(--verde-oscuro);
@@ -643,8 +642,16 @@
       0 28px 52px -22px rgba(20, 46, 32, .32),
       0 2px 10px rgba(20, 46, 32, .08);
   }
-  .exp-card:hover::before,
+  @media (hover: hover) { .exp-card:hover {
+    background: var(--surface-stone-hover);
+    border-color: var(--verde-oscuro);
+    transform: translateY(-6px);
+    box-shadow:
+      0 28px 52px -22px rgba(20, 46, 32, .32),
+      0 2px 10px rgba(20, 46, 32, .08);
+  } }
   .exp-card:focus-visible::before { opacity: 1; }
+  @media (hover: hover) { .exp-card:hover::before { opacity: 1; } }
   .exp-card-top {
     display: flex;
     align-items: center;
@@ -666,12 +673,12 @@
                 border-color var(--dur-fast) var(--ease),
                 transform var(--dur-fast) var(--ease);
   }
-  .exp-card:hover .exp-icon {
+  @media (hover: hover) { .exp-card:hover .exp-icon {
     background: var(--verde-oscuro);
     color: var(--dorado-claro);
     border-color: var(--verde-oscuro);
     transform: rotate(-4deg);
-  }
+  } }
   .exp-chip {
     font-size: .66rem;
     font-weight: 700;
@@ -742,7 +749,7 @@
     font-weight: 600;
     transition: gap var(--dur-fast) var(--ease);
   }
-  .exp-card:hover .exp-cta { gap: 10px; }
+  @media (hover: hover) { .exp-card:hover .exp-cta { gap: 10px; } }
   .exp-empty {
     grid-column: 1 / -1;
     padding: var(--s-6) var(--s-3);
@@ -822,7 +829,7 @@
     line-height: 1.5;
     transition: color var(--dur-fast) var(--ease);
   }
-  .footer-col a:hover, .footer-col button:hover { color: var(--blanco); }
+  @media (hover: hover) { .footer-col a:hover, .footer-col button:hover { color: var(--blanco); } }
   .footer-col a[aria-current="page"] { color: var(--dorado-claro); }
   .socials { display: flex; flex-wrap: wrap; gap: var(--s-1); }
   .social {
@@ -837,7 +844,7 @@
                 border-color var(--dur-fast) var(--ease),
                 color var(--dur-fast) var(--ease);
   }
-  .social:hover { background: rgba(250, 248, 244, .1); border-color: rgba(201, 162, 39, .6); color: var(--dorado-claro); }
+  @media (hover: hover) { .social:hover { background: rgba(250, 248, 244, .1); border-color: rgba(201, 162, 39, .6); color: var(--dorado-claro); } }
   .footer-bottom {
     display: flex;
     flex-wrap: wrap;
@@ -892,23 +899,30 @@
       flex-wrap: nowrap;
       margin-inline: -24px;
       padding-inline: 24px;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 36px), transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 36px), transparent 100%);
     }
-    .filter-btn { font-size: .78rem; padding: 9px 14px; min-height: 42px; }
+    .filter-btn { font-size: .78rem; padding: 9px 14px; min-height: 48px; }
 
     .experiments-section { padding-block: 32px 56px; }
     .exp-grid { grid-template-columns: 1fr; gap: var(--s-2); }
     .exp-card { min-height: 200px; padding: var(--s-3); }
-    .exp-card:hover,
     .exp-card:focus-visible {
       transform: none;
       box-shadow: none;
       background: var(--surface-stone);
       border-color: var(--line);
     }
-    .exp-card:hover::before,
+  @media (hover: hover) { .exp-card:hover {
+      transform: none;
+      box-shadow: none;
+      background: var(--surface-stone);
+      border-color: var(--line);
+    } }
     .exp-card:focus-visible::before { opacity: 0; }
-    .exp-card:hover .exp-icon { transform: none; }
-    .exp-card:hover .exp-cta { gap: 6px; }
+  @media (hover: hover) { .exp-card:hover::before { opacity: 0; } }
+    @media (hover: hover) { .exp-card:hover .exp-icon { transform: none; } }
+    @media (hover: hover) { .exp-card:hover .exp-cta { gap: 6px; } }
     .exp-title { font-size: 1.15rem; }
 
     .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3) 18px; margin-bottom: var(--s-4); }
@@ -920,7 +934,7 @@
 
   @media (max-width: 480px) {
     .exp-grid { gap: var(--s-2); }
-    .filter-btn { font-size: .74rem; padding: 8px 12px; }
+    .filter-btn { font-size: .74rem; padding: 8px 12px; min-height: 48px; }
     .actions-row { grid-template-columns: 1fr 1fr; }
     .results-panel { grid-template-columns: 1fr 1fr; }
   }
@@ -938,8 +952,8 @@
     opacity: .55;
     background: linear-gradient(90deg, var(--verde-medio), var(--dorado));
   }
-  .exp-card:hover::before,
   .exp-card:focus-visible::before { opacity: 1; }
+  @media (hover: hover) { .exp-card:hover::before { opacity: 1; } }
   .exp-icon { width: 52px; height: 52px; border-radius: var(--r-md); }
   .exp-cta {
     align-self: flex-start;
@@ -963,6 +977,7 @@
     flex-direction: column;
     background: var(--hueso);
     overflow: hidden;
+    overflow: clip;
   }
   body.lab-active .lab-view { display: flex; }
 
@@ -996,12 +1011,12 @@
     transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
     touch-action: manipulation;
   }
-  .lab-back:hover {
+  @media (hover: hover) { .lab-back:hover {
     background: var(--blanco);
     border-color: var(--verde-oscuro);
-  }
+  } }
   .lab-back svg { transition: transform var(--dur-fast) var(--ease); flex-shrink: 0; }
-  .lab-back:hover svg { transform: translateX(-2px); }
+  @media (hover: hover) { .lab-back:hover svg { transform: translateX(-2px); } }
 
   .lab-title-info {
     flex: 1;
@@ -1053,10 +1068,10 @@
     transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
   }
   .theory-btn svg { color: var(--dorado-claro); flex-shrink: 0; }
-  .theory-btn:hover,
   .theory-btn.is-active { background: var(--dorado); border-color: var(--dorado); color: var(--verde-profundo); }
-  .theory-btn:hover svg,
+  @media (hover: hover) { .theory-btn:hover { background: var(--dorado); border-color: var(--dorado); color: var(--verde-profundo); } }
   .theory-btn.is-active svg { color: inherit; }
+  @media (hover: hover) { .theory-btn:hover svg { color: inherit; } }
 
   .presentation-btn {
     display: inline-flex;
@@ -1072,10 +1087,10 @@
     touch-action: manipulation;
     transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
   }
-  .presentation-btn:hover {
+  @media (hover: hover) { .presentation-btn:hover {
     background: var(--blanco);
     border-color: var(--verde-oscuro);
-  }
+  } }
 
   .lab-body {
     flex: 1;
@@ -1205,7 +1220,7 @@
     touch-action: manipulation;
     transition: all var(--dur-fast) var(--ease);
   }
-  .pill:hover { border-color: var(--verde-oscuro); color: var(--verde-oscuro); }
+  @media (hover: hover) { .pill:hover { border-color: var(--verde-oscuro); color: var(--verde-oscuro); } }
   .pill.is-active {
     background: var(--verde-oscuro);
     border-color: var(--verde-oscuro);
@@ -1306,10 +1321,10 @@
     touch-action: manipulation;
     transition: all var(--dur-fast) var(--ease);
   }
-  .question-option:hover {
+  @media (hover: hover) { .question-option:hover {
     border-color: var(--verde-oscuro);
     color: var(--verde-oscuro);
-  }
+  } }
   .question-option.is-correct {
     background: rgba(46, 125, 50, .12);
     border-color: var(--verde-medio);
@@ -1321,7 +1336,7 @@
     color: #a5392e;
   }
 
-  /* Theory panel - slides over lab view */
+  /* Theory panel: lateral en escritorio, bottom-sheet en móvil */
   .theory {
     position: absolute;
     z-index: 100;
@@ -1335,15 +1350,18 @@
     transform: translateX(100%);
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
     transition: transform .35s var(--ease), opacity .25s ease, visibility 0s linear .35s;
-    will-change: transform;
   }
   .theory.is-open {
-    transform: none;
+    transform: translateX(0);
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
     transition: transform .35s var(--ease), opacity .25s ease, visibility 0s;
   }
+  .theory.is-animating { will-change: transform; }
+  .theory-backdrop { display: none; }
   .theory-grip { display: none; }
   .theory-head {
     position: sticky;
@@ -1442,62 +1460,123 @@
     flex-shrink: 0;
     transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
   }
-  .modal-close:hover {
+  @media (hover: hover) { .modal-close:hover {
     background: var(--verde-oscuro);
     color: var(--hueso);
     border-color: var(--verde-oscuro);
-  }
+  } }
 
   .slider { height: 32px; background: transparent; }
-  .slider::-webkit-slider-runnable-track { height: 8px; border-radius: var(--r-pill); background: var(--arena); }
-  .slider::-moz-range-track { height: 8px; border-radius: var(--r-pill); background: var(--arena); }
-  .slider::-webkit-slider-thumb { width: 28px; height: 28px; margin-top: -10px; box-shadow: 0 2px 6px rgb(30 26 20 / .35); }
-  .slider::-moz-range-thumb { width: 28px; height: 28px; box-shadow: 0 2px 6px rgb(30 26 20 / .35); }
+  .slider::-webkit-slider-runnable-track { height: 10px; border-radius: var(--r-pill); background: var(--arena); }
+  .slider::-moz-range-track { height: 10px; border-radius: var(--r-pill); background: var(--arena); }
+  .slider::-webkit-slider-thumb { width: 30px; height: 30px; margin-top: -10px; box-shadow: 0 2px 6px rgb(30 26 20 / .35); }
+  .slider::-moz-range-thumb { width: 30px; height: 30px; box-shadow: 0 2px 6px rgb(30 26 20 / .35); }
   .slider:focus-visible::-webkit-slider-thumb { outline: 3px solid var(--verde-oscuro); outline-offset: 2px; }
   .slider:focus-visible::-moz-range-thumb { outline: 3px solid var(--verde-oscuro); outline-offset: 2px; }
 
   @media (max-width: 860px) {
     .lab-header {
-      height: calc(60px + var(--safe-top));
+      height: calc(64px + var(--safe-top));
       padding: var(--safe-top) 12px 0;
       gap: 10px;
     }
-    .lab-back { font-size: .78rem; padding: 8px 12px 8px 10px; min-height: 38px; }
+    .lab-back { font-size: .78rem; padding: 8px 14px 8px 12px; min-height: 48px; }
     .lab-title { font-size: 1rem; }
     .lab-category { font-size: .6rem; }
-    .theory-btn { min-height: 40px; padding: 0 14px 0 12px; font-size: .8rem; }
-    .presentation-btn { width: 40px; height: 40px; }
+    .theory-btn { min-height: 48px; padding: 0 16px 0 14px; font-size: .8rem; }
+    .presentation-btn { width: 48px; height: 48px; }
 
     .lab-body {
       display: flex;
       flex-direction: column;
     }
     .lab-canvas-area {
-      height: 45dvh;
-      flex-shrink: 0;
+      flex: 1 1 auto;
+      min-height: 38vh;
+      min-height: 38dvh;
+      max-height: 48vh;
+      max-height: 48dvh;
     }
     .lab-graph-area {
       height: 120px;
+      height: clamp(96px, 16dvh, 140px);
       padding: 8px 10px;
     }
     .lab-graph-area canvas { height: calc(100% - 20px); }
     .lab-controls {
-      flex: 1;
-      padding: 20px 16px calc(24px + var(--safe-bottom));
+      flex: 1 1 0;
+      padding: 20px 16px 24px;
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
       border-top: 1px solid var(--line);
       gap: 24px;
     }
 
-    .theory {
+    .theory-backdrop {
+      display: block;
+      position: absolute;
       inset: 0;
+      z-index: 90;
+      background: rgb(20 46 32 / .55);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .3s ease, visibility 0s linear .3s;
+    }
+    .theory-backdrop.is-visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity .3s ease, visibility 0s;
+    }
+    .theory {
+      inset: auto 0 0 0;
       width: auto;
+      height: 88vh;
+      height: min(88dvh, calc(100% - 16px));
       border-left: 0;
-      border-radius: 0;
+      border-top: 1px solid var(--line);
+      border-radius: 22px 22px 0 0;
+      overflow: hidden;
       box-shadow: 0 -18px 40px -20px rgb(20 46 32 / .45);
       transform: translateY(100%);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: transform .35s var(--ease), opacity .25s ease, visibility 0s linear .35s;
     }
-    .theory-grip { display: block; width: 40px; height: 4px; margin: 10px auto 0; border-radius: 4px; background: var(--borde); flex-shrink: 0; }
-    .theory-head { padding-top: 12px; }
+    .theory.is-open {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: transform .35s var(--ease), opacity .25s ease, visibility 0s;
+    }
+    .theory.is-dragging { transition: none; }
+    .theory-grip {
+      display: block;
+      position: relative;
+      flex-shrink: 0;
+      width: 100%;
+      height: 28px;
+      background: var(--crema);
+      cursor: grab;
+      touch-action: none;
+    }
+    .theory-grip::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 12px;
+      width: 40px;
+      height: 4px;
+      margin-left: -20px;
+      border-radius: 4px;
+      background: var(--borde);
+    }
+    .theory-head { padding-top: 4px; touch-action: none; }
+    .theory-scroll { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
 
     .results-panel { gap: 16px; padding: 16px; }
     .result-value { font-size: 1.25rem; }
@@ -1505,9 +1584,9 @@
 
   @media (max-width: 480px) {
     .lab-back span { display: none; }
-    .lab-back { padding: 8px 10px; }
+    .lab-back { padding: 0; width: 48px; justify-content: center; }
     .theory-btn span { display: none; }
-    .theory-btn { width: 40px; padding: 0; justify-content: center; }
+    .theory-btn { width: 48px; padding: 0; justify-content: center; }
   }
   @media (min-width: 861px) and (max-width: 1100px) {
     .lab-controls { padding: 24px 22px; gap: 28px; }
@@ -1531,6 +1610,59 @@
   .noscript-msg { padding: 24px; border-left: 4px solid var(--dorado); background: var(--surface-cream); border-radius: var(--r-md); color: var(--verde-oscuro); }
   .nav-drawer[inert] { visibility: hidden; }
   @media (min-width: 721px) and (max-width: 1199px) { .exp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+  /* Touch targets >= 48px en móvil / pantallas táctiles */
+  @media (max-width: 860px), (pointer: coarse) {
+    .filter-btn, .pill, .question-option, .exp-cta, .btn,
+    .modal-close, .nav-drawer-close, .lab-back, .theory-btn, .presentation-btn { min-height: 48px; }
+    .modal-close, .nav-drawer-close, .lab-back, .presentation-btn { min-width: 48px; }
+    .modal-close { width: 48px; height: 48px; }
+    .slider { height: 44px; }
+    .pill-group, .question-options { gap: 8px; }
+  }
+
+  /* Feedback táctil */
+  .exp-card:active {
+    transform: scale(.985);
+    border-color: var(--verde-oscuro);
+    box-shadow: 0 10px 24px -14px rgb(20 46 32 / .4), 0 1px 4px rgb(20 46 32 / .1);
+  }
+  .btn:active, .pill:active, .filter-btn:active, .question-option:active,
+  .lab-back:active, .theory-btn:active, .presentation-btn:active { transform: scale(.97); }
+
+  .btn.is-done {
+    background: var(--verde-medio);
+    border-color: var(--verde-medio);
+    color: #fff;
+  }
+
+  .toast {
+    position: fixed;
+    z-index: 3000;
+    left: 50%;
+    bottom: calc(20px + var(--safe-bottom));
+    max-width: min(92vw, 420px);
+    padding: 12px 18px;
+    border: 1px solid var(--dorado);
+    border-radius: var(--r-pill);
+    background: var(--verde-profundo);
+    color: var(--hueso);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    line-height: 1.35;
+    text-align: center;
+    box-shadow: 0 14px 36px -14px rgb(20 46 32 / .55);
+    transform: translate(-50%, 16px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .3s var(--ease), opacity .25s ease;
+  }
+  .toast.is-visible {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+  .toast[data-type="error"] { border-color: #e88787; }
+  .toast:empty { padding: 0; border-width: 0; }
 }
 </style>
 </head>
@@ -1606,13 +1738,14 @@
   <div class="filters" id="filtersBar" role="group" aria-label="Filtrar experimentos por categoría">
     <div class="container">
       <div class="filters-inner" id="filtersInner">
-        <button class="filter-btn is-active" data-filter="todos" aria-pressed="true">Todos <span class="filter-count" data-count="todos">6</span></button>
-        <button class="filter-btn" data-filter="fisica" aria-pressed="false">Física <span class="filter-count" data-count="fisica">4</span></button>
-        <button class="filter-btn" data-filter="quimica" aria-pressed="false">Química <span class="filter-count" data-count="quimica">2</span></button>
-        <button class="filter-btn" data-filter="termodinamica" aria-pressed="false">Termodinámica <span class="filter-count" data-count="termodinamica">1</span></button>
-        <button class="filter-btn" data-filter="mecanica" aria-pressed="false">Mecánica <span class="filter-count" data-count="mecanica">2</span></button>
-        <button class="filter-btn" data-filter="electricidad" aria-pressed="false">Electricidad <span class="filter-count" data-count="electricidad">1</span></button>
+        <button type="button" class="filter-btn is-active" data-filter="todos" aria-pressed="true">Todos <span class="filter-count" data-count="todos">8</span></button>
+        <button type="button" class="filter-btn" data-filter="fisica" aria-pressed="false">Física <span class="filter-count" data-count="fisica">6</span></button>
+        <button type="button" class="filter-btn" data-filter="quimica" aria-pressed="false">Química <span class="filter-count" data-count="quimica">2</span></button>
+        <button type="button" class="filter-btn" data-filter="termodinamica" aria-pressed="false">Termodinámica <span class="filter-count" data-count="termodinamica">1</span></button>
+        <button type="button" class="filter-btn" data-filter="mecanica" aria-pressed="false">Mecánica <span class="filter-count" data-count="mecanica">2</span></button>
+        <button type="button" class="filter-btn" data-filter="electricidad" aria-pressed="false">Electricidad <span class="filter-count" data-count="electricidad">1</span></button>
       </div>
+      <p class="sr-only" id="filterStatus" role="status" aria-live="polite"></p>
     </div>
   </div>
 
@@ -1700,7 +1833,8 @@
     </div>
   </header>
   <div class="lab-body" id="labBody"></div>
-  <aside class="theory" id="theory" aria-labelledby="theoryTitle" inert>
+  <div class="theory-backdrop" id="theoryBackdrop" aria-hidden="true"></div>
+  <aside class="theory" id="theory" role="dialog" aria-modal="true" aria-labelledby="theoryTitle" aria-hidden="true" inert>
     <div class="theory-grip" aria-hidden="true"></div>
     <div class="theory-head">
       <div>
@@ -1717,6 +1851,8 @@
     </div>
   </aside>
 </div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <script>
 (function () {
@@ -1782,22 +1918,102 @@
     panelDark: 'rgba(0, 0, 0, 0.35)'
   };
 
+  function haptic(ms) {
+    try { navigator.vibrate?.(ms || 10); } catch (e) {}
+  }
+
+  const SS = {
+    get(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} },
+    del(k) { try { sessionStorage.removeItem(k); } catch (e) {} }
+  };
+
+  let toastTimer = null;
+  let toastClearTimer = null;
+  function showToast(message, type) {
+    const el = document.getElementById('toast');
+    if (!el) return;
+    const host = document.fullscreenElement || document.body;
+    if (el.parentNode !== host) host.appendChild(el);
+    clearTimeout(toastTimer);
+    clearTimeout(toastClearTimer);
+    el.dataset.type = type === 'error' ? 'error' : 'success';
+    el.textContent = message;
+    el.classList.add('is-visible');
+    toastTimer = setTimeout(() => {
+      el.classList.remove('is-visible');
+      toastClearTimer = setTimeout(() => { el.textContent = ''; }, 400);
+    }, 2400);
+  }
+
+  function copyText(text) {
+    const legacy = () => {
+      const prev = document.activeElement;
+      let ok = false;
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.setAttribute('aria-hidden', 'true');
+        ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none;';
+        (document.fullscreenElement || document.body).appendChild(ta);
+        ta.focus({ preventScroll: true });
+        ta.select();
+        ta.setSelectionRange(0, text.length);
+        ok = document.execCommand('copy');
+        ta.parentNode.removeChild(ta);
+      } catch (e) { ok = false; }
+      try { if (prev && prev.focus) prev.focus({ preventScroll: true }); } catch (e) {}
+      return ok;
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).then(() => true).catch(() => legacy());
+    }
+    return Promise.resolve(legacy());
+  }
+
+  function askConfirm(message) {
+    try { return window.confirm(message); } catch (e) { return true; }
+  }
+
   class AudioEngine {
     constructor() {
       this.ctx = null;
+      this.failed = false;
+      this.notified = false;
     }
     unlock() {
-      if (!this.ctx) {
-        try {
-          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-        } catch (e) { return; }
+      if (this.failed) return;
+      try {
+        if (!this.ctx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) { this.failed = true; return; }
+          this.ctx = new AC();
+        }
+        if (this.ctx.state === 'suspended') {
+          const p = this.ctx.resume();
+          if (p && p.catch) p.catch(() => {});
+        }
+      } catch (e) {
+        this.failed = true;
+        this.ctx = null;
       }
-      if (this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
+    }
+    notify() {
+      if (this.notified) return;
+      this.notified = true;
+      showToast('El audio no está disponible en este dispositivo.', 'error');
     }
     play(tone) {
-      if (!this.ctx) return;
-      if (this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
+      if (!this.ctx) {
+        if (this.failed) this.notify();
+        return;
+      }
       try {
+        if (this.ctx.state === 'suspended') {
+          const p = this.ctx.resume();
+          if (p && p.catch) p.catch(() => {});
+        }
         const now = this.ctx.currentTime;
         const tones = {
           open: [{ f: 523.25, d: 0, dur: 0.18, g: 0.08 }, { f: 783.99, d: 0.07, dur: 0.22, g: 0.06 }],
@@ -1820,11 +2036,25 @@
           osc.start(t);
           osc.stop(t + n.dur + 0.02);
         });
-      } catch (e) {}
+      } catch (e) {
+        this.failed = true;
+        this.notify();
+      }
     }
   }
 
   const audio = new AudioEngine();
+
+  const CANVAS_HINTS = {
+    entalpia: 'Ajusta la sustancia y la masa de soluto para ver cómo cambia la temperatura del agua.',
+    ohm: 'Ajusta el voltaje y la resistencia para ver cómo cambia la corriente.',
+    hooke: 'Ajusta la constante del resorte y la masa para ver cuánto se estira.',
+    pendulo: 'Ajusta la longitud, el ángulo y la gravedad para ver cómo cambia el período.',
+    presion: 'Ajusta la profundidad y el fluido para ver cómo cambia la presión.',
+    valoracion: 'Ajusta las concentraciones, el volumen y el indicador para ver cómo cambia el pH.',
+    ondas: 'Ajusta la longitud, la tensión y la frecuencia para ver ondas estacionarias.',
+    densidad: 'Ajusta la masa, el volumen y el fluido para ver si el objeto flota o se hunde.'
+  };
 
   class BaseExperiment {
     constructor(meta) {
@@ -1844,6 +2074,12 @@
       this.elapsed = 0;
       this.resizeObserver = null;
       this.resultEls = {};
+      this.canvasArea = null;
+      this.liveEl = null;
+      this.lastLive = '';
+      this.liveTimer = null;
+      this.resizeTimer = null;
+      this.measureTimer = null;
       this.state = 'ready';
     }
 
@@ -1851,7 +2087,8 @@
       const cat = this.meta.categories[0];
       return `
         <div class="lab-canvas-area">
-          <canvas id="labCanvas" role="img" aria-label="Simulación interactiva: ${this.meta.title}"></canvas>
+          <canvas id="labCanvas" role="img" aria-label="${CANVAS_HINTS[this.meta.id] || 'Ajusta los controles para ver cómo cambia la simulación.'} Simulación: ${this.meta.title}."></canvas>
+          <div class="sr-only" id="labLive" role="status" aria-live="polite" aria-atomic="true"></div>
           <div class="lab-graph-area">
             <div class="lab-graph-label">Gráfico en tiempo real</div>
             <canvas id="labGraph" aria-hidden="true"></canvas>
@@ -1859,7 +2096,7 @@
         </div>
         <div class="lab-controls" id="labControls" data-category="${cat}">
           ${this.buildControls()}
-          <div class="results-panel" id="labResults" aria-live="polite" aria-atomic="false">
+          <div class="results-panel" id="labResults">
             ${this.buildResults()}
           </div>
           <div class="actions-row">
@@ -1875,11 +2112,11 @@
           <div class="actions-row">
             <button class="btn btn-outline" id="labCopy" type="button">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              Copiar
+              <span class="btn-label">Copiar</span>
             </button>
             <button class="btn btn-outline" id="labExport" type="button">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Exportar
+              <span class="btn-label">Exportar</span>
             </button>
           </div>
           <div class="questions-panel">
@@ -1898,23 +2135,36 @@
     draw() {}
     reset() {}
 
+    measure() {
+      const main = setupCanvas(this.canvas);
+      this.ctx = main.ctx;
+      this.w = main.w;
+      this.h = main.h;
+      const graph = setupCanvas(this.graphCanvas);
+      this.graphCtx = graph.ctx;
+      this.graphW = graph.w;
+      this.graphH = graph.h;
+    }
+
+    remeasure() {
+      if (!this.canvas || !this.canvasArea) return;
+      const r = this.canvasArea.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) return;
+      this.measure();
+      this.draw();
+      this.drawGraph();
+    }
+
     mount(container) {
       this.root = container;
       this.root.innerHTML = this.buildShell();
 
       this.canvas = this.root.querySelector('#labCanvas');
       this.graphCanvas = this.root.querySelector('#labGraph');
+      this.canvasArea = this.root.querySelector('.lab-canvas-area');
+      this.liveEl = this.root.querySelector('#labLive');
 
-      const main = setupCanvas(this.canvas);
-      this.ctx = main.ctx;
-      this.w = main.w;
-      this.h = main.h;
-
-      const graph = setupCanvas(this.graphCanvas);
-      this.graphCtx = graph.ctx;
-      this.graphW = graph.w;
-      this.graphH = graph.h;
-
+      this.measure();
       this.cacheResults();
       this.bindControls();
       this.bindActions();
@@ -1922,19 +2172,63 @@
       this.bindResize();
       this.state = 'ready';
       this.reset();
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        if (!this.canvas) return;
-        const main = setupCanvas(this.canvas);
-        this.ctx = main.ctx;
-        this.w = main.w;
-        this.h = main.h;
-        const graph = setupCanvas(this.graphCanvas);
-        this.graphCtx = graph.ctx;
-        this.graphW = graph.w;
-        this.graphH = graph.h;
-        this.draw();
-        this.drawGraph();
-      }));
+      // lab-view pasa de display:none a flex: se vuelve a medir cuando el layout ya es estable.
+      requestAnimationFrame(() => {
+        this.measureTimer = setTimeout(() => this.remeasure(), 60);
+      });
+      this.scheduleLive(true);
+    }
+
+    destroy() {
+      this.stop();
+      if (this.resizeObserver) {
+        this.resizeObserver.disconnect();
+        this.resizeObserver = null;
+      }
+      clearTimeout(this.resizeTimer);
+      clearTimeout(this.measureTimer);
+      clearTimeout(this.liveTimer);
+      this.liveTimer = null;
+      this.liveEl = null;
+      this.canvas = null;
+      this.graphCanvas = null;
+      this.canvasArea = null;
+    }
+
+    scheduleLive(quick) {
+      if (!this.liveEl) return;
+      if (this.liveTimer) {
+        if (!quick) return;
+        clearTimeout(this.liveTimer);
+      }
+      this.liveTimer = setTimeout(() => {
+        this.liveTimer = null;
+        if (!this.liveEl) return;
+        const parts = [];
+        Object.keys(this.resultEls).slice(0, 4).forEach(k => {
+          const el = this.resultEls[k];
+          const label = el.previousElementSibling;
+          parts.push((label ? label.textContent.trim() : k) + ': ' + el.textContent.trim());
+        });
+        const text = parts.join('. ');
+        if (text && text !== this.lastLive) {
+          this.lastLive = text;
+          this.liveEl.textContent = text;
+        }
+      }, quick ? 150 : 800);
+    }
+
+    flashDone(btn, text) {
+      const label = btn.querySelector('.btn-label');
+      if (!label) return;
+      if (btn.dataset.label === undefined) btn.dataset.label = label.textContent;
+      clearTimeout(btn._doneTimer);
+      label.textContent = text;
+      btn.classList.add('is-done');
+      btn._doneTimer = setTimeout(() => {
+        label.textContent = btn.dataset.label;
+        btn.classList.remove('is-done');
+      }, 1400);
     }
 
     cacheResults() {
@@ -1952,6 +2246,7 @@
 
       runBtn.addEventListener('click', () => {
         if (this.state === 'running') return;
+        haptic(10);
         audio.play('start');
         if (this.state === 'completed') this.reset();
         this.start();
@@ -1960,6 +2255,8 @@
       });
 
       resetBtn.addEventListener('click', () => {
+        if (this.elapsed > 0.5 && !askConfirm('¿Reiniciar el experimento? Se perderá el progreso actual.')) return;
+        haptic(10);
         audio.play('reset');
         this.stop();
         this.elapsed = 0;
@@ -1972,27 +2269,35 @@
       });
 
       copyBtn.addEventListener('click', () => {
-        const text = this.buildExportText();
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(() => {
-            const original = copyBtn.innerHTML;
-            copyBtn.textContent = 'Copiado';
-            setTimeout(() => { copyBtn.innerHTML = original; }, 1400);
-          }).catch(() => {});
-        }
+        haptic(10);
+        copyText(this.buildExportText()).then(ok => {
+          if (ok) {
+            this.flashDone(copyBtn, 'Copiado ✓');
+            showToast('Resultados copiados al portapapeles.', 'success');
+          } else {
+            showToast('No se pudo copiar. Prueba con Exportar.', 'error');
+          }
+        });
       });
 
       exportBtn.addEventListener('click', () => {
-        const text = this.buildExportText();
-        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'experimento-' + this.meta.id + '.txt';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        haptic(10);
+        try {
+          const text = this.buildExportText();
+          const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'experimento-' + this.meta.id + '.txt';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(url), 1500);
+          this.flashDone(exportBtn, 'Exportado ✓');
+          showToast('Archivo exportado.', 'success');
+        } catch (e) {
+          showToast('No se pudo exportar el archivo.', 'error');
+        }
       });
     }
 
@@ -2034,24 +2339,16 @@
     }
 
     bindResize() {
+      if (this.resizeObserver) {
+        this.resizeObserver.disconnect();
+        this.resizeObserver = null;
+      }
       if (typeof ResizeObserver === 'undefined') return;
-      let resizeTimer = null;
       this.resizeObserver = new ResizeObserver(() => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-          if (!this.canvas) return;
-          const main = setupCanvas(this.canvas);
-          this.ctx = main.ctx;
-          this.w = main.w;
-          this.h = main.h;
-          const graph = setupCanvas(this.graphCanvas);
-          this.graphCtx = graph.ctx;
-          this.graphW = graph.w;
-          this.graphH = graph.h;
-          this.draw();
-          this.drawGraph();
-        }, 100);
+        clearTimeout(this.resizeTimer);
+        this.resizeTimer = setTimeout(() => this.remeasure(), 80);
       });
+      this.resizeObserver.observe(this.canvasArea);
       this.resizeObserver.observe(this.canvas);
       this.resizeObserver.observe(this.graphCanvas);
     }
@@ -2124,6 +2421,7 @@
     setResult(key, value) {
       const el = this.resultEls[key];
       if (el) el.textContent = value;
+      this.scheduleLive();
     }
 
     drawGraph() {
@@ -3978,6 +4276,14 @@
   let currentLabId = null;
   let lastFocusedElement = null;
   let theoryOpen = false;
+  let theoryOpener = null;
+  let theoryAnimTimer = null;
+  let mountToken = 0;
+  let catalogScroll = 0;
+  let closeNavMenu = null;
+  const SS_EXP = 'lv:exp';
+  const SS_SCROLL = 'lv:scroll';
+  const mqMobile = window.matchMedia ? window.matchMedia('(max-width: 860px)') : { matches: false };
 
   function renderCards() {
     const grid = document.getElementById('grid');
@@ -4164,73 +4470,186 @@
     scroll.scrollTop = 0;
   }
 
-  function setTheory(open, restoreFocus) {
+  function endTheoryAnim() {
+    clearTimeout(theoryAnimTimer);
     const panel = document.getElementById('theory');
-    if (!panel || open === theoryOpen) return;
-    theoryOpen = open;
-    panel.classList.toggle('is-open', open);
-    panel.inert = !open;
+    if (panel) panel.classList.remove('is-animating');
+  }
+
+  function applyTheoryState(open) {
+    const panel = document.getElementById('theory');
+    const backdrop = document.getElementById('theoryBackdrop');
     const body = document.getElementById('labBody');
-    if (body) body.inert = open;
     const btn = document.getElementById('theoryBtn');
+    if (panel) {
+      panel.classList.toggle('is-open', open);
+      panel.inert = !open;
+      if (open) panel.removeAttribute('aria-hidden');
+      else panel.setAttribute('aria-hidden', 'true');
+    }
+    if (backdrop) backdrop.classList.toggle('is-visible', open);
+    if (body) body.inert = open;
     if (btn) {
       btn.setAttribute('aria-expanded', String(open));
       btn.setAttribute('aria-label', open ? 'Cerrar teoría' : 'Ver teoría');
       btn.classList.toggle('is-active', open);
     }
+  }
+
+  function setTheory(open, restoreFocus) {
+    const panel = document.getElementById('theory');
+    if (!panel || open === theoryOpen) return;
+    theoryOpen = open;
+
+    // will-change solo mientras dura la transición
+    panel.classList.add('is-animating');
+    clearTimeout(theoryAnimTimer);
+    theoryAnimTimer = setTimeout(endTheoryAnim, 600);
+    panel.classList.remove('is-dragging');
+    panel.style.transform = '';
+
     if (open) {
-      setTimeout(() => {
-        const backBtn = document.getElementById('theoryBack');
-        if (backBtn) backBtn.focus();
-      }, 60);
-    } else if (restoreFocus) {
-      if (btn) btn.focus();
+      const active = document.activeElement;
+      theoryOpener = active && active !== document.body ? active : document.getElementById('theoryBtn');
+    }
+    applyTheoryState(open);
+
+    if (open) {
+      // preventScroll: sin esto el navegador desplaza .lab-view para "revelar" el foco
+      requestAnimationFrame(() => {
+        const closeBtn = document.getElementById('theoryClose');
+        if (closeBtn) closeBtn.focus({ preventScroll: true });
+      });
+    } else {
+      if (restoreFocus) {
+        const target = theoryOpener && document.contains(theoryOpener) && !theoryOpener.closest('[inert]')
+          ? theoryOpener : document.getElementById('theoryBtn');
+        try { if (target) target.focus({ preventScroll: true }); } catch (e) {}
+      }
+      theoryOpener = null;
     }
   }
 
-  function openExperimentInternal(id) {
+  function resetTheory() {
+    theoryOpen = false;
+    theoryOpener = null;
+    endTheoryAnim();
+    const panel = document.getElementById('theory');
+    if (panel) {
+      panel.classList.remove('is-dragging');
+      panel.style.transform = '';
+    }
+    applyTheoryState(false);
+  }
+
+  function bindTheoryGesture() {
+    const panel = document.getElementById('theory');
+    if (!panel || !window.PointerEvent) return;
+    const handles = [panel.querySelector('.theory-grip'), panel.querySelector('.theory-head')];
+    let drag = null;
+
+    function onDown(e) {
+      if (!theoryOpen || !mqMobile.matches || drag) return;
+      if (e.target.closest('button')) return;
+      drag = { id: e.pointerId, y0: e.clientY, dy: 0, t0: performance.now(), el: e.currentTarget };
+      try { drag.el.setPointerCapture(e.pointerId); } catch (err) {}
+      panel.classList.add('is-dragging');
+    }
+    function onMove(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      drag.dy = Math.max(0, e.clientY - drag.y0);
+      panel.style.transform = 'translateY(' + drag.dy + 'px)';
+    }
+    function onUp(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dy = drag.dy;
+      const speed = dy / Math.max(1, performance.now() - drag.t0);
+      const el = drag.el;
+      drag = null;
+      try { el.releasePointerCapture(e.pointerId); } catch (err) {}
+      panel.classList.remove('is-dragging');
+      panel.style.transform = '';
+      if (e.type !== 'pointercancel' && (dy > panel.offsetHeight * 0.25 || (dy > 40 && speed > 0.5))) {
+        setTheory(false, true);
+      }
+    }
+    handles.forEach(h => {
+      if (!h) return;
+      h.addEventListener('pointerdown', onDown);
+      h.addEventListener('pointermove', onMove);
+      h.addEventListener('pointerup', onUp);
+      h.addEventListener('pointercancel', onUp);
+    });
+  }
+
+  function setLabChrome(active) {
+    const items = [
+      document.querySelector('[data-nav-toggle]'),
+      document.querySelector('[data-nav-drawer]'),
+      document.querySelector('[data-nav-backdrop]'),
+      document.querySelector('.skip-link')
+    ];
+    if (active && closeNavMenu) closeNavMenu();
+    items.forEach((el, i) => {
+      if (!el) return;
+      if (active) {
+        el.inert = true;
+        el.setAttribute('aria-hidden', 'true');
+      } else if (i === 1) {
+        el.inert = true;
+        el.removeAttribute('aria-hidden');
+      } else if (i === 2) {
+        el.inert = false;
+        el.setAttribute('aria-hidden', 'true');
+      } else {
+        el.inert = false;
+        el.removeAttribute('aria-hidden');
+      }
+    });
+  }
+
+  function openExperimentInternal(id, opts) {
     const ExpClass = EXPERIMENTS_MAP[id];
     if (!ExpClass) return;
+    const resume = !!(opts && opts.resume);
     const m = ExpClass.META;
     const primaryCat = m.categories[0];
     const catLabel = primaryCat === 'fisica' ? 'Física' : primaryCat === 'quimica' ? 'Química' : primaryCat;
     document.getElementById('labCategory').textContent = catLabel;
     document.getElementById('labTitle').textContent = m.title;
 
-    // Reset theory state
-    theoryOpen = false;
-    const theoryPanel = document.getElementById('theory');
-    theoryPanel.classList.remove('is-open');
-    theoryPanel.inert = true;
-    const theoryBtnEl = document.getElementById('theoryBtn');
-    theoryBtnEl.setAttribute('aria-expanded', 'false');
-    theoryBtnEl.setAttribute('aria-label', 'Ver teoría');
-    theoryBtnEl.classList.remove('is-active');
+    resetTheory();
 
-    // Save focus
+    // Guardar foco y scroll del catálogo (solo al entrar desde el catálogo)
     if (!document.body.classList.contains('lab-active')) {
       lastFocusedElement = document.activeElement;
+      if (resume) {
+        catalogScroll = parseInt(SS.get(SS_SCROLL), 10) || 0;
+      } else {
+        catalogScroll = window.pageYOffset || document.documentElement.scrollTop || 0;
+        SS.set(SS_SCROLL, String(Math.round(catalogScroll)));
+      }
     }
 
-    // Cleanup previous instance
+    // Limpiar instancia previa
+    mountToken++;
     if (currentInstance) {
-      currentInstance.stop();
-      if (currentInstance.resizeObserver) currentInstance.resizeObserver.disconnect();
+      currentInstance.destroy();
       currentInstance = null;
     }
 
-    // Activate lab view
     document.body.classList.add('lab-active');
+    setLabChrome(true);
+    SS.set(SS_EXP, id);
     const body = document.getElementById('labBody');
     body.inert = false;
     body.innerHTML = '';
 
-    // Prepare theory content
     prepareTheory(m.id, m.title);
 
-    // Mount instance (next frame so layout is settled)
+    const token = mountToken;
     requestAnimationFrame(() => {
-      if (currentLabId !== id) return;
+      if (token !== mountToken || currentLabId !== id) return;
       const instance = new ExpClass();
       instance.mount(body);
       currentInstance = instance;
@@ -4250,22 +4669,29 @@
   function closeExperimentInternal() {
     if (!document.body.classList.contains('lab-active') && !currentLabId) return;
     setTheory(false);
+    mountToken++;
     if (currentInstance) {
-      currentInstance.stop();
-      if (currentInstance.resizeObserver) currentInstance.resizeObserver.disconnect();
+      currentInstance.destroy();
       currentInstance = null;
     }
     document.body.classList.remove('lab-active');
+    setLabChrome(false);
     const body = document.getElementById('labBody');
     if (body) {
       body.inert = false;
       body.innerHTML = '';
     }
     currentLabId = null;
+    SS.del(SS_EXP);
+
+    const y = catalogScroll || parseInt(SS.get(SS_SCROLL), 10) || 0;
     if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-      try { lastFocusedElement.focus(); } catch (e) {}
+      try { lastFocusedElement.focus({ preventScroll: true }); } catch (e) {}
     }
     lastFocusedElement = null;
+    // El catálogo vuelve a mostrarse (display) y el scroll se había perdido: restaurar sin animación.
+    window.scrollTo({ top: y, left: 0, behavior: 'instant' });
+    requestAnimationFrame(() => window.scrollTo({ top: y, left: 0, behavior: 'instant' }));
   }
 
   function closeExperiment() {
@@ -4296,19 +4722,22 @@
   function trapFocus(e) {
     if (e.key !== 'Tab') return;
     if (!document.body.classList.contains('lab-active')) return;
-    const view = document.getElementById('labView');
-    if (!view) return;
-    const focusables = Array.from(view.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+    const scope = theoryOpen ? document.getElementById('theory') : document.getElementById('labView');
+    if (!scope) return;
+    const focusables = Array.from(scope.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
       .filter(el => !el.closest('[inert]') && !el.disabled && el.offsetParent !== null);
     if (focusables.length === 0) return;
     const first = focusables[0];
     const last = focusables[focusables.length - 1];
-    if (e.shiftKey && document.activeElement === first) {
+    if (!scope.contains(document.activeElement)) {
       e.preventDefault();
-      last.focus();
+      first.focus({ preventScroll: true });
+    } else if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus({ preventScroll: true });
     } else if (!e.shiftKey && document.activeElement === last) {
       e.preventDefault();
-      first.focus();
+      first.focus({ preventScroll: true });
     }
   }
 
@@ -4324,6 +4753,7 @@
         });
         const cards = document.querySelectorAll('.exp-card');
         let visibleCount = 0;
+        const statusEl = document.getElementById('filterStatus');
         cards.forEach(card => {
           const cats = card.getAttribute('data-categories').split(' ');
           const show = filter === 'todos' || cats.indexOf(filter) !== -1;
@@ -4338,8 +4768,25 @@
             card.style.display = 'none';
           }
         });
+        if (statusEl) {
+          const name = filter === 'todos' ? '' : ' de ' + btn.firstChild.textContent.trim();
+          statusEl.textContent = 'Mostrando ' + visibleCount + (visibleCount === 1 ? ' experimento' : ' experimentos') + name + '.';
+        }
       });
     });
+  }
+
+  function syncFilterCounts() {
+    const metas = EXPERIMENT_ORDER.map(id => EXPERIMENTS_MAP[id].META);
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      const f = btn.getAttribute('data-filter');
+      const n = f === 'todos' ? metas.length : metas.filter(m => m.categories.indexOf(f) !== -1).length;
+      const c = btn.querySelector('[data-count]');
+      if (c) c.textContent = String(n);
+      btn.hidden = f !== 'todos' && n === 0;
+      btn.setAttribute('aria-pressed', btn.classList.contains('is-active') ? 'true' : 'false');
+    });
+    document.querySelectorAll('[data-exp-count]').forEach(el => { el.textContent = String(metas.length); });
   }
 
   function bindReveal() {
@@ -4407,6 +4854,7 @@
         fabBtn.focus();
       }
     }
+    closeNavMenu = () => { if (menuOpen) setMenu(false, false); };
     if (fabBtn) fabBtn.addEventListener('click', () => setMenu(!menuOpen));
     if (drawerClose) drawerClose.addEventListener('click', () => setMenu(false, true));
     if (backdrop) backdrop.addEventListener('click', () => setMenu(false, true));
@@ -4429,16 +4877,18 @@
     bindReveal();
     bindFiltersStuck();
     bindDrawer();
-    document.querySelectorAll('[data-count]').forEach(el => {
-      const f = el.getAttribute('data-count');
-      el.textContent = Array.from(document.querySelectorAll('.exp-card')).filter(c => f === 'todos' || c.dataset.categories.split(' ').indexOf(f) !== -1).length;
-    });
-    const hc = document.querySelector('[data-exp-count]');
-    if (hc) hc.textContent = EXPERIMENT_ORDER.length;
+    syncFilterCounts();
 
     // Lab view buttons
     document.getElementById('labBackBtn').addEventListener('click', closeExperiment);
-    document.getElementById('theoryBtn').addEventListener('click', () => setTheory(!theoryOpen, true));
+    document.getElementById('theoryBtn').addEventListener('click', () => { haptic(10); setTheory(!theoryOpen, true); });
+    const theoryPanel = document.getElementById('theory');
+    theoryPanel.addEventListener('transitionend', (e) => {
+      if (e.target === theoryPanel && e.propertyName === 'transform') endTheoryAnim();
+    });
+    const theoryBackdrop = document.getElementById('theoryBackdrop');
+    if (theoryBackdrop) theoryBackdrop.addEventListener('click', () => setTheory(false, true));
+    bindTheoryGesture();
     document.getElementById('theoryClose').addEventListener('click', () => setTheory(false, true));
     document.getElementById('theoryBack').addEventListener('click', () => setTheory(false, true));
     document.getElementById('presentationBtn').addEventListener('click', togglePresentation);
@@ -4467,7 +4917,18 @@
     // Initial route
     const hid = location.hash.slice(1).split('?')[0];
     if (EXPERIMENTS_MAP[hid]) {
-      openExperimentInternal(hid);
+      openExperimentInternal(hid, { resume: true });
+    } else {
+      let navType = '';
+      try {
+        const nav = performance.getEntriesByType('navigation')[0];
+        navType = nav ? nav.type : '';
+      } catch (e) {}
+      const sid = SS.get(SS_EXP);
+      if (navType === 'reload' && EXPERIMENTS_MAP[sid]) {
+        try { history.replaceState(null, '', '#' + sid); } catch (e) {}
+        openExperimentInternal(sid, { resume: true });
+      }
     }
 
     const yearEl = document.querySelector('[data-current-year]');
